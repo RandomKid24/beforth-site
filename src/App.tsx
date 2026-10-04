@@ -7,7 +7,6 @@ import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compas
 import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
 import ProductShowcase from '@/components/ProductShowcase';
-import PlatformShowcase from '@/components/PlatformShowcase';
 import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
 
@@ -70,15 +69,6 @@ const OUTCOMES = [
   { from: 'Chat follow-ups', to: 'Tracked workflows' },
   { from: 'Hand-made reports', to: 'Live MIS' },
   { from: 'Forced-fit software', to: 'Systems that fit' },
-];
-
-const PILLARS = [
-  { k: 'ERP', v: 'Operations in one system' },
-  { k: 'CRM', v: 'Leads and pipelines' },
-  { k: 'HRMS', v: 'People, shifts, payroll' },
-  { k: 'Inventory', v: 'Stock and materials' },
-  { k: 'Automation', v: 'Workflows that run themselves' },
-  { k: 'Web & Mobile', v: 'Anywhere work happens' },
 ];
 
 const INDUSTRIES = [
@@ -230,146 +220,29 @@ function Navbar() {
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 function Hero() {
-  const { shouldReduce } = useMotionPreset();
-
   return (
-    <section
-      className="relative min-h-[100svh] flex flex-col justify-between pt-28 md:pt-36 pb-8 grain overflow-hidden"
-    >
-      {/* Parallax layers run on the compositor via CSS scroll timelines
-          where supported, and stay static where they are not. */}
-      <div
-        data-parallax
-        className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none"
-        style={{ '--parallax-shift': '18%' } as React.CSSProperties}
-      />
-      <div
-        data-parallax
-        className="absolute top-[-10rem] right-[-8rem] w-[42rem] h-[42rem] pointer-events-none"
-        style={{ '--parallax-shift': '30%' } as React.CSSProperties}
-      >
-        <div
-          className="w-full h-full"
-          style={{ background: 'radial-gradient(circle, rgba(28,117,188,0.09) 0%, transparent 68%)' }}
-        />
-      </div>
+    <section className="pt-32 md:pt-40 pb-16 md:pb-24 border-b border-ink/12">
+      <div className="wrap">
+        <span className="label">Nashik, Maharashtra, India</span>
 
-      <div
-        data-parallax
-        className="wrap relative z-10 w-full flex-1 flex flex-col justify-center"
-        style={
-          {
-            '--parallax-shift': '-40px',
-            '--parallax-opacity-to': '0.4',
-          } as React.CSSProperties
-        }
-      >
-        <m.div
-          initial={shouldReduce ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...springSmooth, delay: 0.15 }}
-          className="pb-7 flex items-center gap-4"
-        >
-          <m.span
-            initial={shouldReduce ? false : { scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="block w-10 h-px bg-signal origin-left"
-          />
-          <span className="label">Nashik, Maharashtra, India</span>
-        </m.div>
-
-        <h1 className="display-xl text-[clamp(1.75rem,7.4vw,6.2rem)] max-w-[16ch]">
-          {['Software that fits', 'the way your', 'business runs.'].map((line, i) => (
-            <span key={line} className="block overflow-hidden">
-              <m.span
-                initial={shouldReduce ? false : { y: '106%' }}
-                animate={{ y: 0 }}
-                transition={{ ...springSmooth, delay: 0.3 + i * 0.11 }}
-                className="block"
-              >
-                {i === 2 ? (
-                  <>
-                    <m.span
-                      initial={shouldReduce ? false : { opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.62 }}
-                      className="accent"
-                    >
-                      business
-                    </m.span>
-                    {' runs.'}
-                  </>
-                ) : (
-                  line
-                )}
-              </m.span>
-            </span>
-          ))}
+        <h1 className="display-xl text-[clamp(2rem,5.6vw,4.25rem)] max-w-[20ch] mt-5">
+          Custom ERP, CRM and HR software for your <span className="accent">business.</span>
         </h1>
 
-        <m.div
-          initial={shouldReduce ? false : { opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...springSmooth, delay: 0.75 }}
-          className="mt-9 md:mt-12 flex flex-wrap items-center gap-x-8 gap-y-5"
-        >
-          <p className="lead max-w-lg">
-            Custom business software, automation and integrations for companies that have outgrown
-            spreadsheets.
-          </p>
-          <div className="flex flex-wrap items-center gap-5 lg:ml-auto">
-            <m.span
-              initial={shouldReduce ? false : { opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...springSnappy, delay: 0.95 }}
-            >
-              <Magnetic>
-                <Link to="/contact" className="btn-signal">
-                  Start a project <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Magnetic>
-            </m.span>
-            <m.span
-              initial={shouldReduce ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...springSmooth, delay: 1.05 }}
-            >
-              <a href="#services" className="ulink">
-                What we build <ArrowDown className="w-3.5 h-3.5" />
-              </a>
-            </m.span>
-          </div>
-        </m.div>
-      </div>
+        <p className="lead max-w-xl mt-6">
+          We replace spreadsheets and scattered tools with one system built around how your
+          company works. Used by manufacturing, pharma, distribution and service firms.
+        </p>
 
-      <m.div
-        initial={shouldReduce ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ...springSmooth, delay: 1.15 }}
-        className="wrap relative z-10 w-full mt-10"
-      >
-        <m.div
-          initial={shouldReduce ? false : { scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="rule mb-5 origin-left"
-        />
-        <div className="flex flex-wrap items-start justify-between gap-x-8 gap-y-4">
-          {PILLARS.map((p, i) => (
-            <m.div
-              key={p.k}
-              initial={shouldReduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...springSmooth, delay: 1.3 + i * 0.07 }}
-              className="flex flex-col gap-0.5"
-            >
-              <span className="font-display font-bold text-[15px] md:text-base tracking-tight">{p.k}</span>
-              <span className="label !text-[10px]">{p.v}</span>
-            </m.div>
-          ))}
+        <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Link to="/contact" className="btn-signal">
+            Start a project <ArrowRight className="w-4 h-4" />
+          </Link>
+          <a href="#services" className="ulink">
+            What we build <ArrowDown className="w-3.5 h-3.5" />
+          </a>
         </div>
-      </m.div>
+      </div>
     </section>
   );
 }
@@ -629,26 +502,6 @@ function Why() {
             </div>
           </Reveal>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Platforms — shown in place, never linked away                        */
-/* ------------------------------------------------------------------ */
-function Products() {
-  return (
-    <section id="platforms" className="section scroll-mt-20">
-      <div className="wrap">
-        <SectionHead
-          label="Platforms"
-          title={<>Platforms we build, run and <span className="accent">maintain.</span></>}
-          note="Pick one and try it right here. Screens use sample data; the systems behind them are real."
-        />
-        <Reveal>
-          <PlatformShowcase />
-        </Reveal>
       </div>
     </section>
   );
@@ -1190,7 +1043,7 @@ export default function App() {
           style={pageTransitionName ? ({ viewTransitionName: pageTransitionName } as React.CSSProperties) : undefined}
         >
           <Routes>
-            <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><Products /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+            <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/team" element={<TeamPage />} />

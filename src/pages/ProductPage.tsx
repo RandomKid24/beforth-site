@@ -35,7 +35,7 @@ export default function ProductPage() {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
-            { '@type': 'ListItem', position: 2, name: 'Platforms', item: `${ORIGIN}/#platforms` },
+            { '@type': 'ListItem', position: 2, name: 'Platforms', item: `${ORIGIN}/services` },
             { '@type': 'ListItem', position: 3, name: p.name, item: url },
           ],
         },
@@ -73,7 +73,7 @@ export default function ProductPage() {
           <nav aria-label="Breadcrumb" className="mb-8 md:mb-10 flex flex-wrap items-center gap-2 label">
             <Link to="/" className="hover:text-signal transition-colors">Home</Link>
             <span aria-hidden>/</span>
-            <Link to="/#platforms" className="hover:text-signal transition-colors">Platforms</Link>
+            <Link to="/services" className="hover:text-signal transition-colors">Platforms</Link>
             <span aria-hidden>/</span>
             <span className="text-ink" aria-current="page">{p.name}</span>
           </nav>
@@ -286,7 +286,7 @@ export default function ProductPage() {
           <div className="rule mb-6" />
           <div className="flex items-end justify-between gap-4 mb-8">
             <h2 className="display-md text-xl md:text-2xl">Other platforms we build</h2>
-            <Link to="/#platforms" className="ulink shrink-0">All platforms <ArrowUpRight className="w-3.5 h-3.5" /></Link>
+            <Link to="/services" className="ulink shrink-0">All platforms <ArrowUpRight className="w-3.5 h-3.5" /></Link>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             {related.map((r, i) => {

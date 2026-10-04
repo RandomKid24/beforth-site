@@ -18,7 +18,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -64,7 +64,7 @@
     @apply text-signal;
   }
   .label {
-    @apply font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-ash;
+    @apply font-sans text-[12px] md:text-[13px] font-semibold uppercase tracking-[0.06em] text-ash;
   }
   .body {
     @apply text-ash text-[15px] md:text-[16px] font-normal leading-[1.75];
@@ -76,30 +76,30 @@
     @apply text-ink/80 text-lg md:text-[21px] font-normal leading-[1.5] tracking-[-0.012em];
   }
   .figure-cap {
-    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-ash;
+    @apply font-sans text-[13px] text-ash;
   }
 
   /* ---- Buttons ------------------------------------------------------ */
   .btn-solid {
-    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink bg-ink text-paper;
+    @apply inline-flex items-center justify-center gap-2.5 font-sans text-[15px] font-semibold transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink bg-ink text-paper;
   }
   .btn-solid:hover {
     @apply bg-signal border-signal text-white;
   }
   .btn-signal {
-    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-signal bg-signal text-white;
+    @apply inline-flex items-center justify-center gap-2.5 font-sans text-[15px] font-semibold transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-signal bg-signal text-white;
   }
   .btn-signal:hover {
     @apply bg-signal-deep border-signal-deep;
   }
   .btn-line {
-    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink/22 text-ink;
+    @apply inline-flex items-center justify-center gap-2.5 font-sans text-[15px] font-semibold transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink/22 text-ink;
   }
   .btn-line:hover {
     @apply border-ink bg-ink text-paper;
   }
   .btn-invert {
-    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-paper bg-paper text-ink;
+    @apply inline-flex items-center justify-center gap-2.5 font-sans text-[15px] font-semibold transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-paper bg-paper text-ink;
   }
   .btn-invert:hover {
     @apply bg-bone border-bone;
@@ -107,7 +107,7 @@
 
   /* ---- Text link ----------------------------------------------------- */
   .ulink {
-    @apply relative inline-flex items-center gap-2 min-h-[28px] font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink transition-colors duration-300 py-1;
+    @apply relative inline-flex items-center gap-2 min-h-[28px] font-sans text-[15px] font-semibold text-ink transition-colors duration-300 py-1;
     border-bottom: 1px solid rgba(35,31,32, 0.25);
   }
   .ulink:hover {
@@ -134,11 +134,12 @@
     @apply border-signal ring-2 ring-signal/15;
   }
   .flabel {
-    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-ash mb-2 block;
+    @apply font-sans text-[13px] font-semibold text-ink mb-2 block;
   }
 
   /* ---- Texture -------------------------------------------------------- */
   .grain::before {
+    display: none;
     content: "";
     @apply absolute inset-0 pointer-events-none z-0;
     opacity: 0.32;
