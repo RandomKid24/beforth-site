@@ -8,6 +8,7 @@ import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
 import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
+import { useTransitionLocation } from '@/lib/pageTransition';
 
 import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
 import { FAQ } from '@/data/faq';
@@ -1013,31 +1014,23 @@ function RouteFallback() {
 /* App                                                                  */
 /* ------------------------------------------------------------------ */
 export default function App() {
-  const { pathname, hash } = useLocation();
+  const { hash } = useLocation();
   const { shouldReduce } = useMotionPreset();
 
-  // New page: start at the top. A link like /#platforms: land on that section instead.
+  // The location actually rendered. Advances inside a View Transition so the
+  // browser can animate the swap; falls back to an instant swap when reduced
+  // motion is set or the browser lacks support.
+  const displayLocation = useTransitionLocation(shouldReduce);
+
+  // A link to a hash on the current page scrolls; a real navigation is handled
+  // by the transition above, which already resets to the top.
   useEffect(() => {
-    if (hash) {
-      const t = window.setTimeout(() => {
-        try { document.querySelector(hash)?.scrollIntoView({ block: 'start' }); } catch { /* not a valid selector */ }
-      }, 90);
-      return () => window.clearTimeout(t);
-    }
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [pathname, hash]);
-
-  /**
-   * View Transitions give the browser a chance to animate the route swap on
-   * its own compositor. Must be guarded: `document.startViewTransition` is
-   * undefined in Safari < 18 and Firefox < 130, and calling it unguarded
-   * throws a TypeError that breaks navigation entirely.
-   */
-  const supportsViewTransition =
-    typeof document !== 'undefined' && typeof document.startViewTransition === 'function';
-
-  const pageTransitionName =
-    supportsViewTransition && !shouldReduce ? 'beforth-page' : undefined;
+    if (!hash) return;
+    const t = window.setTimeout(() => {
+      try { document.querySelector(hash)?.scrollIntoView({ block: 'start' }); } catch { /* not a valid selector */ }
+    }, 90);
+    return () => window.clearTimeout(t);
+  }, [hash]);
 
   return (
     <LazyMotion features={domAnimation} strict>
@@ -1046,12 +1039,9 @@ export default function App() {
         <StructuredData />
         <Navbar />
 
-        <div
-          key={pathname}
-          style={pageTransitionName ? ({ viewTransitionName: pageTransitionName } as React.CSSProperties) : undefined}
-        >
+        <div className="page-content">
           <Suspense fallback={<RouteFallback />}>
-            <Routes>
+            <Routes location={displayLocation}>
               <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about" element={<AboutPage />} />

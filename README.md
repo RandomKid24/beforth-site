@@ -43,10 +43,11 @@ Tokens are defined in `src/index.css` via Tailwind v4 `@theme`.
 - **Everything:** `Plus Jakarta Sans`. `JetBrains Mono` appears only inside the demo dashboard.
 
 ### Design rules
-`DESIGN_VAULT.md` is the source of truth for how the site looks and behaves. In short:
-plain over clever, content visible immediately (no scroll reveals, parallax or decorative
-texture), sentence-case buttons, one accent colour (`signal`), flat surfaces separated by
-1px rules rather than shadows.
+[`designV2.md`](designV2.md) is the source of truth for how the site looks and behaves:
+colour, type, layout, the page-transition motion spec, component classes, and the honesty
+rules for claims. `DESIGN_VAULT.md` is kept as the original rationale and is no longer
+edited. In short: plain over clever, one accent colour (`signal`), square corners,
+1px rules instead of shadows, sentence-case buttons, and one motion per navigation.
 
 ---
 
