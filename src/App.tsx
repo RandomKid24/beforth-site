@@ -10,6 +10,9 @@ import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
 
 import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
+import { FAQ } from '@/data/faq';
+import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
+import { routeGraph } from '@/lib/schema';
 
 /**
  * The interactive dashboard demo is ~200KB of source. It is the one visual the
@@ -37,12 +40,17 @@ const NAV = [
   { path: '/contact', label: 'Contact' },
 ];
 
+/**
+ * Each service line links to the product page that shows the most concrete
+ * example of it. These are contextual links in body copy, not navigation —
+ * crawlers and readers use them to reach related detail from within the text.
+ */
 const SERVICES = [
-  { n: '01', title: 'Business Software & ERP', desc: 'Sales, HR, service, inventory and reporting on one platform.' },
-  { n: '02', title: 'Workflow Automation', desc: 'Approvals and follow-ups tracked, not chased.' },
-  { n: '03', title: 'Custom Software', desc: 'Built for the cases off-the-shelf cannot cover.' },
-  { n: '04', title: 'Web & Mobile Apps', desc: 'Websites, portals and apps your team will actually use.' },
-  { n: '05', title: 'Integrations', desc: 'ERP, accounts, CRM and APIs talking to each other.' },
+  { n: '01', title: 'Business Software & ERP', desc: 'Sales, HR, service, inventory and reporting on one platform.', to: '/services' },
+  { n: '02', title: 'Workflow Automation', desc: 'Approvals and follow-ups tracked, not chased.', to: '/product/crm' },
+  { n: '03', title: 'Custom Software', desc: 'Built for the cases off-the-shelf cannot cover.', to: '/services' },
+  { n: '04', title: 'Web & Mobile Apps', desc: 'Websites, portals and apps your team will actually use.', to: '/product/mobile-apps' },
+  { n: '05', title: 'Integrations', desc: 'ERP, accounts, CRM and APIs talking to each other.', to: '/services' },
 ];
 
 const METHOD = [
@@ -350,7 +358,7 @@ function ServicesSection() {
           {SERVICES.map((service, i) => (
             <Reveal key={service.n} delay={i * 0.04}>
               <Link
-                to="/services"
+                to={service.to}
                 className="group grid md:grid-cols-[3.5rem_1fr_auto] gap-x-8 gap-y-2 py-6 md:py-7 px-3 -mx-3 transition-colors duration-500 hover:bg-bone/50"
               >
                 <span className="label transition-colors duration-500 group-hover:text-signal">
@@ -520,32 +528,52 @@ function Why() {
 /* ------------------------------------------------------------------ */
 /* Selected work                                                        */
 /* ------------------------------------------------------------------ */
-const WORK = [
+/**
+ * The two systems shown under "Selected work" are demonstration builds built
+ * to show interface and workflow, using sample data. They are labelled as
+ * such rather than presented as client deliveries.
+ *
+ * Real client case studies live in src/data/caseStudies.ts and render only
+ * once a genuine, verifiable engagement exists. When that list is empty this
+ * section says so plainly instead of showing filler.
+ */
+const DEMO_WORK = [
   {
     title: 'Global Logistics ERP',
-    kind: 'Supply chain · Web application',
-    desc: 'A logistics management concept bringing shipments, vendors, routes, reports and an operations centre into one centralised interface.',
+    kind: 'Demonstration build · Supply chain',
+    desc: 'A demonstration interface for logistics management, bringing shipments, vendors, routes, reports and an operations centre into one centralised view. Built with sample data to show the workflow, not a client deployment.',
     points: ['Shipment management', 'Vendor management', 'Routes', 'Operations dashboard', 'Reporting'],
   },
   {
     title: 'SalesPulse CRM',
-    kind: 'CRM · Mobile application',
-    desc: 'A sales-management platform concept built around leads, customer activity, pipeline stages and sales reporting.',
+    kind: 'Demonstration build · CRM',
+    desc: 'A demonstration sales-management platform built around leads, customer activity, pipeline stages and sales reporting. Built with sample data to show the workflow, not a client deployment.',
     points: ['Lead management', 'Sales pipeline', 'Lead trends', 'Customer activity', 'Sales metrics'],
   },
 ];
 
 function SelectedWork() {
+  const realWork = PUBLISHED_CASE_STUDIES;
+  const hasRealWork = realWork.length > 0;
+  const items = hasRealWork ? realWork : DEMO_WORK;
+
   return (
     <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
           label="Selected work"
-          title={<>Two systems we designed end to <span className="accent">end.</span></>}
+          title={hasRealWork ? (
+            <>Client systems we built and <span className="accent">stand behind.</span></>
+          ) : (
+            <>Two systems we designed end to <span className="accent">end.</span></>
+          )}
+          note={hasRealWork
+            ? undefined
+            : 'Demonstration builds. Client case studies are published as permissions allow.'}
         />
 
         <div className="grid md:grid-cols-2 gap-5">
-          {WORK.map((item, i) => (
+          {items.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.08}>
               <div className="h-full p-6 md:p-8 bg-paper border border-ink/12">
                 <span className="label block mb-4">{item.kind}</span>
@@ -558,6 +586,16 @@ function SelectedWork() {
                     </li>
                   ))}
                 </ul>
+                {'metrics' in item && (
+                  <dl className="mt-6 pt-5 border-t border-ink/12 grid gap-3">
+                    {item.metrics.map((m) => (
+                      <div key={m.label} className="flex items-baseline justify-between gap-4">
+                        <dt className="body-tight">{m.label}</dt>
+                        <dd className="accent font-semibold text-[15px] whitespace-nowrap">{m.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
               </div>
             </Reveal>
           ))}
@@ -604,39 +642,22 @@ function Technology() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* FAQ                                                                  */
-/* ------------------------------------------------------------------ */
-const FAQ = [
-  {
-    q: 'What does BeForth do?',
-    a: 'We develop custom ERP systems, CRM platforms, HRMS solutions, inventory systems, business applications, web and mobile applications, and workflow automation.',
-  },
-  {
-    q: 'Is the software custom or off-the-shelf?',
-    a: 'Custom. We design around your approval structures, roles, pricing rules, inventory processes and reporting requirements rather than fitting you into a predefined structure.',
-  },
-  {
-    q: 'Can you work with an existing process?',
-    a: 'Yes. Development starts by understanding your processes, roles, workflows, integrations and reporting requirements, then builds around them.',
-  },
-  {
-    q: 'Do you build mobile applications?',
-    a: 'Yes — native and cross-platform, using Swift, Kotlin, Flutter and React Native.',
-  },
-  {
-    q: 'Can it integrate with our existing systems?',
-    a: 'Yes. Systems are designed with integrations and APIs according to the project requirements.',
-  },
-  {
-    q: 'Do you build HR and payroll systems?',
-    a: 'Yes. HRMS and payroll solutions cover employee management, attendance, shifts, leave, payroll, salary calculation, approvals, reports and biometric integration.',
-  },
-  {
-    q: 'Where are you based?',
-    a: 'Nashik, Maharashtra, India.',
-  },
-];
+/**
+ * Resolve a FAQ's `related` slug to a route. Product slugs become product
+ * page links; anything else is treated as a static route. Centralised so the
+ * link text and the destination can never point at different things.
+ */
+function faqLink(slug: string): string {
+  return PLATFORMS.some((p) => p.slug === slug) ? `/product/${slug}` : `/${slug}`;
+}
+
+function faqLinkLabel(slug: string): string {
+  const platform = PLATFORMS.find((p) => p.slug === slug);
+  if (platform) return `${platform.name} details`;
+  if (slug === 'services') return 'All services';
+  if (slug === 'contact') return 'Contact the team';
+  return 'Read more';
+}
 
 function Faq() {
   return (
@@ -657,6 +678,14 @@ function Faq() {
                   </span>
                 </summary>
                 <p className="body max-w-2xl mt-2.5 pl-9 md:pl-12">{item.a}</p>
+                {item.related && (
+                  <p className="pl-9 md:pl-12 mt-3">
+                    <Link to={faqLink(item.related)} className="ulink">
+                      {faqLinkLabel(item.related)}{' '}
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </p>
+                )}
               </details>
             </Reveal>
           ))}
@@ -930,82 +959,28 @@ function SeoManager() {
   return null;
 }
 
+/**
+ * Route-scoped structured data.
+ *
+ * The organization-level graph also ships statically in index.html for
+ * crawlers that never execute JavaScript. This component adds the nodes that
+ * only make sense on one route: breadcrumbs on every page, FAQPage on the
+ * home page, and a Service node on each product page. Both graphs are keyed by
+ * @id, so duplicate nodes across the two merge instead of conflicting.
+ */
 function StructuredData() {
-  useEffect(() => {
-    const origin = 'https://beforth.in';
-    const data = {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Organization',
-          '@id': `${origin}/#organization`,
-          name: 'Beforth',
-          url: origin,
-          description:
-            'Beforth is a technology and software solutions company in Nashik, India, building custom business software, ERP systems, workflow automation, web and mobile applications, and integrations.',
-          email: 'support@beforth.in',
-          telephone: '+91-97661-83834',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Nashik',
-            addressRegion: 'Maharashtra',
-            addressCountry: 'IN',
-          },
-          areaServed: 'Worldwide',
-          sameAs: [
-            'https://in.linkedin.com/company/beforth',
-            'https://www.instagram.com/beforth.in',
-          ],
-        },
-        {
-          '@type': 'ProfessionalService',
-          name: 'Beforth',
-          url: origin,
-          serviceType: [
-            'Custom ERP Development',
-            'CRM Development',
-            'HRMS and Payroll Systems',
-            'Inventory Management Systems',
-            'Business Process Automation',
-            'Web Application Development',
-            'Mobile Application Development',
-          ],
-          provider: { '@id': `${origin}/#organization` },
-        },
-        {
-          '@type': 'SoftwareApplication',
-          name: 'Neomed Delivery',
-          applicationCategory: 'BusinessApplication',
-          operatingSystem: 'Android',
-          description:
-            'Enterprise delivery platform for pharmacy and healthcare distribution operations, supporting delivery assignments, proof of delivery, route handling, live location sharing, notifications and delivery history.',
-          url: 'https://play.google.com/store/apps/details?id=com.neomad.neomad_app',
-        },
-        {
-          '@type': 'SoftwareApplication',
-          name: '4Form',
-          applicationCategory: 'BusinessApplication',
-          description:
-            'Form-management and workflow platform for creating, managing and tracking digital forms, with analytics, email automation, CRM integration, validation, submission tracking and API integrations.',
-          url: 'https://4form.beforth.in/',
-        },
-        {
-          '@type': 'FAQPage',
-          mainEntity: FAQ.map((item) => ({
-            '@type': 'Question',
-            name: item.q,
-            acceptedAnswer: { '@type': 'Answer', text: item.a },
-          })),
-        },
-      ],
-    };
+  const { pathname } = useLocation();
 
+  useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(data);
+    script.dataset.route = pathname;
+    script.textContent = JSON.stringify(routeGraph(pathname));
     document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
-  }, []);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [pathname]);
 
   return null;
 }

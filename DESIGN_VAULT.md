@@ -71,6 +71,39 @@ sites do not need editing, but they do not animate. Hover states are colour chan
 Interactive demo screens may animate their own data. If you add motion elsewhere, it must
 help the visitor understand something; otherwise leave it out.
 
+## Honesty rules
+
+These are stricter than taste. Breaking them is a bug, not a style choice.
+
+- **Never invent a fact.** No client names, no "50+ projects", no invented metrics, no
+  founding year, no review counts, no performance figures. If it is not verifiable, it
+  does not go on the site.
+- **Label demonstrations as demonstrations.** The two systems under "Selected work" are
+  sample-data builds. They say so. Do not let them drift into reading as client work.
+- **No placeholder content reaches a visitor.** Case studies and insights render nothing
+  until real content exists. A section of thin template cards is worse than no section:
+  it dilutes authority and reads as filler.
+- **Schema must match visible content.** `FAQPage` only on pages that render a FAQ.
+  `BreadcrumbList` everywhere except the home page. The prerender build fails if these
+  drift, so do not silence the check.
+- **Structured data is generated, not hand-written.** `src/lib/schema.ts` is the single
+  source of truth for name, phone and address. Edit it there, never in `index.html`
+  directly, or the static and injected graphs will disagree.
+
+## Search and answer engines
+
+The site is a client-rendered SPA, so without prerendering the served HTML is an empty
+`<div id="root">`. Google renders JavaScript; most AI answer-engine crawlers do not.
+
+- **Prerendering is part of the build.** `npm run build` writes static HTML for all
+  routes. Never remove it to "simplify" — that silently makes the site invisible to
+  every non-Google crawler.
+- **Adding a route means three edits**: the `<Route>`, `ROUTES` in
+  `scripts/prerender.mjs`, and the sitemap. Skipping the second ships a blank page to
+  crawlers while looking fine in a browser.
+- **Answer shape.** Questions are headings, answers lead with the conclusion in the
+  first sentence, and run 40–60 words. That is the shape an AI engine quotes back.
+
 ## Do / don't
 
 | Do | Don't |

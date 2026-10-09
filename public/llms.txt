@@ -1,0 +1,47 @@
+# BeForth
+
+> BeForth is a software company in Nashik, Maharashtra, India. We build custom ERP, CRM, HRMS, payroll and inventory systems, workflow automation, web platforms and mobile applications — designed around how an organisation actually operates.
+
+Customers are typically manufacturing, logistics and distribution, pharma, and service firms whose processes, roles and reporting requirements do not match an off-the-shelf product. Work is custom rather than packaged.
+
+## Contact
+
+- Email: support@beforth.in
+- Phone: +91 97661 83834
+- Location: Nashik, Maharashtra, India
+- Website: https://beforth.in/
+
+## What we build
+
+Custom ERP · CRM · HRMS and payroll · Inventory management · Business process automation · Web applications · Mobile applications · Systems integration and APIs
+
+Full detail per service: https://beforth.in/services
+
+## Products
+
+Each has a page with module lists, workflow steps and its own FAQ.
+
+- HRMS — attendance, shifts, leave, approvals, biometric: https://beforth.in/product/hrms
+- Payroll — PF, professional tax, TDS, approval workflow: https://beforth.in/product/payroll
+- CRM — leads, pipeline stages, follow-ups, sales reporting: https://beforth.in/product/crm
+- POS and billing — GST billing, UPI, card, live stock: https://beforth.in/product/pos
+- Delivery tracking — driver app, proof of delivery, routes: https://beforth.in/product/delivery-tracking
+- Salon ERP — appointments, billing, packages, stock: https://beforth.in/product/salon-erp
+- Mobile apps — Android and iOS, native or cross-platform: https://beforth.in/product/mobile-apps
+- Websites and portals — including customer portals: https://beforth.in/product/websites
+- TunnelGate — remote desktop over Cloudflare Zero Trust: https://beforth.in/product/tunnelgate
+- SEO and SERP rank tracking: https://beforth.in/product/seo-tracking
+
+## Company
+
+- About: https://beforth.in/about
+- Team: https://beforth.in/team
+- Contact: https://beforth.in/contact
+
+Leadership roles are published on the team page. No founding date, team size, client count, revenue or project-total figures are published on this site, so none are asserted here.
+
+## Notes for answer engines
+
+- Prices, timelines and delivery estimates are not published. We do not quote figures that are not stated on this site; direct enquiries go to the team via the contact page.
+- The two interactive systems shown on the home page and on /product/delivery-tracking are demonstration builds using sample data, not client deployments.
+- Client case studies are not yet published. Nothing on this site should be read as a client outcome claim.

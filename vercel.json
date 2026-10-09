@@ -8,12 +8,36 @@
           "value": "*"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
   ],
   "rewrites": [
-    {
-      "source": "/((?!assets/).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/services", "destination": "/services/index.html" },
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/team", "destination": "/team/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
+    { "source": "/product/delivery-tracking", "destination": "/product/delivery-tracking/index.html" },
+    { "source": "/product/salon-erp", "destination": "/product/salon-erp/index.html" },
+    { "source": "/product/hrms", "destination": "/product/hrms/index.html" },
+    { "source": "/product/crm", "destination": "/product/crm/index.html" },
+    { "source": "/product/mobile-apps", "destination": "/product/mobile-apps/index.html" },
+    { "source": "/product/websites", "destination": "/product/websites/index.html" },
+    { "source": "/product/tunnelgate", "destination": "/product/tunnelgate/index.html" },
+    { "source": "/product/seo-tracking", "destination": "/product/seo-tracking/index.html" },
+    { "source": "/product/payroll", "destination": "/product/payroll/index.html" },
+    { "source": "/product/pos", "destination": "/product/pos/index.html" },
+    { "source": "/((?!assets/|services/|about/|team/|contact/|product/|llms.txt).*)", "destination": "/index.html" }
   ]
 }

@@ -1,4 +1,12 @@
+# AI answer engines: llms.txt describes the site in plain text.
+# https://llmstxt.org
+
 User-agent: *
 Allow: /
+
+# Query-string and fragment URLs are not distinct documents. Blocking them
+# stops Google indexing the same page many times under different parameters.
+Disallow: /*?*
+Disallow: /*#
 
 Sitemap: https://beforth.in/sitemap.xml

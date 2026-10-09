@@ -73,9 +73,70 @@ texture), sentence-case buttons, one accent colour (`signal`), flat surfaces sep
 ```bash
 npm install        # dependencies
 npm run dev        # local dev server (port 3000)
-npm run build      # production build
+npm run build      # production build + static schema + prerender
+npm run build:raw  # vite build only, no prerender (faster while iterating)
+npm run prerender  # re-run prerendering against an existing dist/
+npm run preview    # serve the production build
 npm run lint       # TypeScript check (tsc --noEmit)
 ```
+
+### Prerendering
+
+`npm run build` prerenders all 15 routes to static HTML in `dist/<route>/index.html`.
+This is not optional decoration — the app is a client-rendered SPA, and without it
+the served HTML is an empty `<div id="root">`. Google will render the JavaScript,
+but most AI answer-engine crawlers (ChatGPT, Perplexity, ClaudeBot) fetch raw HTML
+and would see nothing.
+
+Three things make this safe to keep:
+
+- **Assets are never stripped.** An earlier prerenderer removed the hashed CSS link
+  and rewrote the bundle reference, which broke styling on every sub-route. This
+  one asserts the stylesheet link survives on each page and fails the build if not.
+- **Each run is independent.** The SPA fallback serves a pristine snapshot of the
+  built shell taken before any route is written. Serving `dist/index.html`
+  directly would re-inject the home page's JSON-LD into other routes.
+- **Schema is validated per route.** The build fails if a route ships
+  `FAQPage` without rendering an FAQ, or a product page is missing its
+  `BreadcrumbList` or `Service` node.
+
+### Adding a route
+
+1. Add the page component and its `<Route>` in `src/App.tsx`.
+2. Add the path to `ROUTES` in `scripts/prerender.mjs`.
+3. Add it to `public/sitemap.xml` and to the crumb map in `src/lib/schema.ts`.
+
+Missing step 2 is the one that silently ships an empty page — the route will work
+in a browser but the crawler gets nothing.
+
+### Structured data
+
+`src/lib/schema.ts` is the single source of truth. The organization-level graph is
+written statically into `index.html` by `scripts/emit-static-schema.mjs`; the
+route-level graph (breadcrumbs, `FAQPage`, per-product `Service`) is injected by
+the `StructuredData` component. Both are generated from the same module, so the
+name, phone and address cannot drift between them.
+
+Facts must be verifiable and published elsewhere on the site. There are no review
+counts, ratings, founding dates or client names on this site, and none are invented
+in the schema.
+
+---
+
+## ✍️ Content that needs real data
+
+Two modules are deliberately **empty and gated**. They render nothing until genuine
+content exists, because placeholder cards give crawlers nothing worth indexing and
+read as filler to visitors.
+
+- **`src/data/caseStudies.ts`** — set `live: true` on an entry once a real,
+  verifiable engagement exists. `CaseStudyMetric` will not compile without a
+  measured outcome, because a case study without one is not a case study.
+- **`src/data/insights.ts`** — long-form articles. `TOPIC_BACKLOG` lists subject
+  areas this company can speak to; it is a writing prompt, not published content.
+
+Nothing in either file may be invented. No sample client names, no invented metrics,
+no "50+ projects delivered".
 
 ---
 
