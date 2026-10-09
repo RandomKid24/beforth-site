@@ -20,7 +20,8 @@
  */
 
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, access, stat } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
@@ -169,17 +170,112 @@ async function waitForContent(page, route) {
   return heading;
 }
 
-async function main() {
-  // Snapshot the built shell before we overwrite dist/index.html with the
-  // prerendered home page. See PRISTINE_INDEX for why this matters.
+/**
+ * Launch a browser, tolerating environments where puppeteer's postinstall
+ * never ran.
+ *
+ * Vercel blocks install scripts by default, so puppeteer never downloads its
+ * own Chrome and `puppeteer.launch()` throws "Could not find Chrome". The
+ * build step therefore installs a browser explicitly, but a cached image or a
+ * future platform change can still leave the binary somewhere unexpected.
+ *
+ * Resolution order:
+ *   1. PUPPETEER_EXECUTABLE_PATH — explicit override, always wins.
+ *   2. A system Chrome/Chromium already on the machine.
+ *   3. Puppeteer's own managed download (the local dev path).
+ *
+ * If none work we fail with the actual reason rather than a bare stack trace.
+ */
+const SYSTEM_CHROME_PATHS = [
+  '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
+  '/usr/bin/chromium',
+  '/usr/bin/chromium-browser',
+  '/opt/google/chrome/chrome',
+  '/usr/bin/microsoft-edge-stable',
+];
+
+async function resolveExecutablePath() {
+  const override = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (override && existsSync(override)) return override;
+
+  for (const candidate of SYSTEM_CHROME_PATHS) {
+    if (existsSync(candidate)) return candidate;
+  }
+
+  // Puppeteer's resolver; throws a descriptive error when nothing is found.
+  // Async since puppeteer >= 22.
+  return await puppeteer.executablePath();
+}
+
+async function launchBrowser() {
+  let executablePath;
+  try {
+    executablePath = await resolveExecutablePath();
+  } catch (err) {
+    throw new Error(
+      'No Chrome/Chromium binary available for prerendering.\n' +
+        `Puppeteer said: ${err.message}\n\n` +
+        'Fix by installing a browser during the build:\n' +
+        '  npx puppeteer browsers install chrome\n' +
+        'or point PUPPETEER_EXECUTABLE_PATH at an existing binary.',
+    );
+  }
+
+  if (executablePath) {
+    console.log(`Prerender browser: ${executablePath}`);
+  }
+
+  return puppeteer.launch({
+    executablePath: executablePath || undefined,
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      // Required in containers with a small /dev/shm; without it Chrome
+      // crashes partway through rendering.
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+    ],
+  });
+}
+
+/** Marker written into every prerendered page, so we can tell our own output
+ *  apart from the raw Vite build. See takePristineSnapshot. */
+const PRERENDER_MARKER = '<!-- prerendered -->';
+
+/** Insert the marker just after <head> so re-runs can detect this file. */
+function withMarker(html) {
+  return html.replace(/<head([^>]*)>/i, `<head$1>\n  ${PRERENDER_MARKER}`);
+}
+
+async function takePristineSnapshot() {
+  const built = await readFile(path.join(DIST, 'index.html'), 'utf8');
   await mkdir(path.dirname(PRISTINE_INDEX), { recursive: true });
-  await writeFile(PRISTINE_INDEX, await readFile(path.join(DIST, 'index.html')));
+
+  // Running `npm run prerender` twice without rebuilding must not snapshot our
+  // own output: dist/index.html would then contain the home page's rendered DOM
+  // and its route-scoped JSON-LD, which the other routes would then serve and
+  // re-inject. Only the freshly built shell is safe to snapshot.
+  if (built.includes(PRERENDER_MARKER)) {
+    if (!existsSync(PRISTINE_INDEX)) {
+      throw new Error(
+        'dist/index.html is already prerendered and no pristine build snapshot exists.\n' +
+          'Run `npm run build:raw` (or `npm run build`) first, then prerender again.',
+      );
+    }
+    console.log('prerender: reusing existing build snapshot (dist is already prerendered)');
+    return;
+  }
+
+  await writeFile(PRISTINE_INDEX, built);
+}
+
+async function main() {
+  await takePristineSnapshot();
 
   const server = await serve();
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  const browser = await launchBrowser();
 
   let failed = 0;
   const report = [];
@@ -207,7 +303,7 @@ async function main() {
 
         const outDir = route === '/' ? DIST : path.join(DIST, route);
         await mkdir(outDir, { recursive: true });
-        await writeFile(path.join(outDir, 'index.html'), html, 'utf8');
+        await writeFile(path.join(outDir, 'index.html'), withMarker(html), 'utf8');
 
         // Verify the route-scoped schema matches this route. A mismatch means
         // markup leaked in from a previous run, which would ship schema for
