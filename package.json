@@ -28,6 +28,7 @@
     "vite": "^6.2.0"
   },
   "devDependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "@types/node": "^22.14.0",
     "@types/nodemailer": "^8.0.0",
     "@types/react": "^19.3.0",

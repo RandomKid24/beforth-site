@@ -170,22 +170,6 @@ async function waitForContent(page, route) {
   return heading;
 }
 
-/**
- * Launch a browser, tolerating environments where puppeteer's postinstall
- * never ran.
- *
- * Vercel blocks install scripts by default, so puppeteer never downloads its
- * own Chrome and `puppeteer.launch()` throws "Could not find Chrome". The
- * build step therefore installs a browser explicitly, but a cached image or a
- * future platform change can still leave the binary somewhere unexpected.
- *
- * Resolution order:
- *   1. PUPPETEER_EXECUTABLE_PATH — explicit override, always wins.
- *   2. A system Chrome/Chromium already on the machine.
- *   3. Puppeteer's own managed download (the local dev path).
- *
- * If none work we fail with the actual reason rather than a bare stack trace.
- */
 const SYSTEM_CHROME_PATHS = [
   '/usr/bin/google-chrome',
   '/usr/bin/google-chrome-stable',
@@ -195,49 +179,188 @@ const SYSTEM_CHROME_PATHS = [
   '/usr/bin/microsoft-edge-stable',
 ];
 
-async function resolveExecutablePath() {
-  const override = process.env.PUPPETEER_EXECUTABLE_PATH;
-  if (override && existsSync(override)) return override;
+/** Flags needed for any Chrome in a container, on any platform. */
+const BASE_ARGS = [
+  '--no-sandbox',
+  '--disable-setuid-sandbox',
+  // Containers often have a small /dev/shm; without this Chrome crashes
+  // partway through rendering.
+  '--disable-dev-shm-usage',
+  '--disable-gpu',
+];
 
-  for (const candidate of SYSTEM_CHROME_PATHS) {
-    if (existsSync(candidate)) return candidate;
-  }
-
-  // Puppeteer's resolver; throws a descriptive error when nothing is found.
-  // Async since puppeteer >= 22.
-  return await puppeteer.executablePath();
+/**
+ * Chrome flags supplied by @sparticuz/chromium, minus the ones that break
+ * multi-page use.
+ *
+ * Its default list includes --single-process, added to avoid a
+ * `prctl(PR_SET_NO_NEW_PRIVS) failed` error on Lambda. In exchange the browser
+ * runs its renderer in the browser process, so creating a second page kills
+ * the whole connection — which is exactly what happens here, since prerendering
+ * opens fifteen pages in sequence.
+ *
+ * Vercel does not hit the prctl problem, so the flag is dropped rather than
+ * worked around. Every other supplied flag is kept: swiftshader for software
+ * GL, font rendering, and the AL2023 library paths.
+ */
+function chromiumArgs(chromium) {
+  const supplied = Array.isArray(chromium.args) ? chromium.args : [];
+  return supplied.filter((flag) => flag !== '--single-process');
 }
 
-async function launchBrowser() {
-  let executablePath;
+/**
+ * Candidate browsers, in the order they are tried.
+ *
+ * Each entry returns launch options, or null if it is not usable here.
+ *
+ * Why the ordering is not simply "fastest first": on Vercel, puppeteer's own
+ * Chrome downloads fine but cannot start, because the build image lacks its
+ * shared libraries (libnspr4.so and friends). @sparticuz/chromium ships a
+ * self-contained Chromium with those libraries bundled for Amazon Linux 2023,
+ * which is exactly the image Vercel runs. So on Linux we prefer the bundled
+ * build and fall back to the downloaded one; on macOS and Windows the bundled
+ * Linux binary is unusable, so the managed download is preferred.
+ */
+async function browserCandidates() {
+  const override = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (override && existsSync(override)) {
+    return [{
+      label: `PUPPETEER_EXECUTABLE_PATH (${override})`,
+      options: { executablePath: override, headless: true, args: BASE_ARGS },
+    }];
+  }
+
+  const isLinux = process.platform === 'linux';
+
+  if (isLinux) {
+    // Bundled, self-contained build: the reliable option on Vercel.
+    const bundled = {
+      label: '@sparticuz/chromium (bundled, self-contained)',
+      options: null,
+    };
+
+    try {
+      // @sparticuz/chromium decides at import time whether to unpack its
+      // Amazon Linux 2023 shared libraries, and it reads the VERCEL env var to
+      // do so. Vercel's own build containers do not set it, so the libraries
+      // stay packed and Chromium dies with "libnspr4.so: cannot open shared
+      // object file". Setting it first is what makes the bundled build usable
+      // here — it must happen before the import, since the check runs at module
+      // evaluation. Harmless anywhere else: the flag only adds library paths.
+      process.env.VERCEL ||= '1';
+
+      const { default: chromium } = await import('@sparticuz/chromium');
+      const executablePath = await chromium.executablePath();
+      bundled.options = {
+        executablePath,
+        headless: true,
+        args: [...BASE_ARGS, ...chromiumArgs(chromium)],
+      };
+    } catch (err) {
+      bundled.error = err.message;
+    }
+
+    const candidates = [bundled];
+
+    // Fallbacks, in case the bundled build cannot be extracted.
+    for (const candidate of SYSTEM_CHROME_PATHS) {
+      if (existsSync(candidate)) {
+        candidates.push({
+          label: `system Chrome (${candidate})`,
+          options: { executablePath: candidate, headless: true, args: BASE_ARGS },
+        });
+        break;
+      }
+    }
+
+    try {
+      candidates.push({
+        label: "puppeteer's managed Chrome",
+        options: {
+          executablePath: await puppeteer.executablePath(),
+          headless: true,
+          args: BASE_ARGS,
+        },
+      });
+    } catch {
+      /* not downloaded; the loop below will report it */
+    }
+
+    return candidates;
+  }
+
+  // macOS / Windows: prefer puppeteer's own download, then any system browser.
+  const candidates = [];
   try {
-    executablePath = await resolveExecutablePath();
-  } catch (err) {
+    candidates.push({
+      label: "puppeteer's managed Chrome",
+      options: {
+        executablePath: await puppeteer.executablePath(),
+        headless: true,
+        args: BASE_ARGS,
+      },
+    });
+  } catch {
+    /* not downloaded */
+  }
+
+  for (const candidate of SYSTEM_CHROME_PATHS) {
+    if (existsSync(candidate)) {
+      candidates.push({
+        label: `system Chrome (${candidate})`,
+        options: { executablePath: candidate, headless: true, args: BASE_ARGS },
+      });
+      break;
+    }
+  }
+
+  return candidates;
+}
+
+/**
+ * Launch the first browser that actually starts.
+ *
+ * Resolving a path is not enough: on Vercel the downloaded Chrome exists but
+ * dies with exit code 127 for a missing shared library. Each candidate is
+ * therefore launched for real, and a failure moves on to the next rather than
+ * ending the build.
+ */
+async function launchBrowser() {
+  const candidates = await browserCandidates();
+  const failures = [];
+
+  if (!candidates.some((c) => c.options)) {
     throw new Error(
-      'No Chrome/Chromium binary available for prerendering.\n' +
-        `Puppeteer said: ${err.message}\n\n` +
-        'Fix by installing a browser during the build:\n' +
+      'No usable browser for prerendering. Tried:\n' +
+        candidates.map((c) => `  - ${c.label}${c.error ? `: ${c.error}` : ' (unavailable)'}`).join('\n') +
+        '\n\nFix by installing one during the build:\n' +
         '  npx puppeteer browsers install chrome\n' +
-        'or point PUPPETEER_EXECUTABLE_PATH at an existing binary.',
+        'or set PUPPETEER_EXECUTABLE_PATH to an existing Chrome/Chromium.',
     );
   }
 
-  if (executablePath) {
-    console.log(`Prerender browser: ${executablePath}`);
+  for (const candidate of candidates) {
+    if (!candidate.options) {
+      failures.push(`${candidate.label}: ${candidate.error ?? 'unavailable'}`);
+      continue;
+    }
+    try {
+      console.log(`Prerender browser: ${candidate.label}`);
+      return await puppeteer.launch(candidate.options);
+    } catch (err) {
+      // Most often "error while loading shared libraries" on a bare image.
+      const detail = (err.stderr?.toString() ?? err.message ?? '').split('\n').find(Boolean) ?? '';
+      failures.push(`${candidate.label}: ${detail}`);
+    }
   }
 
-  return puppeteer.launch({
-    executablePath: executablePath || undefined,
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      // Required in containers with a small /dev/shm; without it Chrome
-      // crashes partway through rendering.
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-    ],
-  });
+  throw new Error(
+    'Every browser candidate failed to launch:\n' +
+      failures.map((f) => `  - ${f}`).join('\n') +
+      '\n\nOn a bare Linux image this usually means missing shared libraries ' +
+      '(libnspr4, libnss3). @sparticuz/chromium bundles them; check that it ' +
+      'installed correctly.',
+  );
 }
 
 /** Marker written into every prerendered page, so we can tell our own output
@@ -271,20 +394,53 @@ async function takePristineSnapshot() {
   await writeFile(PRISTINE_INDEX, built);
 }
 
+/**
+ * Block every off-origin request for the duration of a prerender.
+ *
+ * The page loads two external resources: the Google Fonts stylesheet and the
+ * Tawk.to live-chat widget. In the bundled Chromium used on Vercel, fetching
+ * them detaches the renderer mid-navigation and kills the browser
+ * ("Navigating frame was detached"), failing all 15 routes. Denying them makes
+ * rendering deterministic.
+ *
+ * This is also the correct behaviour on its own terms: prerendering captures
+ * the page as a search crawler would see it, so it must not depend on a
+ * third-party CDN being reachable, nor embed a live-chat widget in the static
+ * output. Both load again normally in a real browser.
+ */
+async function blockExternalRequests(page, siteOrigin) {
+  await page.setRequestInterception(true);
+  page.on('request', (request) => {
+    if (request.url().startsWith(siteOrigin)) request.continue();
+    else request.abort();
+  });
+}
+
 async function main() {
   await takePristineSnapshot();
 
   const server = await serve();
-  const browser = await launchBrowser();
 
   let failed = 0;
   const report = [];
 
-  try {
-    for (const route of ROUTES) {
+  // One browser per route.
+  //
+  // Reusing a single browser across all fifteen routes is the obvious
+  // optimisation, but the bundled Chromium in a constrained container becomes
+  // unstable across repeated page lifecycle events: the renderer detaches
+  // mid-navigation ("Navigating frame was detached") and the browser process
+  // exits, so the run dies on whichever route happens to be next. Launching
+  // per route costs a few seconds each and is reliable, which matters more
+  // than build speed here — a crashed prerender fails the deploy.
+  for (const route of ROUTES) {
+    let browser;
+    try {
+      browser = await launchBrowser();
       const page = await browser.newPage();
       // Desktop width so nothing is hidden behind a mobile disclosure.
       await page.setViewport({ width: 1280, height: 1000 });
+      await blockExternalRequests(page, `http://localhost:${new URL(origin).port}`);
 
       try {
         await page.goto(`http://localhost:${new URL(origin).port}${route}`, {
@@ -337,14 +493,20 @@ async function main() {
       } catch (err) {
         failed++;
         report.push({ route, error: err.message, ok: false });
-      } finally {
-        await page.close();
+      }
+    } finally {
+      // Closing is best-effort. When the renderer has crashed, close() rejects
+      // with ConnectionClosedError and would mask the failure that actually
+      // caused the route to fail.
+      try {
+        await browser.close();
+      } catch {
+        /* already gone */
       }
     }
-  } finally {
-    await browser.close();
-    server.close();
   }
+
+  server.close();
 
   console.log('\nPrerender report');
   console.log('─────────────────────────────────────────────');

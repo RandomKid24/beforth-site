@@ -60,6 +60,22 @@ async function puppeteerOwnsABrowser() {
   }
 }
 
+/**
+ * On Linux, @sparticuz/chromium provides a self-contained browser with the
+ * required shared libraries bundled, so there is nothing to download. This is
+ * the path Vercel takes: its build image cannot run a stock Chrome binary
+ * (missing libnspr4.so and friends), but the bundled build works.
+ */
+async function bundledBrowserAvailable() {
+  if (process.platform !== 'linux') return false;
+  try {
+    const { default: chromium } = await import('@sparticuz/chromium');
+    return typeof chromium?.executablePath === 'function';
+  } catch {
+    return false;
+  }
+}
+
 function skip(reason) {
   console.log(`prerender-browser: skipping install (${reason})`);
   process.exit(0);
@@ -70,6 +86,9 @@ async function main() {
   if (process.env.PUPPETEER_SKIP_DOWNLOAD === '1') skip('PUPPETEER_SKIP_DOWNLOAD=1');
   if (process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD === '1') {
     skip('PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1');
+  }
+  if (await bundledBrowserAvailable()) {
+    skip('@sparticuz/chromium is bundled and self-contained');
   }
   if (await haveBrowser()) skip('a system Chrome/Chromium is present');
   if (await puppeteerOwnsABrowser()) skip('puppeteer already has a managed build');

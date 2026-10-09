@@ -88,17 +88,30 @@ the served HTML is an empty `<div id="root">`. Google will render the JavaScript
 but most AI answer-engine crawlers (ChatGPT, Perplexity, ClaudeBot) fetch raw HTML
 and would see nothing.
 
+**Browser for the build.** On Linux (Vercel, most CI) it uses
+`@sparticuz/chromium`, a self-contained Chromium with its shared libraries
+bundled. Vercel's build image cannot run a stock Chrome — it is missing
+`libnspr4.so` and friends, and the process exits with code 127. On macOS and
+Windows it falls back to puppeteer's own download. `scripts/install-browser.mjs`
+skips the download entirely when the bundled build is present.
+
 Three things make this safe to keep:
 
 - **Assets are never stripped.** An earlier prerenderer removed the hashed CSS link
   and rewrote the bundle reference, which broke styling on every sub-route. This
   one asserts the stylesheet link survives on each page and fails the build if not.
+- **External requests are blocked.** The Google Fonts stylesheet and the Tawk.to
+  chat widget are denied during prerender. Fetching them detaches the renderer in
+  the bundled browser and kills the run. It is also the correct behaviour:
+  prerendering captures the page as a crawler sees it, so it should not depend on
+  a third-party CDN. Both load normally in a real browser.
 - **Each run is independent.** The SPA fallback serves a pristine snapshot of the
   built shell taken before any route is written. Serving `dist/index.html`
   directly would re-inject the home page's JSON-LD into other routes.
-- **Schema is validated per route.** The build fails if a route ships
-  `FAQPage` without rendering an FAQ, or a product page is missing its
-  `BreadcrumbList` or `Service` node.
+
+`scripts/verify-build.mjs` runs last and fails the build if any route is missing
+content, an `<h1>`, a title, a description or its stylesheet — so a prerender that
+silently fails cannot ship.
 
 ### Adding a route
 
