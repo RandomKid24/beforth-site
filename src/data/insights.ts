@@ -70,3 +70,26 @@ export const TOPIC_BACKLOG = [
 export const INSIGHTS: Insight[] = [];
 
 export const PUBLISHED_INSIGHTS = INSIGHTS.filter((i) => i.live);
+
+/** ISO date of a real, live article, rendered as a readable string. */
+export function formatInsightDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+/** One plain-text summary of an article, for llms.txt. */
+export function insightToPlainText(a: Insight): string {
+  const parts: string[] = [`# ${a.title}`, a.summary];
+  for (const s of a.sections) {
+    parts.push(`## ${s.heading}`);
+    parts.push(...s.paragraphs);
+    if (s.points?.length) parts.push(...s.points.map((p) => `- ${p}`));
+  }
+  return parts.join('\n\n');
+}

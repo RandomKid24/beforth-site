@@ -109,15 +109,17 @@ Contact.
 
 **One orchestrated moment per navigation, and nothing else moves.**
 
-Page transitions use the native View Transitions API. The incoming page rises 12px into
-place over 300ms; the outgoing page clears in 90ms. The stagger matters — the old page is
-gone before the new one becomes readable, so two pages of text are never legible on top
-of each other.
+Page transitions use the native View Transitions API, as a **pure cross-fade with no
+directional movement**. The previous version slid the content vertically and it read as
+jittery; removing the movement is what made it feel smooth.
 
 ```
-old page   90ms   fade + rise 4px
-new page  300ms   fade + rise 12px   (cubic-bezier 0.22, 1, 0.36, 1)
+old page   140ms   fade only   (cubic-bezier 0.4, 0, 1, 1)
+new page   220ms   fade only   (cubic-bezier 0.33, 0, 0.2, 1)
 ```
+
+The outgoing page still finishes first, so two pages of text are never legible on top of
+each other — it reads as a page turning rather than a dissolve.
 
 The navbar is excluded from the snapshot and stays put, so its active-link highlight
 updates immediately. Implementation: `src/lib/pageTransition.ts` + the
@@ -170,6 +172,8 @@ These are rules, not preferences. Breaking one is a bug.
   sample-data builds and say so on the card.
 - **No placeholder content reaches a visitor.** Case studies and insights render nothing
   until real content exists. A section of thin template cards is worse than no section.
+  `/insights` therefore shows an honest empty state — the plain statement that nothing is
+  published yet, plus the list of topics on the way — rather than filler.
 - **Schema must match visible content.** `FAQPage` only where an FAQ renders.
   `BreadcrumbList` everywhere except the home page. The prerender build fails if these
   drift.
@@ -191,6 +195,27 @@ The site is a client-rendered SPA, so without prerendering the served HTML is an
   fine in a browser while shipping a blank page to crawlers.
 - **Answer shape.** Questions become headings, answers lead with the conclusion in the
   first sentence and run 40–60 words. That is the shape an AI engine quotes back.
+
+### Social previews
+
+Every route gets its own Open Graph card, generated at build time by
+`scripts/generate-og-images.mjs` into `dist/og/<route>.png` and pointed at by
+`og:image` / `twitter:image`. A preview that does not match the page is worse than no
+custom image — it looks wrong rather than absent.
+
+`scripts/prerender.mjs` rewrites the two meta tags per route, because most scrapers
+never execute JavaScript and the client-side `SeoManager` cannot fix it alone.
+`scripts/verify-build.mjs` fails the build if any route points at another route's card.
+
+### Hostnames
+
+The canonical host is **`https://beforth.in`** (no `www`). `vercel.json` redirects
+`www.beforth.in` to the canonical host. Canonical, `og:url`, the schema `@id` values, the
+sitemap and `llms.txt` all declare the same host — a canonical that points at a URL which
+itself redirects is contradictory and is ignored.
+
+This only holds if `beforth.in` is the primary/production domain in Vercel. If the
+platform still sends `beforth.in` to `www`, the two redirects loop.
 
 ---
 

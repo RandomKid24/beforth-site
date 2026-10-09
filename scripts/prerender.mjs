@@ -49,6 +49,7 @@ const PRISTINE_INDEX = path.join(ROOT, 'node_modules', '.cache', 'prerender-inde
 const ROUTES = [
   '/',
   '/services',
+  '/insights',
   '/about',
   '/team',
   '/contact',
@@ -372,6 +373,36 @@ function withMarker(html) {
   return html.replace(/<head([^>]*)>/i, `<head$1>\n  ${PRERENDER_MARKER}`);
 }
 
+/** Route -> og image filename, produced by scripts/generate-og-images.mjs. */
+function ogSlug(route) {
+  return route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
+}
+
+/**
+ * Point og:image and twitter:image at this route's own card.
+ *
+ * Without this every share renders the home page's image, so a LinkedIn post
+ * of /product/payroll previews as the homepage. Scraper-facing meta has to be
+ * right in the static HTML because most scrapers never execute JavaScript —
+ * the client-side SeoManager cannot fix this on its own.
+ *
+ * Only the URL is rewritten; title, description and the 1200x630 dimensions
+ * are already correct in index.html and are shared across cards.
+ */
+function withRouteOgImage(html, route) {
+  const image = `https://beforth.in/og/${ogSlug(route)}.png`;
+
+  return html
+    .replace(
+      /<meta property="og:image" content="[^"]*"/i,
+      `<meta property="og:image" content="${image}"`,
+    )
+    .replace(
+      /<meta name="twitter:image" content="[^"]*"/i,
+      `<meta name="twitter:image" content="${image}"`,
+    );
+}
+
 async function takePristineSnapshot() {
   const built = await readFile(path.join(DIST, 'index.html'), 'utf8');
   await mkdir(path.dirname(PRISTINE_INDEX), { recursive: true });
@@ -459,7 +490,11 @@ async function main() {
 
         const outDir = route === '/' ? DIST : path.join(DIST, route);
         await mkdir(outDir, { recursive: true });
-        await writeFile(path.join(outDir, 'index.html'), withMarker(html), 'utf8');
+        await writeFile(
+          path.join(outDir, 'index.html'),
+          withRouteOgImage(withMarker(html), route),
+          'utf8',
+        );
 
         // Verify the route-scoped schema matches this route. A mismatch means
         // markup leaked in from a previous run, which would ship schema for

@@ -18,7 +18,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 
 const ROUTES = [
-  '/', '/services', '/about', '/team', '/contact',
+  '/', '/services', '/insights', '/about', '/team', '/contact',
   '/product/delivery-tracking', '/product/salon-erp', '/product/hrms',
   '/product/crm', '/product/mobile-apps', '/product/websites',
   '/product/tunnelgate', '/product/seo-tracking', '/product/payroll',
@@ -66,6 +66,12 @@ async function checkRoute(route) {
   if (!/<title>[^<]+<\/title>/i.test(html)) problems.push(`${route}: no <title>`);
   if (!/name="description"/i.test(html)) problems.push(`${route}: no meta description`);
 
+  // Every route must point og:image at its own card, or shares render the
+  // home page's image and look like the wrong link.
+  const og = html.match(/<meta property="og:image" content="([^"]+)"/i)?.[1] ?? '';
+  const expected = `https://beforth.in/og/${route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-')}.png`;
+  if (og !== expected) problems.push(`${route}: og:image is "${og || 'missing'}", expected ${expected}`);
+
   // The root div must contain rendered markup, not be an empty shell.
   const root = html.match(/<div id="root"[^>]*>([\s\S]*?)<\/div>\s*<\/body>/i);
   if (root && root[1].trim().length < 200) {
@@ -82,6 +88,16 @@ async function main() {
       await access(path.join(DIST, f));
     } catch {
       problems.push(`public asset missing from dist: ${f}`);
+    }
+  }
+
+  // One OG card per route, so no share falls back to the home image.
+  for (const route of ROUTES) {
+    const slug = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
+    try {
+      await access(path.join(DIST, 'og', `${slug}.png`));
+    } catch {
+      problems.push(`og image missing: og/${slug}.png`);
     }
   }
 

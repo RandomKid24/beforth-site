@@ -31,11 +31,13 @@ const AboutPage = lazy(() => import('./pages/About'));
 const TeamPage = lazy(() => import('./pages/Team'));
 const ContactPage = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const InsightsPage = lazy(() => import('./pages/Insights'));
 const ProductPage = lazy(() => import('./pages/ProductPage'));
 
 const NAV = [
   { path: '/', label: 'Home' },
   { path: '/services', label: 'Services' },
+  { path: '/insights', label: 'Insights' },
   { path: '/about', label: 'About' },
   { path: '/team', label: 'Team' },
   { path: '/contact', label: 'Contact' },
@@ -889,6 +891,12 @@ const META: Record<string, { title: string; description: string; keywords: strin
       'Beforth builds custom ERP systems, CRM, HRMS, inventory management, business automation, web and mobile applications — designed around how your organisation actually operates.',
     keywords: 'custom ERP software Nashik, CRM development India, HRMS and payroll software, inventory management system, business automation, custom software company Maharashtra',
   },
+  '/insights': {
+    title: 'Insights | Practical Notes on Business Systems — BeForth, Nashik',
+    description:
+      'Practical notes from BeForth on ERP, CRM, HRMS, payroll, inventory and POS systems for manufacturing, pharma, distribution and service companies.',
+    keywords: 'ERP insights, business software guides, custom software best practices, India ERP advice',
+  },
   '/services': {
     title: 'Services | Custom ERP, CRM, HRMS & Automation — Beforth',
     description:
@@ -1044,6 +1052,7 @@ export default function App() {
             <Routes location={displayLocation}>
               <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
+              <Route path="/insights" element={<InsightsPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />

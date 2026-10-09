@@ -255,6 +255,7 @@ function faqPageFor(pathname: string) {
 const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/': [],
   '/services': [{ name: 'Services', path: '/services' }],
+  '/insights': [{ name: 'Insights', path: '/insights' }],
   '/about': [{ name: 'About', path: '/about' }],
   '/team': [{ name: 'Team', path: '/team' }],
   '/contact': [{ name: 'Contact', path: '/contact' }],

@@ -59,6 +59,8 @@ edited. In short: plain over clever, one accent colour (`signal`), square corner
   (ERP, CRM, HRMS, POS, automation) and our security guarantees.
 - **About** — who we are, the mission, values, and quick stats.
 - **Team** — the founding team behind the builds.
+- **Insights** — long-form articles. Renders an honest empty state until real
+  articles exist; see `src/data/insights.ts`.
 - **Contact** — lead-capture form with live availability + contact channels.
 
 ### Reusable UI Primitives (`src/index.css`)
@@ -83,7 +85,7 @@ npm run lint       # TypeScript check (tsc --noEmit)
 
 ### Prerendering
 
-`npm run build` prerenders all 15 routes to static HTML in `dist/<route>/index.html`.
+`npm run build` prerenders all 16 routes to static HTML in `dist/<route>/index.html`.
 This is not optional decoration — the app is a client-rendered SPA, and without it
 the served HTML is an empty `<div id="root">`. Google will render the JavaScript,
 but most AI answer-engine crawlers (ChatGPT, Perplexity, ClaudeBot) fetch raw HTML
@@ -114,14 +116,31 @@ Three things make this safe to keep:
 content, an `<h1>`, a title, a description or its stylesheet — so a prerender that
 silently fails cannot ship.
 
+### Social preview cards
+
+`scripts/generate-og-images.mjs` renders one 1200×630 Open Graph card per route into
+`dist/og/<route>.png`, using that route's real title and description. `og:image` was
+previously static, so a LinkedIn share of `/product/payroll` previewed the homepage.
+
+The card generator reads the product titles from `src/components/platforms/catalog.tsx`
+rather than a hand-kept duplicate, so a card cannot claim something the page does not.
+The headliner auto-shrinks until it fits, so a long product name does not overflow.
+
+`scripts/prerender.mjs` then rewrites `og:image` and `twitter:image` per route, and
+`scripts/verify-build.mjs` fails the build if a route points at another route's card.
+This has to happen in static HTML because most social scrapers never run JavaScript —
+the client-side `SeoManager` cannot do it alone.
+
 ### Adding a route
 
 1. Add the page component and its `<Route>` in `src/App.tsx`.
 2. Add the path to `ROUTES` in `scripts/prerender.mjs`.
 3. Add it to `public/sitemap.xml` and to the crumb map in `src/lib/schema.ts`.
+4. Add its entry to `ROUTE_META` in `scripts/generate-og-images.mjs`.
 
 Missing step 2 is the one that silently ships an empty page — the route will work
-in a browser but the crawler gets nothing.
+in a browser but the crawler gets nothing. Skipping step 4 makes shares fall back to
+the static default image.
 
 ### Structured data
 
