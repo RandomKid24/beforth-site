@@ -121,9 +121,8 @@ const ENGAGEMENT = [
 
 function PageHead({ label, title, lead }: { label: string; title: React.ReactNode; lead?: string }) {
   return (
-    <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
-      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
-      <div className="wrap relative z-10">
+    <section className="pt-32 md:pt-40 pb-12 md:pb-16">
+      <div className="wrap">
         <Reveal>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
@@ -200,7 +199,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Solutions by business need */}
-      <section className="section bg-bone grain">
+      <section className="section bg-bone">
         <div className="wrap relative z-10">
           <div className="rule mb-6" />
           <span className="label block mb-4">Solutions by business need</span>
@@ -250,11 +249,8 @@ export default function ServicesPage() {
                 </span>
               </div>
 
-              <div className="relative">
-                <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none opacity-60" />
-                <div className="relative mx-auto max-w-[500px]">
-                  <WorkflowDiagram />
-                </div>
+              <div className="mx-auto max-w-[500px]">
+                <WorkflowDiagram />
               </div>
 
               <div className="mt-7 pt-4 border-t border-ink/12 flex flex-wrap items-center justify-between gap-2">
@@ -266,7 +262,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="section surface-ink grain">
+      <section className="section surface-ink">
         <div className="wrap relative z-10">
           <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-20">
             <Reveal>

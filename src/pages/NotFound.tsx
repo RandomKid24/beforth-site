@@ -12,10 +12,8 @@ const SUGGESTIONS = [
 
 export default function NotFound() {
   return (
-    <section className="relative min-h-[100svh] flex items-center pt-32 pb-20 overflow-hidden grain">
-      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
-
-      <div className="wrap relative z-10 w-full">
+    <section className="min-h-[100svh] flex items-center pt-32 pb-20">
+      <div className="wrap w-full">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
           <div>
             <m.span

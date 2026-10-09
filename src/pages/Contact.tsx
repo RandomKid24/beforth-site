@@ -137,9 +137,8 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="pt-32 md:pt-40 pb-14 md:pb-20 grain relative overflow-hidden">
-        <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
-        <div className="wrap relative z-10">
+      <section className="pt-32 md:pt-40 pb-14 md:pb-20">
+        <div className="wrap">
           <Reveal>
             <div className="rule mb-6" />
             <span className="label block mb-7">Contact</span>

@@ -35,9 +35,8 @@ const INDUSTRIES = [
 
 function PageHead({ label, title, children }: { label: string; title: React.ReactNode; children?: React.ReactNode }) {
   return (
-    <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
-      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
-      <div className="wrap relative z-10">
+    <section className="pt-32 md:pt-40 pb-12 md:pb-16">
+      <div className="wrap">
         <Reveal>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
@@ -143,7 +142,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section bg-bone grain">
+      <section className="section bg-bone">
         <div className="wrap relative z-10">
           <div className="rule mb-6" />
           <span className="label block mb-4">How we operate</span>

@@ -40,9 +40,13 @@ always match.
 Tokens are defined in `src/index.css` via Tailwind v4 `@theme`.
 
 ### Typography
-- **Display:** `Bebas Neue` — massive uppercase headings.
-- **Sans:** `Inter` — body copy and readability.
-- **Mono:** `JetBrains Mono` — metadata, labels, technical text.
+- **Everything:** `Plus Jakarta Sans`. `JetBrains Mono` appears only inside the demo dashboard.
+
+### Design rules
+`DESIGN_VAULT.md` is the source of truth for how the site looks and behaves. In short:
+plain over clever, content visible immediately (no scroll reveals, parallax or decorative
+texture), sentence-case buttons, one accent colour (`signal`), flat surfaces separated by
+1px rules rather than shadows.
 
 ---
 
@@ -57,9 +61,10 @@ Tokens are defined in `src/index.css` via Tailwind v4 `@theme`.
 - **Contact** — lead-capture form with live availability + contact channels.
 
 ### Reusable UI Primitives (`src/index.css`)
-- `badge` · `card` · `icon-box` · `page-container` · `dark-section`
-- `eyebrow` / `eyebrow-dot` / `eyebrow-text` — section labels
-- `skeuo-btn` / `skeuo-switch` — tactile skeuomorphic controls
+- Layout: `wrap` · `section` · `rule`
+- Type: `display-xl` · `display-lg` · `display-md` · `lead` · `body` · `label` · `accent` · `figure-cap`
+- Buttons: `btn-solid` · `btn-signal` · `btn-line` · `btn-invert` · `ulink`
+- Surfaces: `surface` · `surface-ink` · `field` · `flabel`
 
 ---
 

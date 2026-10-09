@@ -34,9 +34,8 @@ const DISCIPLINES = [
 
 function PageHead({ label, title, lead }: { label: string; title: React.ReactNode; lead?: string }) {
   return (
-    <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
-      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
-      <div className="wrap relative z-10">
+    <section className="pt-32 md:pt-40 pb-12 md:pb-16">
+      <div className="wrap">
         <Reveal>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
@@ -81,7 +80,7 @@ export default function TeamPage() {
         </div>
       </section>
 
-      <section className="section bg-bone grain">
+      <section className="section bg-bone">
         <div className="wrap relative z-10">
           <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-20 items-center">
             <Reveal>

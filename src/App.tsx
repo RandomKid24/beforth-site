@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
@@ -6,17 +6,28 @@ import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compas
 
 import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
-import ProductShowcase from '@/components/ProductShowcase';
 import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
 
-import ServicesPage from './pages/Services';
-import AboutPage from './pages/About';
-import TeamPage from './pages/Team';
-import ContactPage from './pages/Contact';
-import NotFound from './pages/NotFound';
-import ProductPage from './pages/ProductPage';
 import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
+
+/**
+ * The interactive dashboard demo is ~200KB of source. It is the one visual the
+ * design vault allows, but it sits below the fold and only matters to visitors
+ * who scroll to it, so it loads on demand instead of blocking first paint.
+ */
+const ProductShowcase = lazy(() => import('@/components/ProductShowcase'));
+
+/**
+ * Each route is a separate chunk. The home page is the common first read and
+ * stays in the main bundle; everything else arrives when it is navigated to.
+ */
+const ServicesPage = lazy(() => import('./pages/Services'));
+const AboutPage = lazy(() => import('./pages/About'));
+const TeamPage = lazy(() => import('./pages/Team'));
+const ContactPage = lazy(() => import('./pages/Contact'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const ProductPage = lazy(() => import('./pages/ProductPage'));
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -115,18 +126,15 @@ function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               transition={springSmooth}
             >
-              <Link to="/" className="flex items-center gap-2.5 min-h-[40px] shrink-0" aria-label="BeForth home">
+              <Link to="/" className="flex items-center min-h-[40px] shrink-0" aria-label="BeForth home">
                 <m.img
-                  src="/befu.png"
-                  alt=""
-                  className="w-7 h-7 object-contain"
-                  initial={shouldReduce ? false : { opacity: 0, scale: 0.7, rotate: -12 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  src="/logo.png"
+                  alt="BeForth"
+                  className="h-[26px] md:h-[28px] w-auto"
+                  initial={shouldReduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={springSmooth}
                 />
-                <span className="font-display font-extrabold uppercase tracking-[0.14em] text-[14px] md:text-[15px]">
-                  Beforth
-                </span>
               </Link>
             </m.div>
 
@@ -182,7 +190,7 @@ function Navbar() {
         initial={false}
         animate={{ opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none' }}
         transition={{ duration: 0.28 }}
-        className="lg:hidden fixed inset-0 z-40 bg-paper grain flex flex-col justify-center px-6"
+        className="lg:hidden fixed inset-0 z-40 bg-paper flex flex-col justify-center px-6"
       >
         <div className="relative z-10 flex flex-col">
           {NAV.map((item, i) => (
@@ -276,7 +284,7 @@ function Positioning() {
 /* ------------------------------------------------------------------ */
 function Fit() {
   return (
-    <section className="section bg-bone grain">
+    <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
           label="Who it's for"
@@ -371,7 +379,7 @@ function ServicesSection() {
 /* ------------------------------------------------------------------ */
 function ProductProof() {
   return (
-    <section className="section bg-bone grain">
+    <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
           label="The work"
@@ -381,7 +389,9 @@ function ProductProof() {
 
         <Reveal>
           <div className="surface overflow-hidden">
-            <ProductShowcase />
+            <Suspense fallback={<DemoPlaceholder />}>
+              <ProductShowcase />
+            </Suspense>
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 md:px-7 py-4 border-t border-ink/12 bg-paper">
               <span className="figure-cap">Sales · Inventory · Service · People · Finance · Reports</span>
               <Link to="/contact" className="ulink">
@@ -440,7 +450,7 @@ function Method() {
 /* ------------------------------------------------------------------ */
 function Why() {
   return (
-    <section className="section bg-bone grain">
+    <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
           label="Why BeForth"
@@ -527,7 +537,7 @@ const WORK = [
 
 function SelectedWork() {
   return (
-    <section className="section bg-bone grain">
+    <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
           label="Selected work"
@@ -687,7 +697,7 @@ function CTA() {
     <section className="pb-20 md:pb-28">
       <div className="wrap">
         <Reveal>
-          <div className="surface-ink p-8 md:p-14 relative overflow-hidden grain">
+          <div className="surface-ink p-8 md:p-14 relative overflow-hidden">
             <div
               className="absolute -right-24 -bottom-28 w-[32rem] h-[32rem] pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(28,117,188,0.30) 0%, transparent 66%)' }}
@@ -729,13 +739,12 @@ function CTA() {
 /* ------------------------------------------------------------------ */
 function Footer() {
   return (
-    <footer className="border-t border-ink/12 bg-bone/40 grain">
+    <footer className="border-t border-ink/12 bg-bone/40">
       <div className="wrap relative z-10 pt-12 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-[1.25fr_0.6fr_0.95fr_1.05fr_1fr] gap-10">
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <img src="/befu.png" alt="" className="w-7 h-7 object-contain" />
-              <span className="font-display font-extrabold uppercase tracking-[0.14em] text-[15px]">Beforth</span>
+            <div className="mb-4">
+              <img src="/logo.png" alt="BeForth" className="h-8 w-auto" />
             </div>
             <p className="display-md text-lg">Think better. Build smarter.</p>
           </div>
@@ -1002,6 +1011,30 @@ function StructuredData() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Lazy-load fallback                                                  */
+/* ------------------------------------------------------------------ */
+/**
+ * Deliberately static. The vault says content is visible immediately and no
+ * element should signal "loading" with a spinner; this holds the exact space
+ * the dashboard will occupy so nothing jumps when it arrives.
+ */
+function DemoPlaceholder() {
+  return (
+    <div className="bg-paper px-5 md:px-7 py-4 border-b border-ink/12">
+      <span className="figure-cap">Loading the sample screen…</span>
+    </div>
+  );
+}
+
+function RouteFallback() {
+  return (
+    <div className="wrap py-24 md:py-32">
+      <span className="label">Loading</span>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* App                                                                  */
 /* ------------------------------------------------------------------ */
 export default function App() {
@@ -1042,15 +1075,17 @@ export default function App() {
           key={pathname}
           style={pageTransitionName ? ({ viewTransitionName: pageTransitionName } as React.CSSProperties) : undefined}
         >
-          <Routes>
-            <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/product/:slug" element={<ProductPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </div>
 
         <Footer />

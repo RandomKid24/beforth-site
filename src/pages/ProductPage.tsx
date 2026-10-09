@@ -145,7 +145,7 @@ export default function ProductPage() {
       </section>
 
       {/* ------------------------------ Live preview ------------------------------ */}
-      <section id="demo" className="section bg-bone grain scroll-mt-20">
+      <section id="demo" className="section bg-bone scroll-mt-20">
         <div className="wrap relative z-10">
           <SectionHead
             label="Live preview"
@@ -161,7 +161,7 @@ export default function ProductPage() {
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-[11px] text-ash"><i className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Sample data</span>
               </div>
-              <div className="relative bg-bone/55 blueprint-grid p-4 sm:p-8 min-h-[520px] flex items-center justify-center overflow-hidden">
+              <div className="relative bg-bone/55 p-4 sm:p-8 min-h-[520px] flex items-center justify-center overflow-hidden">
                 <div className="w-full max-w-[900px] relative z-10"><Preview /></div>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function ProductPage() {
       </section>
 
       {/* ------------------------------ How it works ------------------------------ */}
-      <section className="section bg-bone grain">
+      <section className="section bg-bone">
         <div className="wrap relative z-10">
           <SectionHead label="How it works" title={<>A day with it, <span className="accent">step by step.</span></>} />
           <ol className="grid md:grid-cols-4 gap-4 md:gap-0">
@@ -315,7 +315,7 @@ export default function ProductPage() {
       <section className="pb-20 md:pb-28">
         <div className="wrap">
           <Reveal>
-            <div className="surface-ink p-8 md:p-14 relative overflow-hidden grain">
+            <div className="surface-ink p-8 md:p-14 relative overflow-hidden">
               <div
                 className="absolute -right-24 -bottom-28 w-[32rem] h-[32rem] pointer-events-none"
                 style={{ background: 'radial-gradient(circle, rgba(28,117,188,0.30) 0%, transparent 66%)' }}
