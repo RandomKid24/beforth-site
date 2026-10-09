@@ -46,7 +46,7 @@ export const FAQ: { q: string; a: string; related?: string }[] = [
   },
   {
     q: 'Where are you based?',
-    a: 'BeForth is based in Nashik, Maharashtra, India. We work with companies across India and overseas, and most engagements are delivered remotely with scheduled reviews rather than on-site presence. You can reach the team by email at support@beforth.in or by phone on +91 97661 83834.',
+    a: 'BeForth is based in Nashik, Maharashtra, India. You can reach the team by email at support@beforth.in or by phone on +91 97661 83834.',
     related: 'contact',
   },
   {

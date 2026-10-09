@@ -140,15 +140,9 @@
   }
 
 @layer utilities {
-  .spin-slow { animation: spin 52s linear infinite; }
   .pulse-dot { animation: pulse-dot 2.2s ease-in-out infinite; }
   .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -165,19 +159,17 @@
 /* ------------------------------------------------------------------ */
 /* Offscreen / background animation gating                             */
 /*                                                                     */
-/* Applied by a shared observer so continuous work (the diagram's      */
-/* travelling particles, the demo heartbeat) stops when the element is */
-/* not on screen or the tab is hidden, instead of running forever.     */
+/* Applied by a shared observer so the demo's continuous indicators     */
+/* stop when the element is not on screen or the tab is hidden,        */
+/* instead of running forever.                                          */
 /* ------------------------------------------------------------------ */
-.is-offscreen .spin-slow,
-.is-offscreen .wf-particle,
-.is-hidden-tab .spin-slow,
-.is-hidden-tab .wf-particle {
+.is-offscreen .pulse-dot,
+.is-hidden-tab .pulse-dot {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spin-slow, .pulse-dot { animation: none !important; }
+  .pulse-dot { animation: none !important; }
   html { scroll-behavior: auto; }
 }
 

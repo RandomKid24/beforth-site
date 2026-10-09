@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import { Magnetic } from '../components/Magnetic';
-import WorkflowDiagram from '../components/WorkflowDiagram';
 
 const SERVICES = [
   {
@@ -225,40 +224,6 @@ export default function ServicesPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Topology */}
-      <section className="pb-20 md:pb-24">
-        <div className="wrap">
-          <Reveal>
-            <div className="rule mb-6" />
-            <span className="label block mb-4">How it fits together</span>
-            <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-9 max-w-[18ch]">
-              Separate modules, one source of truth.
-            </h2>
-
-            <div className="surface p-6 md:p-10">
-              <div className="flex flex-wrap items-start justify-between gap-3 pb-4 mb-7 border-b border-ink/12">
-                <div>
-                  <span className="figure-cap block mb-1.5">Figure 01</span>
-                  <h3 className="display-md text-base">Integration topology</h3>
-                </div>
-                <span className="figure-cap hidden md:block max-w-[26ch] leading-relaxed">
-                  Operational modules resolved into one connected system
-                </span>
-              </div>
-
-              <div className="mx-auto max-w-[500px]">
-                <WorkflowDiagram />
-              </div>
-
-              <div className="mt-7 pt-4 border-t border-ink/12 flex flex-wrap items-center justify-between gap-2">
-                <span className="figure-cap">Sales · Inventory · Finance · People · Service</span>
-                <span className="figure-cap">Hover a node to trace</span>
-              </div>
-            </div>
-          </Reveal>
         </div>
       </section>
 
