@@ -12,6 +12,7 @@
  * If a fact is not published elsewhere on the site, it does not belong here.
  */
 
+import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { FAQ } from '@/data/faq';
 import { PLATFORMS } from '@/components/platforms/catalog';
 
@@ -284,6 +285,20 @@ function breadcrumbList(pathname: string) {
       ],
     };
   }
+  if (pathname.startsWith('/insights/')) {
+    const a = PUBLISHED_INSIGHTS.find((x) => x.slug === pathname.split('/')[2]);
+    if (a) {
+      return {
+        '@type': 'BreadcrumbList',
+        '@id': `${ORIGIN}${pathname}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN },
+          { '@type': 'ListItem', position: 2, name: 'Insights', item: `${ORIGIN}/insights` },
+          { '@type': 'ListItem', position: 3, name: a.title, item: `${ORIGIN}${pathname}` },
+        ],
+      };
+    }
+  }
   const crumbs = CRUMBS[pathname] ?? [];
   if (!crumbs.length) return null;
   return {
@@ -319,6 +334,7 @@ const PAGE_TYPE: Record<string, string> = {
 function webPage(pathname: string, page: { title: string; description: string }, hasCrumbs: boolean) {
   const url = pathname === '/' ? ORIGIN + '/' : `${ORIGIN}${pathname}`;
   const isProduct = pathname.startsWith('/product/');
+  const isArticle = pathname.startsWith('/insights/');
   return {
     '@type': PAGE_TYPE[pathname] ?? 'WebPage',
     '@id': `${url}#webpage`,
@@ -329,6 +345,7 @@ function webPage(pathname: string, page: { title: string; description: string },
     isPartOf: { '@id': `${ORIGIN}/#website` },
     about: { '@id': `${ORIGIN}/#organization` },
     ...(isProduct ? { mainEntity: { '@id': `${url}#service` } } : {}),
+    ...(isArticle ? { mainEntity: { '@id': `${url}#article` } } : {}),
     ...(hasCrumbs ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
   };
 }
@@ -348,6 +365,25 @@ export function routeGraph(pathname: string, page?: { title: string; description
   if (faq) graph.push(faq);
   if (crumbs) graph.push(crumbs);
   if (page) graph.push(webPage(pathname, page, !!crumbs));
+  const article = pathname.startsWith('/insights/')
+    ? PUBLISHED_INSIGHTS.find((x) => x.slug === pathname.split('/')[2])
+    : undefined;
+  if (article) {
+    const url = `${ORIGIN}${pathname}`;
+    graph.push({
+      '@type': 'Article',
+      '@id': `${url}#article`,
+      headline: article.title,
+      description: article.summary,
+      datePublished: article.publishedOn,
+      dateModified: article.updated ?? article.publishedOn,
+      inLanguage: 'en-IN',
+      author: { '@id': `${ORIGIN}/#organization` },
+      publisher: { '@id': `${ORIGIN}/#organization` },
+      mainEntityOfPage: { '@id': `${url}#webpage` },
+      image: `${ORIGIN}/og/insights-${article.slug}.png`,
+    });
+  }
   if (pathname.startsWith('/product/')) {
     graph.push(...services().filter((s) => s['@id']?.startsWith(`${ORIGIN}${pathname}`)));
   }

@@ -169,6 +169,11 @@ async function main() {
     };
   });
 
+  const insights = await readFile(path.join(ROOT, 'src', 'data', 'insights.ts'), 'utf8');
+  [...insights.matchAll(/slug: '([^']+)',\s*title: '([^']+)'/g)].forEach((m) => {
+    ROUTE_META[`/insights/${m[1]}`] = { eyebrow: 'Insights', title: `${m[2]} | BeForth` };
+  });
+
   const browser = await puppeteer.launch(await launchOptions());
   let made = 0;
 

@@ -45,6 +45,18 @@
       "destination": "/insights/index.html"
     },
     {
+      "source": "/insights/custom-erp-or-off-the-shelf",
+      "destination": "/insights/custom-erp-or-off-the-shelf/index.html"
+    },
+    {
+      "source": "/insights/what-to-expect-during-erp-discovery",
+      "destination": "/insights/what-to-expect-during-erp-discovery/index.html"
+    },
+    {
+      "source": "/insights/spreadsheets-fail-at-a-second-location",
+      "destination": "/insights/spreadsheets-fail-at-a-second-location/index.html"
+    },
+    {
       "source": "/product/delivery-tracking",
       "destination": "/product/delivery-tracking/index.html"
     },

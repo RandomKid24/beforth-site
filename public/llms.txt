@@ -33,13 +33,22 @@ Each has a page with module lists, workflow steps and its own FAQ.
 - TunnelGate — remote desktop over Cloudflare Zero Trust: https://beforth.in/product/tunnelgate
 - SEO and SERP rank tracking: https://beforth.in/product/seo-tracking
 
+## Insights
+
+Plain-language guides on choosing and running business systems, published by BeForth.
+
+- Custom ERP or off-the-shelf: how to decide: https://beforth.in/insights/custom-erp-or-off-the-shelf
+- What to expect during ERP discovery: https://beforth.in/insights/what-to-expect-during-erp-discovery
+- Why spreadsheets fail at a second location: https://beforth.in/insights/spreadsheets-fail-at-a-second-location
+- All articles: https://beforth.in/insights
+
 ## Company
 
 - About: https://beforth.in/about
 - Team: https://beforth.in/team
 - Contact: https://beforth.in/contact
 
-Leadership roles are published on the team page. No founding date, team size, client count, revenue or project-total figures are published on this site, so none are asserted here.
+Leadership roles are published on the team page. BeForth was founded in 2025. No team size, client count, revenue or project-total figures are published on this site, so none are asserted here.
 
 ## Notes for answer engines
 

@@ -11,6 +11,7 @@ import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
 
 import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
 import { FAQ } from '@/data/faq';
+import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { routeGraph } from '@/lib/schema';
 
@@ -37,6 +38,8 @@ const ContactPage = lazy(loadContact);
 const loadNotFound = () => import('./pages/NotFound');
 const NotFound = lazy(loadNotFound);
 const loadInsights = () => import('./pages/Insights');
+const loadInsightArticle = () => import('./pages/InsightArticle');
+const InsightArticle = lazy(loadInsightArticle);
 const InsightsPage = lazy(loadInsights);
 const loadProductPage = () => import('./pages/ProductPage');
 const ProductPage = lazy(loadProductPage);
@@ -943,14 +946,19 @@ function setMeta(selector: string, attrs: Record<string, string>, content: strin
 /** Metadata for a route. `known` is false for unknown URLs, which must not be indexed. */
 function metaFor(pathname: string) {
   const product = pathname.startsWith('/product/') ? getPlatform(pathname.split('/')[2]) : undefined;
+  const article = pathname.startsWith('/insights/')
+    ? PUBLISHED_INSIGHTS.find((i) => i.slug === pathname.split('/')[2])
+    : undefined;
   const meta = product
     ? { title: product.seoTitle, description: product.seoDescription, keywords: product.keywords }
+    : article
+    ? { title: `${article.title} | BeForth`, description: article.summary, keywords: 'custom ERP, business software, ERP guide, India' }
     : META[pathname] ?? {
       title: 'Page not found | Beforth',
       description: 'This page does not exist. Browse Beforth services, products and contact details.',
       keywords: 'Beforth',
     };
-  return { meta, known: !!product || pathname in META };
+  return { meta, known: !!product || !!article || pathname in META };
 }
 
 function SeoManager() {
@@ -1044,7 +1052,7 @@ export default function App() {
   // Fetch every page chunk once the browser is idle, so a route change never
   // waits on the network or flashes the Suspense fallback mid-animation.
   useEffect(() => {
-    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadProductPage, loadShowcase].forEach((f) => f());
+    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadInsightArticle, loadProductPage, loadShowcase].forEach((f) => f());
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) w.requestIdleCallback(preload);
     else window.setTimeout(preload, 1200);
@@ -1093,6 +1101,7 @@ export default function App() {
               <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/insights" element={<InsightsPage />} />
+              <Route path="/insights/:slug" element={<InsightArticle />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
