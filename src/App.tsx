@@ -15,6 +15,7 @@ import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { routeGraph } from '@/lib/schema';
 import { track } from '@/lib/track';
+import { DoodleDefs, HeroDoodle, HubDoodle, SheetDoodle, SiteDoodle, RoadDoodle, SectorIcon, PlaneDoodle } from '@/components/Doodles';
 
 /**
  * The interactive dashboard demo is ~200KB of source. It is the one visual the
@@ -271,7 +272,8 @@ function Navbar() {
 function Hero() {
   return (
     <section className="pt-32 md:pt-40 pb-16 md:pb-24 border-b border-ink/12">
-      <div className="wrap">
+      <div className="wrap grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-6 items-center">
+        <div>
         <span className="label">Nashik, Maharashtra, India</span>
 
         <h1 className="display-xl text-[clamp(2rem,5.6vw,4.25rem)] max-w-[20ch] mt-5">
@@ -291,6 +293,8 @@ function Hero() {
             What we build <ArrowDown className="w-3.5 h-3.5" />
           </a>
         </div>
+        </div>
+        <HeroDoodle className="w-full max-w-[540px] mx-auto lg:max-w-none" />
       </div>
     </section>
   );
@@ -307,6 +311,7 @@ function Positioning() {
           <Reveal>
             <div className="rule mb-5" />
             <span className="label">What we do</span>
+            <HubDoodle className="hidden lg:block w-36 mt-8" />
           </Reveal>
           <Reveal delay={0.08}>
             <p className="display-lg text-xl md:text-[28px] leading-[1.3] max-w-[30ch]">
@@ -334,7 +339,8 @@ function Fit() {
 
         <div className="grid lg:grid-cols-2 gap-5">
           <Reveal>
-            <div className="surface p-6 md:p-8 h-full">
+            <div className="surface p-6 md:p-8 h-full relative">
+              <SheetDoodle className="absolute top-3 right-3 w-20 md:w-24" />
               <h3 className="display-md text-base mb-6 text-signal">You will get on well if…</h3>
               <ul className="flex flex-col gap-3">
                 {FITS.map((item) => (
@@ -348,7 +354,8 @@ function Fit() {
           </Reveal>
 
           <Reveal delay={0.07}>
-            <div className="surface p-6 md:p-8 h-full">
+            <div className="surface p-6 md:p-8 h-full relative">
+              <SiteDoodle className="absolute top-3 right-3 w-20 md:w-24" />
               <h3 className="display-md text-base mb-6">Probably not you, if…</h3>
               <ul className="flex flex-col gap-3">
                 {NOT_FITS.map((item) => (
@@ -463,6 +470,7 @@ function Method() {
             <p className="body max-w-xs">
               Five stages, every time. The order is why the result fits.
             </p>
+            <RoadDoodle className="hidden lg:block w-60 mt-10" />
           </div>
 
           <div className="border-t border-ink/12">
@@ -740,8 +748,9 @@ function Sectors() {
           {INDUSTRIES.map((industry) => (
             <span
               key={industry}
-              className="label border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
+              className="label inline-flex items-center gap-2.5 border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
             >
+              <SectorIcon name={industry} className="w-5 h-5 shrink-0" />
               {industry}
             </span>
           ))}
@@ -764,6 +773,7 @@ function CTA() {
               className="absolute -right-24 -bottom-28 w-[32rem] h-[32rem] pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(28,117,188,0.30) 0%, transparent 66%)' }}
             />
+            <PlaneDoodle className="hidden md:block absolute right-10 top-6 w-44 pointer-events-none" />
             <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <div className="max-w-xl">
                 <span className="label !text-paper/50 block mb-5">Next step</span>
@@ -1134,6 +1144,7 @@ export default function App() {
   return (
     <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
+        <DoodleDefs />
         <SeoManager />
         <StructuredData />
         <a

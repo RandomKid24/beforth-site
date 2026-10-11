@@ -59,6 +59,11 @@ Seven tokens. Nothing else. Full RGB and CMYK in `COLOR_PALETTE.md`.
 3. **`wave` on dark, never `signal`.** `signal` on `ink` is only ~3.3:1.
 4. **Separate with `bone` and a 1px rule**, never a shadow, gradient or glow.
 5. **No decorative colour.** No grain, no blueprint grids, no tinted overlays.
+6. **Doodles are the one exception to "no decoration"** (added October 2026): hand-drawn style
+   line illustrations on the home page, in `ink` with `signal` for the connected system and
+   `bone` for flat fills. They live in `src/components/Doodles.tsx` as inline SVG, are
+   `aria-hidden`, never carry text the page does not also say, and use no gradients or
+   shadows. Add new ones only where they explain something.
 
 Status colours in the demo dashboard (emerald / amber / red) are semantic and sit
 outside the brand palette by design.
