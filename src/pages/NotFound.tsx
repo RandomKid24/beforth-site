@@ -25,9 +25,9 @@ export default function NotFound() {
               Error 404
             </m.span>
 
-            <h1 className="display-xl text-[clamp(5rem,20vw,14rem)] leading-[0.8] my-6 text-signal">
+            <p aria-hidden="true" className="display-xl text-[clamp(5rem,20vw,14rem)] leading-[0.8] my-6 text-signal">
               404
-            </h1>
+            </p>
 
             <m.div
               initial={{ opacity: 0, y: 18 }}
@@ -35,9 +35,9 @@ export default function NotFound() {
               transition={{ duration: 0.55, delay: 0.12 }}
             >
               <div className="rule mb-7" />
-              <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] mb-4 max-w-[20ch]">
+              <h1 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] mb-4 max-w-[20ch]">
                 This page took an early exit.
-              </h2>
+              </h1>
               <p className="body max-w-md mb-8">
                 The link may be out of date, or the address might be slightly off. Here is the way
                 back.

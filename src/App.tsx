@@ -948,14 +948,17 @@ function SeoManager() {
     const meta = product
       ? { title: product.seoTitle, description: product.seoDescription, keywords: product.keywords }
       : META[pathname] ?? {
-      title: 'Beforth | Custom Software & Automation Company',
-      description: 'Beforth builds custom software, business systems and automation from Nashik, India.',
-      keywords: 'Beforth, custom software, business systems, automation',
+      title: 'Page not found | Beforth',
+      description: 'This page does not exist. Browse Beforth services, products and contact details.',
+      keywords: 'Beforth',
     };
+    // Unknown URLs (including /product/<unknown>) must not be indexed.
+    const known = !!product || pathname in META;
     const canonical = `https://beforth.in${pathname === '/' ? '/' : pathname}`;
 
     document.title = meta.title;
     setMeta('meta[name="description"]', { name: 'description' }, meta.description);
+    setMeta('meta[name="robots"]', { name: 'robots' }, known ? 'index, follow, max-image-preview:large' : 'noindex, follow');
     setMeta('meta[name="keywords"]', { name: 'keywords' }, meta.keywords);
     setMeta('meta[property="og:title"]', { property: 'og:title' }, meta.title);
     setMeta('meta[property="og:description"]', { property: 'og:description' }, meta.description);
@@ -1071,9 +1074,15 @@ export default function App() {
       <MotionConfig reducedMotion="user">
         <SeoManager />
         <StructuredData />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-ink focus:text-paper focus:px-4 focus:py-2"
+        >
+          Skip to content
+        </a>
         <Navbar />
 
-        <div key={pathname} className={animate.current ? 'page-enter' : undefined}>
+        <main id="main-content" key={pathname} className={animate.current ? 'page-enter' : undefined}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
@@ -1086,7 +1095,7 @@ export default function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-        </div>
+        </main>
 
         <Footer />
       </MotionConfig>

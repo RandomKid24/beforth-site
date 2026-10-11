@@ -66,7 +66,7 @@ export default function ProductPage() {
   const toDemo = () => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   return (
-    <main>
+    <div>
       {/* ------------------------------ Hero ------------------------------ */}
       <section className="pt-[104px] md:pt-[136px] pb-12 md:pb-20">
         <div className="wrap">
@@ -341,6 +341,6 @@ export default function ProductPage() {
           </Reveal>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

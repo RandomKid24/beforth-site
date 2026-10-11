@@ -83,10 +83,6 @@
     {
       "source": "/product/pos",
       "destination": "/product/pos/index.html"
-    },
-    {
-      "source": "/((?!assets/|services/|about/|team/|contact/|insights/|product/|llms.txt).*)",
-      "destination": "/index.html"
     }
   ]
 }

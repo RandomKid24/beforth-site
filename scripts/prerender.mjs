@@ -20,7 +20,7 @@
  */
 
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir, access, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, access, stat, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -66,6 +66,10 @@ const ROUTES = [
     'pos',
   ].map((slug) => `/product/${slug}`),
 ];
+
+/** Rendered from an unknown URL and written to dist/404.html, which Vercel serves
+ *  with a real 404 status for any path that matches nothing. */
+const NOT_FOUND = '/__not-found';
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -464,7 +468,8 @@ async function main() {
   // exits, so the run dies on whichever route happens to be next. Launching
   // per route costs a few seconds each and is reliable, which matters more
   // than build speed here — a crashed prerender fails the deploy.
-  for (const route of ROUTES) {
+  for (const route of [...ROUTES, NOT_FOUND]) {
+    const isNotFound = route === NOT_FOUND;
     let browser;
     try {
       browser = await launchBrowser();
@@ -490,11 +495,9 @@ async function main() {
 
         const outDir = route === '/' ? DIST : path.join(DIST, route);
         await mkdir(outDir, { recursive: true });
-        await writeFile(
-          path.join(outDir, 'index.html'),
-          withRouteOgImage(withMarker(html), route),
-          'utf8',
-        );
+        const outFile = isNotFound ? path.join(DIST, '404.html') : path.join(outDir, 'index.html');
+        await writeFile(outFile, withRouteOgImage(withMarker(html), isNotFound ? '/' : route), 'utf8');
+        if (isNotFound) await rm(outDir, { recursive: true, force: true });
 
         // Verify the route-scoped schema matches this route. A mismatch means
         // markup leaked in from a previous run, which would ship schema for
@@ -510,7 +513,7 @@ async function main() {
 
         // The home page is the breadcrumb root and correctly has no BreadcrumbList.
         // Everything else must carry one.
-        if (route !== '/' && !scriptBlocks.some((b) => b.includes('"BreadcrumbList"'))) {
+        if (route !== '/' && !isNotFound && !scriptBlocks.some((b) => b.includes('"BreadcrumbList"'))) {
           throw new Error('route-scoped schema missing BreadcrumbList');
         }
         if (!isFaqRoute && scriptBlocks.some((b) => b.includes('"FAQPage"'))) {

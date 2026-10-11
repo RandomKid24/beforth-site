@@ -101,6 +101,15 @@ async function main() {
     }
   }
 
+  // Unknown URLs must get a real 404 page that is not indexable.
+  try {
+    const nf = await readFile(path.join(DIST, '404.html'), 'utf8');
+    if (!/name="robots" content="noindex/i.test(nf)) problems.push('404.html is missing noindex');
+    if (!/<title>Page not found/i.test(nf)) problems.push('404.html has the wrong title');
+  } catch {
+    problems.push('dist/404.html missing — unknown URLs would return 200');
+  }
+
   // FAQPage belongs only on pages that render a FAQ.
   const home = await readFile(path.join(DIST, 'index.html'), 'utf8');
   if (!home.includes('FAQPage')) problems.push('/ : home page has no FAQPage schema');
