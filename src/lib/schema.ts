@@ -308,7 +308,32 @@ function breadcrumbList(pathname: string) {
  * questions are rendered on. Marking up FAQ on pages that don't show it is a
  * structured-data violation and risks a manual action.
  */
-export function routeGraph(pathname: string) {
+const PAGE_TYPE: Record<string, string> = {
+  '/about': 'AboutPage',
+  '/team': 'AboutPage',
+  '/contact': 'ContactPage',
+  '/insights': 'CollectionPage',
+};
+
+/** The page itself, tied to the site, the organisation and its breadcrumb. */
+function webPage(pathname: string, page: { title: string; description: string }, hasCrumbs: boolean) {
+  const url = pathname === '/' ? ORIGIN + '/' : `${ORIGIN}${pathname}`;
+  const isProduct = pathname.startsWith('/product/');
+  return {
+    '@type': PAGE_TYPE[pathname] ?? 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: page.title,
+    description: page.description,
+    inLanguage: 'en-IN',
+    isPartOf: { '@id': `${ORIGIN}/#website` },
+    about: { '@id': `${ORIGIN}/#organization` },
+    ...(isProduct ? { mainEntity: { '@id': `${url}#service` } } : {}),
+    ...(hasCrumbs ? { breadcrumb: { '@id': `${url}#breadcrumb` } } : {}),
+  };
+}
+
+export function routeGraph(pathname: string, page?: { title: string; description: string }) {
   const crumbs = breadcrumbList(pathname);
 
   const graph: Record<string, unknown>[] = [
@@ -322,6 +347,7 @@ export function routeGraph(pathname: string) {
   const faq = faqPageFor(pathname);
   if (faq) graph.push(faq);
   if (crumbs) graph.push(crumbs);
+  if (page) graph.push(webPage(pathname, page, !!crumbs));
   if (pathname.startsWith('/product/')) {
     graph.push(...services().filter((s) => s['@id']?.startsWith(`${ORIGIN}${pathname}`)));
   }

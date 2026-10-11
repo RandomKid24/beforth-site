@@ -940,20 +940,24 @@ function setMeta(selector: string, attrs: Record<string, string>, content: strin
   el.setAttribute('content', content);
 }
 
-function SeoManager() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    const product = pathname.startsWith('/product/') ? getPlatform(pathname.split('/')[2]) : undefined;
-    const meta = product
-      ? { title: product.seoTitle, description: product.seoDescription, keywords: product.keywords }
-      : META[pathname] ?? {
+/** Metadata for a route. `known` is false for unknown URLs, which must not be indexed. */
+function metaFor(pathname: string) {
+  const product = pathname.startsWith('/product/') ? getPlatform(pathname.split('/')[2]) : undefined;
+  const meta = product
+    ? { title: product.seoTitle, description: product.seoDescription, keywords: product.keywords }
+    : META[pathname] ?? {
       title: 'Page not found | Beforth',
       description: 'This page does not exist. Browse Beforth services, products and contact details.',
       keywords: 'Beforth',
     };
-    // Unknown URLs (including /product/<unknown>) must not be indexed.
-    const known = !!product || pathname in META;
+  return { meta, known: !!product || pathname in META };
+}
+
+function SeoManager() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const { meta, known } = metaFor(pathname);
     const canonical = `https://beforth.in${pathname === '/' ? '/' : pathname}`;
 
     document.title = meta.title;
@@ -994,7 +998,8 @@ function StructuredData() {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.dataset.route = pathname;
-    script.textContent = JSON.stringify(routeGraph(pathname));
+    const { meta, known } = metaFor(pathname);
+    script.textContent = JSON.stringify(routeGraph(pathname, known ? meta : undefined));
     document.head.appendChild(script);
     return () => {
       document.head.removeChild(script);
