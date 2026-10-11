@@ -15,7 +15,7 @@ import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { routeGraph } from '@/lib/schema';
 import { track } from '@/lib/track';
-import { DoodleDefs, HeroDoodle, HubDoodle, SheetDoodle, SiteDoodle, RoadDoodle, SectorIcon, PlaneDoodle } from '@/components/Doodles';
+import { DoodleDefs, HeroDoodle, HubDoodle, SheetDoodle, SiteDoodle, RoadDoodle, SectorIcon, PlaneDoodle, ReasonDoodle, TangleDoodle, FaqDoodle } from '@/components/Doodles';
 
 /**
  * The interactive dashboard demo is ~200KB of source. It is the one visual the
@@ -510,14 +510,11 @@ function Why() {
         <div className="grid lg:grid-cols-12 gap-4 lg:gap-5 items-stretch">
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-3 lg:gap-4">
             {REASONS.map((reason, i) => {
-              const Icon = reason.icon;
               return (
                 <Reveal key={reason.title} delay={i * 0.06} className="h-full">
                   <div className="group h-full bg-white border border-ink/12 p-6 flex flex-col transition-[border-color,box-shadow,transform] duration-500 hover:border-signal/50 hover:shadow-[0_16px_34px_-22px_rgba(28,117,188,0.55)] hover:-translate-y-0.5">
                     <div className="flex items-start justify-between mb-8">
-                      <span className="w-11 h-11 bg-signal/10 text-signal flex items-center justify-center transition-colors duration-500 group-hover:bg-signal group-hover:text-white">
-                        <Icon className="w-5 h-5" strokeWidth={1.6} />
-                      </span>
+                      <ReasonDoodle index={i} className="w-14 h-14 -ml-1 -mt-1" />
                       <span className="label !text-[10px]">0{i + 1}</span>
                     </div>
                     <h3 className="display-md text-[19px]">{reason.title}</h3>
@@ -555,7 +552,9 @@ function Why() {
                 ))}
               </ul>
 
-              <p className="relative mt-6 pt-5 border-t border-paper/15 text-[13px] text-paper/65 leading-relaxed">
+              <TangleDoodle className="relative w-40 mt-5 -mb-1" />
+
+              <p className="relative mt-3 pt-5 border-t border-paper/15 text-[13px] text-paper/65 leading-relaxed">
                 A system you own and that fits your process — not a subscription you adapt to.
               </p>
             </div>
@@ -705,6 +704,7 @@ function Faq() {
     <section className="pb-20 md:pb-28">
       <div className="wrap">
         <SectionHead label="FAQ" title={<>Questions worth <span className="accent">answering.</span></>} />
+        <div className="grid lg:grid-cols-[1fr_260px] gap-x-14 items-start">
         <div className="border-t border-ink/12">
           {FAQ.map((item, i) => (
             <Reveal key={item.q} delay={Math.min(i, 4) * 0.04}>
@@ -730,6 +730,8 @@ function Faq() {
               </details>
             </Reveal>
           ))}
+        </div>
+        <FaqDoodle className="hidden lg:block w-full sticky top-28" />
         </div>
       </div>
     </section>

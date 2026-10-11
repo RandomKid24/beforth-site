@@ -32,6 +32,10 @@ export function DoodleDefs() {
         <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="1" seed="4" result="n" />
         <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
       </filter>
+      <filter id="sketch-md" x="-8%" y="-8%" width="116%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1" seed="3" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
       <filter id="sketch-sm" x="-10%" y="-10%" width="120%" height="120%">
         <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="1" seed="2" result="n" />
         <feDisplacementMap in="SourceGraphic" in2="n" scale="0.7" xChannelSelector="R" yChannelSelector="G" />
@@ -328,6 +332,90 @@ export function PlaneDoodle({ className }: Props) {
         <path d="M262 132v12M256 138h12" strokeWidth="2.4" />
         <path d="M184 22v10M179 27h10" strokeWidth="2.4" />
         <path d="M290 98l8 -6M292 108h10" strokeWidth="2.2" />
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Why BeForth: one drawing per commitment                              */
+/* ------------------------------------------------------------------ */
+/** 0 start with the problem, 1 built around you, 2 simple to use, 3 one partner. */
+export function ReasonDoodle({ index, className }: { index: number; className?: string }) {
+  const art = [
+    // a magnifier over the problem
+    <>
+      <circle cx="27" cy="27" r="17" fill={PAPER} />
+      <path d="M40 40L57 57" strokeWidth="4" />
+      <path d="M21 22q0 -7 7 -7q7 0 7 6q0 4 -6 6v3" stroke={SIGNAL} />
+      <circle cx="29" cy="38" r="1.6" fill={SIGNAL} stroke="none" />
+    </>,
+    // a piece that fits
+    <>
+      <path d="M12 24h10c-5 -11 13 -11 8 0h12v10c10 -5 10 13 0 8v10H12z" fill={BONE} />
+      <path d="M48 10l3 4l7 -8" stroke={SIGNAL} strokeWidth="2.8" />
+    </>,
+    // a button, pressed
+    <>
+      <rect x="6" y="26" width="42" height="22" rx="6" fill={BONE} />
+      <path d="M16 37h22" />
+      <path d="M38 36l0 18l5 -5l4 9l4 -2l-4 -9l7 0z" fill={PAPER} />
+      <path d="M50 22l4 -5M56 29l6 -2M44 18l1 -6" stroke={SIGNAL} strokeWidth="2.6" />
+    </>,
+    // one person, one point of contact
+    <>
+      <circle cx="26" cy="26" r="9" fill={PAPER} />
+      <path d="M8 58c0 -17 9 -23 18 -23s18 6 18 23" />
+      <path d="M16 24c0 -14 20 -14 20 0M16 24v6h4" stroke={SIGNAL} />
+      <path d="M42 6h16a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-8l-6 5v-5h-2a3 3 0 0 1 -3 -3V9a3 3 0 0 1 3 -3z" fill={PAPER} />
+      <path d="M46 14h.1M51 14h.1M56 14h.1" stroke={SIGNAL} strokeWidth="3.4" />
+    </>,
+  ];
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch-md)" strokeWidth="2.4" stroke={INK}>
+        {art[index % art.length]}
+      </g>
+    </svg>
+  );
+}
+
+/** Dark panel: a tangled line straightens out and ends in a tick. */
+export function TangleDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 200 90" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.6" stroke="var(--color-wave)">
+        <path d="M8 60c8 -40 38 -44 30 -16s-34 36 -14 28s38 -34 22 -48s-34 10 -6 30c12 8 26 -2 24 -10" strokeOpacity="0.8" />
+        <path d="M92 46H168" />
+        <path d="M158 36l12 10l-12 10" />
+        <path d="M184 40l5 6l9 -11" />
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* FAQ: a question, and an answer on its way                            */
+/* ------------------------------------------------------------------ */
+export function FaqDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 260 320" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.6" stroke={INK}>
+        {/* a big question bubble */}
+        <path d="M30 20h140a10 10 0 0 1 10 10v92a10 10 0 0 1 -10 10H78l-26 24v-24H30a10 10 0 0 1 -10 -10V30a10 10 0 0 1 10 -10z" fill={PAPER} />
+        <path d="M76 62q0 -22 24 -22q24 0 24 20q0 14 -18 20q-6 3 -6 12" stroke={SIGNAL} strokeWidth="4" />
+        <circle cx="100" cy="114" r="4" fill={SIGNAL} stroke="none" />
+        {/* the answer: lines and a tick */}
+        <path d="M118 176h98a8 8 0 0 1 8 8v52a8 8 0 0 1 -8 8h-8v18l-26 -18h-64a8 8 0 0 1 -8 -8v-52a8 8 0 0 1 8 -8z" fill={BONE} />
+        <path d="M134 198h64M134 214h46" strokeWidth="2.2" />
+        <path d="M196 226l8 8l16 -18" stroke={SIGNAL} strokeWidth="3.4" />
+        {/* sparks */}
+        <path d="M210 40v12M204 46h12" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M40 200v10M35 205h10" stroke={SIGNAL} strokeWidth="2.6" />
+        {/* a curious little figure */}
+        <circle cx="54" cy="270" r="14" fill={PAPER} />
+        <path d="M30 316c0 -26 14 -36 24 -36s24 10 24 36" />
+        <path d="M78 296l18 -30M96 266l-4 -9M96 266l8 -4" strokeWidth="2.4" />
       </g>
     </svg>
   );
