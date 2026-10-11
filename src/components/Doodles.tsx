@@ -29,8 +29,8 @@ export function DoodleDefs() {
   return (
     <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: 'absolute' }}>
       <filter id="sketch" x="-5%" y="-5%" width="110%" height="110%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="n" />
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="1" seed="4" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
       </filter>
       <filter id="sketch-sm" x="-10%" y="-10%" width="120%" height="120%">
         <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="1" seed="2" result="n" />
@@ -49,75 +49,102 @@ export function HeroDoodle({ className }: Props) {
   return (
     <svg viewBox="0 0 540 400" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        {/* the mess: back sheet, front sheet, sticky note, scribbles */}
-        <g transform="rotate(5 130 120)">
-          <rect x="46" y="50" width="150" height="116" fill={PAPER} strokeOpacity="0.55" />
-          <path d="M46 78H196M46 106H196M46 134H196M96 50V166M146 50V166" strokeOpacity="0.4" strokeWidth="1.6" />
+        {/* ---- the mess ---- */}
+        {/* a fanned stack of sheets */}
+        <g transform="rotate(9 120 110)">
+          <rect x="52" y="34" width="140" height="108" fill={PAPER} strokeOpacity="0.45" />
+          <path d="M52 60H192M52 86H192M52 112H192M100 34V142M148 34V142" strokeOpacity="0.3" strokeWidth="1.5" />
         </g>
+        <g transform="rotate(-3 110 110)">
+          <rect x="36" y="48" width="140" height="108" fill={PAPER} strokeOpacity="0.7" />
+          <path d="M36 74H176M36 100H176M36 126H176M84 48V156M130 48V156" strokeOpacity="0.4" strokeWidth="1.5" />
+        </g>
+        {/* the main spreadsheet, full of half-filled cells */}
         <g transform="rotate(-6 110 190)">
-          <rect x="24" y="112" width="172" height="130" fill={PAPER} />
-          <rect x="24" y="112" width="172" height="26" fill={BONE} />
-          <path d="M24 164H196M24 190H196M24 216H196M80 112V242M138 112V242" strokeWidth="1.6" />
-          <path d="M32 151q8 -6 16 0t16 0M88 151q10 -6 20 0M146 151q8 -5 16 0" strokeWidth="1.8" />
-          <path d="M34 177q10 -7 18 0M92 203q8 -6 18 0t14 0M148 229q8 -6 18 0" strokeWidth="1.8" />
-          <path d="M88 175l30 -10M92 168l24 18" stroke={INK} strokeWidth="2" />
+          <rect x="24" y="112" width="176" height="132" fill={PAPER} />
+          <rect x="24" y="112" width="176" height="26" fill={BONE} />
+          <path d="M24 164H200M24 190H200M24 216H200M82 112V244M142 112V244" strokeWidth="1.6" />
+          <path d="M32 151q8 -6 16 0t16 0M92 151q10 -6 20 0M152 151q8 -5 16 0" strokeWidth="1.8" />
+          <path d="M34 177q10 -7 18 0M96 203q8 -6 18 0t14 0M152 229q8 -6 18 0M34 229h30" strokeWidth="1.8" />
+          <path d="M90 175l32 -11M94 167l26 20" strokeWidth="2.2" />
+          <path d="M150 168l22 22M172 168l-22 22" strokeWidth="2" />
         </g>
+        {/* sticky note */}
         <g transform="rotate(9 190 250)">
-          <rect x="150" y="214" width="66" height="62" fill={BONE} />
-          <path d="M168 238q0 -12 12 -12q12 0 12 10q0 8 -10 11v6" strokeWidth="2.4" />
-          <circle cx="182" cy="262" r="1.8" fill={INK} />
+          <rect x="152" y="214" width="66" height="62" fill={BONE} />
+          <path d="M170 238q0 -12 12 -12q12 0 12 10q0 8 -10 11v6" strokeWidth="2.6" />
+          <circle cx="184" cy="262" r="2" fill={INK} />
         </g>
-        <path d="M18 70c14 -34 40 8 62 -16s34 14 56 -8" strokeOpacity="0.7" strokeWidth="2" />
-        <path d="M30 300c10 -12 22 6 34 -4s20 8 34 -2" strokeOpacity="0.5" strokeWidth="1.8" />
-
-        {/* the turn: an arrow and a few sparks */}
-        <path d="M232 236C258 196 286 190 318 216" strokeWidth="2.6" />
-        <path d="M304 224l16 -7l-9 -16" strokeWidth="2.6" />
-        <path d="M268 160v-14M252 168l-9 -10M284 168l9 -10" stroke={SIGNAL} strokeWidth="2.6" />
-
-        {/* the system: a hub joined to four modules */}
-        <g stroke={SIGNAL} strokeWidth="2.6">
-          <path d="M392 196C372 170 366 140 360 118" />
-          <path d="M418 196C440 172 452 144 462 118" />
-          <path d="M392 236C374 262 368 292 362 316" />
-          <path d="M418 236C438 262 452 290 462 316" />
-          <circle cx="360" cy="118" r="3.5" fill={SIGNAL} />
-          <circle cx="462" cy="118" r="3.5" fill={SIGNAL} />
-          <circle cx="362" cy="316" r="3.5" fill={SIGNAL} />
-          <circle cx="462" cy="316" r="3.5" fill={SIGNAL} />
+        {/* a phone full of chats */}
+        <g transform="rotate(-9 60 320)">
+          <rect x="34" y="276" width="54" height="86" rx="9" fill={PAPER} />
+          <path d="M52 284h18" strokeWidth="2" />
+          <rect x="42" y="296" width="30" height="14" rx="6" fill={BONE} strokeWidth="1.8" />
+          <rect x="52" y="316" width="30" height="14" rx="6" fill={BONE} strokeWidth="1.8" />
+          <circle cx="82" cy="276" r="9" fill={PAPER} />
+          <path d="M82 271v6" strokeWidth="2.2" />
         </g>
-        <rect x="372" y="176" width="66" height="78" rx="6" stroke={SIGNAL} strokeWidth="3" fill={PAPER} />
-        <path d="M386 238v-14M404 238v-30M422 238v-20" stroke={SIGNAL} strokeWidth="3.4" />
-        <path d="M384 192h22" stroke={SIGNAL} strokeWidth="2.4" />
+        {/* crumpled paper and scribbles */}
+        <path d="M120 338c-8 -10 0 -24 12 -24c8 -8 24 -4 26 8c10 6 6 22 -6 24c-8 8 -22 6 -32 -8z" fill={PAPER} />
+        <path d="M128 330l8 -5l4 9l8 -8M132 346l9 -4l8 5" strokeWidth="1.6" strokeOpacity="0.7" />
+        <path d="M16 62c14 -34 40 8 62 -16s34 14 56 -8" strokeOpacity="0.65" strokeWidth="2" />
+        <path d="M206 330c8 -12 20 6 30 -4s16 8 28 -2" strokeOpacity="0.45" strokeWidth="1.8" />
+
+        {/* ---- the turn ---- */}
+        <path d="M236 232C262 188 296 186 332 216" strokeWidth="3" />
+        <path d="M318 226l17 -9l-10 -16" strokeWidth="3" />
+        <path d="M280 150v-16M262 158l-10 -11M298 158l10 -11" stroke={SIGNAL} strokeWidth="2.8" />
+
+        {/* ---- the system ---- */}
+        <g stroke={SIGNAL} strokeWidth="2.8">
+          <path d="M388 164C372 148 362 134 350 120" />
+          <path d="M444 164C460 148 470 134 480 120" />
+          <path d="M388 242C372 258 362 300 350 314" />
+          <path d="M444 242C460 258 470 300 480 314" />
+        </g>
+        <g fill={SIGNAL} stroke="none">
+          <circle cx="350" cy="119" r="4" />
+          <circle cx="480" cy="119" r="4" />
+          <circle cx="350" cy="315" r="4" />
+          <circle cx="480" cy="315" r="4" />
+        </g>
+        {/* the hub: a small live dashboard */}
+        <rect x="368" y="160" width="96" height="86" rx="8" stroke={SIGNAL} strokeWidth="3.2" fill={PAPER} />
+        <path d="M380 176h30" stroke={SIGNAL} strokeWidth="3" />
+        <circle cx="448" cy="176" r="3" fill={SIGNAL} stroke="none" />
+        <path d="M388 232v-14M406 232v-26M424 232v-18M442 232v-34" stroke={SIGNAL} strokeWidth="5" />
+        <path d="M380 190l16 -4l14 4l18 -8" stroke={INK} strokeWidth="1.8" />
 
         {/* sales */}
-        <g transform="translate(300 62)">
-          <rect x="0" y="0" width="78" height="56" rx="5" fill={PAPER} />
-          <path d="M12 42l16 -14l12 8l24 -22" />
-          <path d="M52 14h12v12" />
+        <g transform="translate(308 62)">
+          <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
+          <path d="M12 44l18 -14l12 8l28 -24" />
+          <path d="M56 14h14v14" />
         </g>
         {/* stock */}
-        <g transform="translate(420 62)">
-          <rect x="0" y="0" width="84" height="56" rx="5" fill={PAPER} />
-          <rect x="14" y="26" width="24" height="18" fill={BONE} />
-          <rect x="42" y="26" width="24" height="18" fill={BONE} />
-          <rect x="28" y="8" width="24" height="18" fill={BONE} />
+        <g transform="translate(438 62)">
+          <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
+          <rect x="14" y="28" width="26" height="20" fill={BONE} />
+          <rect x="44" y="28" width="26" height="20" fill={BONE} />
+          <rect x="29" y="8" width="26" height="20" fill={BONE} />
         </g>
         {/* people */}
-        <g transform="translate(300 316)">
-          <rect x="0" y="0" width="78" height="56" rx="5" fill={PAPER} />
-          <circle cx="39" cy="20" r="8" />
-          <path d="M20 46c2 -12 10 -16 19 -16s17 4 19 16" />
+        <g transform="translate(308 316)">
+          <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
+          <circle cx="42" cy="21" r="9" />
+          <path d="M22 48c2 -13 11 -18 20 -18s18 5 20 18" />
         </g>
         {/* accounts */}
-        <g transform="translate(420 316)">
-          <rect x="0" y="0" width="84" height="56" rx="5" fill={PAPER} />
-          <circle cx="42" cy="28" r="14" />
-          <path d="M36 22h12M36 28h12M40 22c8 0 8 12 0 12l8 6" strokeWidth="2" />
+        <g transform="translate(438 316)">
+          <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
+          <circle cx="42" cy="29" r="15" />
+          <path d="M36 23h13M36 29h13M40 23c9 0 9 13 0 13l9 7" strokeWidth="2.2" />
         </g>
 
-        {/* a tick, to say it works */}
-        <path d="M470 168l8 8l16 -18" stroke={SIGNAL} strokeWidth="3" />
+        {/* a tick and a few sparks, to say it works */}
+        <path d="M498 176l9 9l18 -20" stroke={SIGNAL} strokeWidth="3.4" />
+        <path d="M512 214v10M507 219h10" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M296 330v10M291 335h10" stroke={SIGNAL} strokeWidth="2.6" />
       </g>
     </svg>
   );
@@ -275,12 +302,32 @@ export function SectorIcon({ name, className }: { name: string; className?: stri
 /* Call to action: a paper plane on a looping trail (drawn for dark)    */
 /* ------------------------------------------------------------------ */
 export function PlaneDoodle({ className }: Props) {
+  const wave = 'var(--color-wave)';
   return (
-    <svg viewBox="0 0 220 140" className={className} aria-hidden="true" focusable="false" {...common}>
-      <g filter="url(#sketch)" strokeWidth="2.2" stroke="var(--color-wave)">
-        <path d="M8 120C40 120 54 96 40 84S22 100 50 108S110 92 130 70" strokeDasharray="3 8" strokeWidth="2.6" />
-        <path d="M200 20L132 52L148 70L200 20L152 84L146 112L132 52" />
-        <path d="M148 70L146 112L162 92" />
+    <svg viewBox="0 0 300 180" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={wave}>
+        {/* the conversation: two speech bubbles */}
+        <path d="M16 20h74a8 8 0 0 1 8 8v28a8 8 0 0 1 -8 8H48l-16 14v-14H16a8 8 0 0 1 -8 -8V28a8 8 0 0 1 8 -8z" />
+        <circle cx="38" cy="42" r="3" fill={wave} stroke="none" />
+        <circle cx="54" cy="42" r="3" fill={wave} stroke="none" />
+        <circle cx="70" cy="42" r="3" fill={wave} stroke="none" />
+        <path d="M118 70h58a8 8 0 0 1 8 8v22a8 8 0 0 1 -8 8h-4v12l-14 -12h-40a8 8 0 0 1 -8 -8V78a8 8 0 0 1 8 -8z" strokeOpacity="0.85" />
+        <path d="M128 84h38M128 96h24" strokeWidth="2" strokeOpacity="0.85" />
+
+        {/* the plane's looping trail */}
+        <path d="M24 166C70 168 96 146 82 128S44 130 70 148S160 156 196 118" strokeDasharray="0.5 10" strokeWidth="3.6" />
+
+        {/* a paper plane with a visible fold */}
+        <g strokeWidth="2.6">
+          <path d="M280 14L206 70L238 78Z" fill={wave} fillOpacity="0.14" />
+          <path d="M280 14L238 78L246 118Z" fill={wave} fillOpacity="0.3" />
+          <path d="M238 78L246 118L222 98Z" fill={wave} fillOpacity="0.08" />
+        </g>
+
+        {/* sparks */}
+        <path d="M262 132v12M256 138h12" strokeWidth="2.4" />
+        <path d="M184 22v10M179 27h10" strokeWidth="2.4" />
+        <path d="M290 98l8 -6M292 108h10" strokeWidth="2.2" />
       </g>
     </svg>
   );

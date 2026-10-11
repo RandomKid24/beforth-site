@@ -773,7 +773,7 @@ function CTA() {
               className="absolute -right-24 -bottom-28 w-[32rem] h-[32rem] pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(28,117,188,0.30) 0%, transparent 66%)' }}
             />
-            <PlaneDoodle className="hidden md:block absolute right-10 top-6 w-44 pointer-events-none" />
+            <PlaneDoodle className="hidden md:block absolute right-8 top-4 w-60 pointer-events-none" />
             <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <div className="max-w-xl">
                 <span className="label !text-paper/50 block mb-5">Next step</span>
