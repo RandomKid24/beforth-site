@@ -52,7 +52,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHead
-        label="About"
+        label="About · Founded 2025 · Nashik, India"
         title={<>Technology that <span className="accent">fits</span> the business.</>}
       >
         <div className="grid md:grid-cols-2 gap-8 md:gap-14 max-w-5xl">
