@@ -886,7 +886,7 @@ function Footer() {
 /* ------------------------------------------------------------------ */
 const META: Record<string, { title: string; description: string; keywords: string }> = {
   '/': {
-    title: 'Beforth | Custom Business Software & ERP Company — Nashik, India',
+    title: 'Beforth | Custom ERP & Business Software, Nashik India',
     description:
       'Beforth builds custom ERP systems, CRM, HRMS, inventory management, business automation, web and mobile applications — designed around how your organisation actually operates.',
     keywords: 'custom ERP software Nashik, CRM development India, HRMS and payroll software, inventory management system, business automation, custom software company Maharashtra',
@@ -916,7 +916,7 @@ const META: Record<string, { title: string; description: string; keywords: strin
     keywords: 'Beforth team, software developers Nashik, technology team Maharashtra',
   },
   '/contact': {
-    title: 'Contact Beforth | Discuss Your ERP or Software Project — Nashik',
+    title: 'Contact Beforth | Discuss Your ERP or Software Project',
     description:
       'Talk to Beforth about custom ERP, CRM, HRMS, inventory or automation projects. Based in Nashik, Maharashtra, India.',
     keywords: 'contact Beforth, hire ERP developer India, custom software quote Nashik, business automation consultation',

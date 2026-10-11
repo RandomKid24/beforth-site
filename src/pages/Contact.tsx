@@ -232,6 +232,15 @@ export default function ContactPage() {
                   </Reveal>
                 ))}
               </div>
+              <iframe
+                title="BeForth office location on Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3803.1224150588278!2d73.7598738!3d19.9908887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddeb7595346263%3A0x4b4cdc5bec0e04dd!2sBeForth!5e1!3m2!1sen!2sin!4v1791704969639!5m2!1sen!2sin"
+                className="mt-10 w-full h-[280px] border border-ink/15"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
             </div>
 
             <Reveal delay={0.08}>

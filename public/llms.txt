@@ -9,6 +9,7 @@ Customers are typically manufacturing, logistics and distribution, pharma, and s
 - Email: support@beforth.in
 - Phone: +91 97661 83834
 - Location: Nashik, Maharashtra, India
+- Founded: 2025
 - Website: https://beforth.in/
 
 ## What we build

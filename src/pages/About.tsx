@@ -57,8 +57,8 @@ export default function AboutPage() {
       >
         <div className="grid md:grid-cols-2 gap-8 md:gap-14 max-w-5xl">
           <p className="lead">
-            BeForth is a software company in Nashik, India. We build custom business software,
-            automation and digital platforms.
+            BeForth is a software company in Nashik, India, founded in 2025. We build custom
+            business software, automation and digital platforms.
           </p>
           <p className="body">
             Our work is simple to state: understand how a business really runs, then build
