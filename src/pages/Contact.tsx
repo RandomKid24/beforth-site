@@ -1,3 +1,4 @@
+import { track } from '@/lib/track';
 import React, { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
@@ -125,6 +126,7 @@ export default function ContactPage() {
 
       if (!res.ok) throw new Error(data.message || 'Something went wrong. Please try again.');
 
+      track('contact_submit');
       setState('success');
       setFeedback('Message sent. We will get back to you shortly.');
       setForm({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });

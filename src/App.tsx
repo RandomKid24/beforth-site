@@ -14,6 +14,7 @@ import { FAQ } from '@/data/faq';
 import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { routeGraph } from '@/lib/schema';
+import { track } from '@/lib/track';
 
 /**
  * The interactive dashboard demo is ~200KB of source. It is the one visual the
@@ -1056,6 +1057,17 @@ export default function App() {
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) w.requestIdleCallback(preload);
     else window.setTimeout(preload, 1200);
+  }, []);
+
+  // Count phone and email link clicks anywhere on the site (names only, no data).
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const href = (e.target as Element).closest?.('a')?.getAttribute('href') ?? '';
+      if (href.startsWith('tel:')) track('phone_click');
+      else if (href.startsWith('mailto:')) track('email_click');
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
   }, []);
 
   // Animate only after the first navigation, so the prerendered first paint is
