@@ -145,81 +145,23 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 /* ------------------------------------------------------------------ */
-/* Page transitions                                                     */
+/* Page transition                                                      */
 /*                                                                      */
-/* One orchestrated moment per navigation: the incoming page rises into */
-/* place while the outgoing one clears faster. Nothing else on the site */
-/* moves, so this reads as the page changing rather than as decoration.*/
+/* The incoming page fades in with a short rise. Enter-only on purpose: */
+/* no snapshots, no overlap, no waiting on the old page. Only `from` is */
+/* keyframed and fill-mode is `backwards`, so no transform is left on   */
+/* the element afterwards (which would break sticky/fixed children).    */
 /* ------------------------------------------------------------------ */
-
-/* Only the page body animates. The navbar is excluded from the snapshot so it
-   stays put and its active-link highlight updates immediately. */
-.page-content {
-  view-transition-name: page-content;
+.page-enter {
+  animation: page-in 480ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
-/* Naming an element lifts it out of the root snapshot, but the root still runs
-   its own default cross-fade underneath — which ghosts the navbar, showing two
-   overlapping "Services" labels mid-transition. Disabling it leaves only our
-   page-content animation. */
-::view-transition-group(root),
-::view-transition-image-pair(root) {
-  animation: none;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  display: none;
-}
-
-/* Both snapshots render at natural size, anchored top-left, so a page taller
-   than the viewport is not squashed to fit the outgoing one. */
-::view-transition-old(page-content),
-::view-transition-new(page-content) {
-  animation: none;
-  mix-blend-mode: normal;
-  display: block;
-  height: 100%;
-  width: 100%;
-  object-fit: none;
-  object-position: top left;
-  overflow: clip;
-}
-
-/* The outgoing page clears first, so the two are never both legible on top of
-   each other — the change reads as a page turning, not a dissolve. No
-   directional movement: content slides were the thing that felt wrong. */
-::view-transition-old(page-content) {
-  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both page-exit;
-}
-
-/* Delayed a beat so the outgoing page is mostly gone, then an 8px rise on an
-   expo-out curve: fast start, long soft landing. Transform + opacity only, so
-   it stays on the compositor. */
-::view-transition-new(page-content) {
-  animation: 480ms cubic-bezier(0.16, 1, 0.3, 1) 60ms both page-enter;
-}
-
-/* The group is given no animation, otherwise the browser interpolates between
-   two differently-sized pages and the outgoing one stretches on the way. */
-::view-transition-group(page-content) {
-  animation: none;
-}
-
-@keyframes page-exit {
-  to { opacity: 0; }
-}
-
-@keyframes page-enter {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(14px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(page-content),
-  ::view-transition-old(page-content),
-  ::view-transition-new(page-content) {
-    animation: none !important;
-  }
+  .page-enter { animation: none; }
 }
 
 @keyframes pulse-dot {

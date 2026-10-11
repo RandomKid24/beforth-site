@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
@@ -8,7 +8,6 @@ import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
 import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
-import { useTransitionLocation } from '@/lib/pageTransition';
 
 import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
 import { FAQ } from '@/data/faq';
@@ -20,19 +19,27 @@ import { routeGraph } from '@/lib/schema';
  * design vault allows, but it sits below the fold and only matters to visitors
  * who scroll to it, so it loads on demand instead of blocking first paint.
  */
-const ProductShowcase = lazy(() => import('@/components/ProductShowcase'));
+const loadShowcase = () => import('@/components/ProductShowcase');
+const ProductShowcase = lazy(loadShowcase);
 
 /**
  * Each route is a separate chunk. The home page is the common first read and
  * stays in the main bundle; everything else arrives when it is navigated to.
  */
-const ServicesPage = lazy(() => import('./pages/Services'));
-const AboutPage = lazy(() => import('./pages/About'));
-const TeamPage = lazy(() => import('./pages/Team'));
-const ContactPage = lazy(() => import('./pages/Contact'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const InsightsPage = lazy(() => import('./pages/Insights'));
-const ProductPage = lazy(() => import('./pages/ProductPage'));
+const loadServices = () => import('./pages/Services');
+const ServicesPage = lazy(loadServices);
+const loadAbout = () => import('./pages/About');
+const AboutPage = lazy(loadAbout);
+const loadTeam = () => import('./pages/Team');
+const TeamPage = lazy(loadTeam);
+const loadContact = () => import('./pages/Contact');
+const ContactPage = lazy(loadContact);
+const loadNotFound = () => import('./pages/NotFound');
+const NotFound = lazy(loadNotFound);
+const loadInsights = () => import('./pages/Insights');
+const InsightsPage = lazy(loadInsights);
+const loadProductPage = () => import('./pages/ProductPage');
+const ProductPage = lazy(loadProductPage);
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -1023,12 +1030,31 @@ function RouteFallback() {
 /* ------------------------------------------------------------------ */
 export default function App() {
   const { hash } = useLocation();
-  const { shouldReduce } = useMotionPreset();
 
-  // The location actually rendered. Advances inside a View Transition so the
-  // browser can animate the swap; falls back to an instant swap when reduced
-  // motion is set or the browser lacks support.
-  const displayLocation = useTransitionLocation(shouldReduce);
+  const { pathname } = useLocation();
+
+  // Fetch every page chunk once the browser is idle, so a route change never
+  // waits on the network or flashes the Suspense fallback mid-animation.
+  useEffect(() => {
+    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadProductPage, loadShowcase].forEach((f) => f());
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (w.requestIdleCallback) w.requestIdleCallback(preload);
+    else window.setTimeout(preload, 1200);
+  }, []);
+
+  // Animate only after the first navigation, so the prerendered first paint is
+  // never held at opacity 0.
+  const lastPath = useRef(pathname);
+  const animate = useRef(false);
+  if (lastPath.current !== pathname) {
+    lastPath.current = pathname;
+    animate.current = true;
+  }
+
+  // New page starts at the top; hash links are handled by the effect below.
+  useLayoutEffect(() => {
+    if (!window.location.hash) window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, [pathname]);
 
   // A link to a hash on the current page scrolls; a real navigation is handled
   // by the transition above, which already resets to the top.
@@ -1047,9 +1073,9 @@ export default function App() {
         <StructuredData />
         <Navbar />
 
-        <div className="page-content">
+        <div key={pathname} className={animate.current ? 'page-enter' : undefined}>
           <Suspense fallback={<RouteFallback />}>
-            <Routes location={displayLocation}>
+            <Routes>
               <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/insights" element={<InsightsPage />} />
