@@ -18,7 +18,7 @@ variables in `src/index.css`.
 | `paper` | Card Background | `#F2F7F9` | 242, 247, 249 | C3 M1 Y0 K2 | Page canvas |
 | `bone` | Light Wave | `#D6E7F1` | 214, 231, 241 | C11 M4 Y0 K5 | Section contrast, tiles, selected rows |
 | `ink` | Black / Logo Ink | `#231F20` | 35, 31, 32 | C0 M11 Y9 K86 | Body text, dark fills |
-| `ash` | Grey Tagline | `#6D737F` | 109, 115, 127 | C14 M9 Y0 K50 | Secondary text, captions, metadata |
+| `ash` | Grey Tagline | `#5F6571` | 95, 101, 113 | C16 M11 Y0 K56 | Secondary text, captions, metadata |
 | `signal` | Dark Wave | `#1C75BC` | 28, 117, 188 | C85 M38 Y0 K26 | Primary accent — buttons, active states |
 | `wave` | Middle Wave | `#75BAE6` | 117, 186, 230 | C49 M19 Y0 K10 | Accent on dark surfaces |
 

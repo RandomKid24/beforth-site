@@ -506,9 +506,9 @@ export default function ProductShowcase() {
                     type="button"
                     onClick={() => onKpi(k.to)}
                     className="group text-left bg-white border border-ink/10 p-3.5 hover:border-signal/60 hover:shadow-sm transition-[border-color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal"
-                    aria-label={`${k.label}: ${k.value}, ${k.delta}. Show the records.`}
                   >
                     {inner}
+                    <span className="sr-only">. Show the records.</span>
                   </button>
                 ) : (
                   <div key={k.label} className="bg-white border border-ink/10 p-3.5">{inner}</div>

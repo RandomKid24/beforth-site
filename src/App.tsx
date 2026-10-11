@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
@@ -21,29 +21,48 @@ import { track } from '@/lib/track';
  * design vault allows, but it sits below the fold and only matters to visitors
  * who scroll to it, so it loads on demand instead of blocking first paint.
  */
-const loadShowcase = () => import('@/components/ProductShowcase');
-const ProductShowcase = lazy(loadShowcase);
+/**
+ * Like React.lazy, but once the chunk has been loaded the component renders
+ * synchronously. React.lazy always suspends on its first render, which swaps
+ * the prerendered page for the "Loading" fallback and back, shifting the
+ * layout. `preload` lets main.tsx load the current route before React starts.
+ */
+function lazyRoute<P extends object>(loader: () => Promise<{ default: React.ComponentType<P> }>) {
+  let Comp: React.ComponentType<P> | undefined;
+  let loading: Promise<void> | undefined;
+  const preload = () =>
+    (loading ??= loader().then((m) => {
+      Comp = m.default;
+    }));
+  const Lazy = (props: P) => {
+    if (!Comp) throw preload();
+    return <Comp {...props} />;
+  };
+  return Object.assign(Lazy, { preload });
+}
+
+const ProductShowcase = lazyRoute(() => import('@/components/ProductShowcase'));
+const loadShowcase = ProductShowcase.preload;
 
 /**
  * Each route is a separate chunk. The home page is the common first read and
  * stays in the main bundle; everything else arrives when it is navigated to.
  */
-const loadServices = () => import('./pages/Services');
-const ServicesPage = lazy(loadServices);
-const loadAbout = () => import('./pages/About');
-const AboutPage = lazy(loadAbout);
-const loadTeam = () => import('./pages/Team');
-const TeamPage = lazy(loadTeam);
-const loadContact = () => import('./pages/Contact');
-const ContactPage = lazy(loadContact);
-const loadNotFound = () => import('./pages/NotFound');
-const NotFound = lazy(loadNotFound);
-const loadInsights = () => import('./pages/Insights');
-const loadInsightArticle = () => import('./pages/InsightArticle');
-const InsightArticle = lazy(loadInsightArticle);
-const InsightsPage = lazy(loadInsights);
-const loadProductPage = () => import('./pages/ProductPage');
-const ProductPage = lazy(loadProductPage);
+const ServicesPage = lazyRoute(() => import('./pages/Services'));
+const loadServices = ServicesPage.preload;
+const AboutPage = lazyRoute(() => import('./pages/About'));
+const loadAbout = AboutPage.preload;
+const TeamPage = lazyRoute(() => import('./pages/Team'));
+const loadTeam = TeamPage.preload;
+const ContactPage = lazyRoute(() => import('./pages/Contact'));
+const loadContact = ContactPage.preload;
+const NotFound = lazyRoute(() => import('./pages/NotFound'));
+const InsightsPage = lazyRoute(() => import('./pages/Insights'));
+const loadInsights = InsightsPage.preload;
+const InsightArticle = lazyRoute(() => import('./pages/InsightArticle'));
+const loadInsightArticle = InsightArticle.preload;
+const ProductPage = lazyRoute(() => import('./pages/ProductPage'));
+const loadProductPage = ProductPage.preload;
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -517,7 +536,7 @@ function Why() {
               <ul className="relative flex-1 flex flex-col">
                 {OUTCOMES.map((row) => (
                   <li key={row.to} className="group grid grid-cols-[1fr] gap-1 py-4 border-t border-paper/15">
-                    <span className="text-[13px] text-paper/45 line-through decoration-paper/30 decoration-1">{row.from}</span>
+                    <span className="text-[13px] text-paper/65 line-through decoration-paper/40 decoration-1">{row.from}</span>
                     <span className="flex items-center gap-3 text-[17px] md:text-[18px] font-semibold tracking-[-0.015em] transition-transform duration-500 group-hover:translate-x-1">
                       <span className="w-5 h-5 shrink-0 rounded-full bg-wave/20 text-wave flex items-center justify-center">
                         <Check className="w-3 h-3" strokeWidth={3} />
@@ -899,11 +918,11 @@ const META: Record<string, { title: string; description: string; keywords: strin
   '/': {
     title: 'Beforth | Custom ERP & Business Software, Nashik India',
     description:
-      'Beforth builds custom ERP systems, CRM, HRMS, inventory management, business automation, web and mobile applications — designed around how your organisation actually operates.',
+      'Beforth builds custom ERP, CRM, HRMS, inventory, automation, web and mobile software, designed around how your organisation actually operates.',
     keywords: 'custom ERP software Nashik, CRM development India, HRMS and payroll software, inventory management system, business automation, custom software company Maharashtra',
   },
   '/insights': {
-    title: 'Insights | Practical Notes on Business Systems — BeForth, Nashik',
+    title: 'Insights | Practical Notes on Business Systems — BeForth',
     description:
       'Practical notes from BeForth on ERP, CRM, HRMS, payroll, inventory and POS systems for manufacturing, pharma, distribution and service companies.',
     keywords: 'ERP insights, business software guides, custom software best practices, India ERP advice',
@@ -917,7 +936,7 @@ const META: Record<string, { title: string; description: string; keywords: strin
   '/about': {
     title: 'About Beforth | Custom Business Software Company, Nashik',
     description:
-      'Beforth is an IT services and software development company in Nashik, Maharashtra, focused on custom business systems, workflow automation and operational visibility.',
+      'Beforth is a software company in Nashik, Maharashtra, founded in 2025, building custom business systems, workflow automation and operational visibility.',
     keywords: 'about Beforth, custom software company Nashik, ERP development company Maharashtra, IT services Nashik',
   },
   '/team': {
@@ -944,8 +963,24 @@ function setMeta(selector: string, attrs: Record<string, string>, content: strin
   el.setAttribute('content', content);
 }
 
+/** Starts loading the code for a route, so its first render does not suspend. */
+export function preloadRoute(pathname: string): Promise<unknown> {
+  const p = pathname.replace(/\/+$/, '') || '/';
+  if (p === '/') return loadShowcase();
+  if (p === '/services') return loadServices();
+  if (p === '/about') return loadAbout();
+  if (p === '/team') return loadTeam();
+  if (p === '/contact') return loadContact();
+  if (p === '/insights') return loadInsights();
+  if (p.startsWith('/insights/')) return loadInsightArticle();
+  if (p.startsWith('/product/')) return loadProductPage();
+  return NotFound.preload();
+}
+
 /** Metadata for a route. `known` is false for unknown URLs, which must not be indexed. */
-function metaFor(pathname: string) {
+function metaFor(rawPathname: string) {
+  // /about/ and /about are the same page.
+  const pathname = rawPathname.replace(/\/+$/, '') || '/';
   const product = pathname.startsWith('/product/') ? getPlatform(pathname.split('/')[2]) : undefined;
   const article = pathname.startsWith('/insights/')
     ? PUBLISHED_INSIGHTS.find((i) => i.slug === pathname.split('/')[2])
@@ -967,7 +1002,8 @@ function SeoManager() {
 
   useEffect(() => {
     const { meta, known } = metaFor(pathname);
-    const canonical = `https://beforth.in${pathname === '/' ? '/' : pathname}`;
+    const path = pathname.replace(/\/+$/, '') || '/';
+    const canonical = `https://beforth.in${path === '/' ? '/' : path}`;
 
     document.title = meta.title;
     setMeta('meta[name="description"]', { name: 'description' }, meta.description);
@@ -1006,9 +1042,10 @@ function StructuredData() {
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.dataset.route = pathname;
+    const path = pathname.replace(/\/+$/, '') || '/';
+    script.dataset.route = path;
     const { meta, known } = metaFor(pathname);
-    script.textContent = JSON.stringify(routeGraph(pathname, known ? meta : undefined));
+    script.textContent = JSON.stringify(routeGraph(path, known ? meta : undefined));
     document.head.appendChild(script);
     return () => {
       document.head.removeChild(script);

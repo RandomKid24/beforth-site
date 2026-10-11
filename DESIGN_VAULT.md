@@ -41,7 +41,7 @@ Defined in `src/index.css`. Full RGB/CMYK values are in `COLOR_PALETTE.md`.
 | `paper` | `#F2F7F9` | Page background |
 | `bone` | `#D6E7F1` | Alternate section background, tiles |
 | `ink` | `#231F20` | Text, dark panels |
-| `ash` | `#6D737F` | Secondary text, captions |
+| `ash` | `#5F6571` | Secondary text, captions |
 | `signal` | `#1C75BC` | Primary accent: buttons, links, key words |
 | `wave` | `#75BAE6` | Accent on dark backgrounds only |
 | `signal-deep` | `#165B93` | Button hover |

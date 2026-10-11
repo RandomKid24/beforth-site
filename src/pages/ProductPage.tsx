@@ -217,16 +217,14 @@ export default function ProductPage() {
           <SectionHead label="How it works" title={<>A day with it, <span className="accent">step by step.</span></>} />
           <ol className="grid md:grid-cols-4 gap-4 md:gap-0">
             {p.flow.map((s, i) => (
-              <Reveal key={s.title} delay={i * 0.07} className="h-full">
-                <li className="relative h-full md:pr-6 list-none">
+              <li key={s.title} className="relative h-full md:pr-6 list-none">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="w-9 h-9 rounded-full bg-ink text-paper flex items-center justify-center text-[13px] font-semibold tabular-nums shrink-0">{i + 1}</span>
                     {i < p.flow.length - 1 && <span aria-hidden className="hidden md:block flex-1 h-px bg-ink/20" />}
                   </div>
                   <h3 className="display-md text-[17px] mb-1.5">{s.title}</h3>
                   <p className="body-tight">{s.desc}</p>
-                </li>
-              </Reveal>
+              </li>
             ))}
           </ol>
         </div>

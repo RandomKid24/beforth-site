@@ -1,17 +1,29 @@
 @import "tailwindcss";
 
+/* Fallback tuned to Plus Jakarta Sans (measured: 1.043x Arial's width, ascent
+   104, descent 22 at 100px), so text does not re-wrap and shift the page when
+   the web font arrives. */
+@font-face {
+  font-family: "Plus Jakarta Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 104.3%;
+  ascent-override: 99.7%;
+  descent-override: 21.1%;
+  line-gap-override: 0%;
+}
+
 @theme {
   /* BEFORTH brand palette. RGB + CMYK breakdown in COLOR_PALETTE.md */
   --color-paper: #F2F7F9;        /* Paper       — Card Background: page canvas        */
   --color-bone: #D6E7F1;         /* Bone        — Light Wave: section contrast        */
   --color-ink: #231F20;          /* Ink         — Black / Logo Ink: text, dark fills  */
-  --color-ash: #6D737F;          /* Ash         — Grey Tagline: secondary text        */
+  --color-ash: #5F6571;          /* Ash         — Grey Tagline: secondary text        */
   --color-signal: #1C75BC;       /* Signal      — Dark Wave: primary accent           */
   --color-wave: #75BAE6;         /* Wave        — Middle Wave: accent on dark surfaces */
   --color-signal-deep: #165B93;  /* Signal Deep — Dark Wave at 80% brightness: hover  */
 
-  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Plus Jakarta Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 

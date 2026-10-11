@@ -44,7 +44,7 @@ Seven tokens. Nothing else. Full RGB and CMYK in `COLOR_PALETTE.md`.
 | `paper` | `#F2F7F9` | Page canvas. Default background. |
 | `bone` | `#D6E7F1` | Section break. One step darker, same hue family. |
 | `ink` | `#231F20` | Body text, dark panels, borders. |
-| `ash` | `#6D737F` | Secondary text, captions, metadata. |
+| `ash` | `#5F6571` | Secondary text, captions, metadata. |
 | `signal` | `#1C75BC` | The single accent. Primary action, key words, active state. |
 | `wave` | `#75BAE6` | Accent **on dark surfaces only**. |
 | `signal-deep` | `#165B93` | Hover / pressed for `signal`. Derived, not brand. |
@@ -53,9 +53,9 @@ Seven tokens. Nothing else. Full RGB and CMYK in `COLOR_PALETTE.md`.
 
 1. **One accent.** `signal` marks the main action and nothing more. If a second colour
    appears in a view, something is wrong.
-2. **`ash` is secondary text only.** Its contrast on `paper` is about 4.4:1 — just under
-   the AA threshold. Use it for supporting copy, `ink` for anything the reader must act
-   on, and never below ~14px.
+2. **`ash` is secondary text only.** Its contrast is about 5.4:1 on `paper` and 4.6:1 on
+   `bone`, both above the AA threshold (it was `#6D737F` at 4.4:1 until the October 2026
+   audit). Use it for supporting copy and `ink` for anything the reader must act on.
 3. **`wave` on dark, never `signal`.** `signal` on `ink` is only ~3.3:1.
 4. **Separate with `bone` and a 1px rule**, never a shadow, gradient or glow.
 5. **No decorative colour.** No grain, no blueprint grids, no tinted overlays.
