@@ -51,19 +51,24 @@
     }
   </script>
 
-  <!-- Tawk.to live chat -->
+  <!-- Tawk.to live chat: loaded on the visitor's first interaction, not on page
+       load, so it cannot delay the first paint or shift the layout. -->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
-      var s1=document.getElementById('tawk-src');
-      if(s1) return;
-      var s0=document.getElementsByTagName('script')[0], s=document.createElement('script');
-      s.id='tawk-src';
-      s.async=true;
-      s.src='https://embed.tawk.to/69cce1f8cfacab1c3944644d/1jl455dah';
-      s.charset='UTF-8';
-      s.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s,s0);
+      var events=['pointerdown','keydown','touchstart','wheel'];
+      function load(){
+        events.forEach(function(e){ window.removeEventListener(e,load); });
+        if(document.getElementById('tawk-src')) return;
+        var s=document.createElement('script');
+        s.id='tawk-src';
+        s.async=true;
+        s.src='https://embed.tawk.to/69cce1f8cfacab1c3944644d/1jl455dah';
+        s.charset='UTF-8';
+        s.setAttribute('crossorigin','*');
+        document.head.appendChild(s);
+      }
+      events.forEach(function(e){ window.addEventListener(e,load,{once:true,passive:true}); });
     })();
   </script>
 
