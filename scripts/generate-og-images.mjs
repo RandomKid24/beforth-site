@@ -127,6 +127,27 @@ const ROUTE_META = {
   },
 };
 
+/**
+ * Vercel's build image cannot start puppeteer's downloaded Chrome (missing
+ * libnspr4.so), so on Linux use the self-contained @sparticuz/chromium, the
+ * same build prerender.mjs uses. Elsewhere puppeteer's own Chrome is fine.
+ */
+async function launchOptions() {
+  const base = { headless: true, args: ['--no-sandbox'] };
+  if (process.platform !== 'linux') return base;
+  try {
+    process.env.VERCEL ||= '1'; // makes it unpack its bundled libraries
+    const { default: chromium } = await import('@sparticuz/chromium');
+    return {
+      headless: true,
+      executablePath: await chromium.executablePath(),
+      args: chromium.args.filter((f) => f !== '--single-process'),
+    };
+  } catch {
+    return base;
+  }
+}
+
 async function main() {
   await mkdir(OUT, { recursive: true });
 
@@ -148,7 +169,7 @@ async function main() {
     };
   });
 
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const browser = await puppeteer.launch(await launchOptions());
   let made = 0;
 
   try {
