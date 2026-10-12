@@ -1049,3 +1049,104 @@ export function NotFoundDoodle({ className }: Props) {
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Insights                                                             */
+/* ------------------------------------------------------------------ */
+/** Insights hero: an open notebook, an idea, a pencil. */
+export function InsightsDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the notebook */}
+        <path d="M30 92Q105 76 180 94V206Q105 190 30 206Z" fill={PAPER} />
+        <path d="M180 94Q255 76 330 92V206Q255 190 180 206Z" fill={PAPER} />
+        <path d="M180 94V206" />
+        <path d="M48 118q40 -8 114 4M48 140q40 -8 114 4M48 162q40 -8 80 0" strokeWidth="1.8" strokeOpacity="0.6" />
+        {/* a small process on the right page */}
+        <rect x="204" y="116" width="34" height="24" fill={BONE} />
+        <rect x="262" y="116" width="34" height="24" fill={BONE} />
+        <path d="M240 128h20M254 122l6 6l-6 6" stroke={SIGNAL} strokeWidth="2.4" />
+        <path d="M279 142v14" stroke={SIGNAL} strokeWidth="2.4" />
+        <circle cx="279" cy="168" r="11" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M273 168l4 4l8 -9" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M206 160q20 -6 40 0M206 178q16 -5 30 0" strokeWidth="1.8" strokeOpacity="0.6" />
+        {/* an idea */}
+        <path d="M180 8a22 22 0 0 0 -11 41v8h22v-8a22 22 0 0 0 -11 -41z" fill={BONE} />
+        <path d="M172 64h16M174 70h12" />
+        <path d="M130 22l8 6M230 22l-8 6M118 44h10M232 44h10M150 6l4 8M210 6l-4 8" stroke={SIGNAL} strokeWidth="2.6" />
+        {/* a pencil */}
+        <g transform="rotate(-28 312 190)">
+          <rect x="278" y="182" width="64" height="16" fill={BONE} />
+          <path d="M342 182l16 8l-16 8z" fill={PAPER} />
+          <path d="M350 186l8 4l-8 4" fill={SIGNAL} stroke={SIGNAL} />
+          <path d="M290 182v16" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+/** One small drawing per article, keyed by slug. */
+const ARTICLE_ART: Record<string, React.ReactNode> = {
+  // buy or build: a balance with a boxed package against a puzzle piece
+  'custom-erp-or-off-the-shelf': (
+    <>
+      <path d="M100 118V28" />
+      <path d="M86 118h28" />
+      <path d="M44 38L156 30" />
+      <path d="M44 38L24 84M44 38L66 84M156 30L136 76M156 30L176 76" strokeWidth="1.8" strokeOpacity="0.7" />
+      <path d="M18 84h54q-4 14 -27 14t-27 -14z" fill={PAPER} />
+      <path d="M130 76h54q-4 14 -27 14t-27 -14z" fill={PAPER} />
+      <rect x="32" y="58" width="26" height="24" fill={BONE} />
+      <path d="M32 66h26M45 58v8" strokeWidth="1.8" />
+      <path d="M140 66h8c-3 -9 11 -9 7 0h8v8c8 -4 8 10 0 6" fill={BONE} stroke={SIGNAL} strokeWidth="2.2" transform="translate(-2 -6)" />
+      <circle cx="100" cy="24" r="5" fill={PAPER} />
+    </>
+  ),
+  // discovery: a magnifier over a mapped-out process
+  'what-to-expect-during-erp-discovery': (
+    <>
+      <rect x="14" y="30" width="44" height="30" fill={BONE} />
+      <rect x="78" y="30" width="44" height="30" fill={PAPER} />
+      <rect x="142" y="30" width="44" height="30" fill={PAPER} />
+      <path d="M58 45h20M72 39l6 6l-6 6M122 45h20M136 39l6 6l-6 6" stroke={SIGNAL} strokeWidth="2.4" />
+      <path d="M28 82h30M92 82h22M156 82h24" strokeWidth="1.8" strokeOpacity="0.6" />
+      <circle cx="46" cy="76" r="24" fill={PAPER} fillOpacity="0.85" />
+      <path d="M64 94L88 118" strokeWidth="4" />
+      <path d="M36 70q0 -8 9 -8q9 0 9 7q0 5 -8 8v3" stroke={SIGNAL} strokeWidth="2.6" />
+    </>
+  ),
+  // spreadsheets break across two places: two pins, two sheets, a broken link
+  'spreadsheets-fail-at-a-second-location': (
+    <>
+      <g transform="translate(22 32)">
+        <rect x="0" y="0" width="52" height="40" fill={PAPER} />
+        <rect x="0" y="0" width="52" height="10" fill={BONE} />
+        <path d="M0 20H52M0 30H52M17 10V40M35 10V40" strokeWidth="1.5" />
+      </g>
+      <g transform="translate(126 32)">
+        <rect x="0" y="0" width="52" height="40" fill={PAPER} />
+        <rect x="0" y="0" width="52" height="10" fill={BONE} />
+        <path d="M0 20H52M0 30H52M17 10V40M35 10V40" strokeWidth="1.5" />
+        <path d="M6 24l10 -3M6 34l12 -3" strokeWidth="2" stroke={SIGNAL} />
+      </g>
+      <path d="M80 52h14l6 -8l8 16l6 -8h8" stroke={SIGNAL} strokeWidth="2.6" />
+      <Pin x={48} y={118} color={INK} />
+      <Pin x={152} y={118} />
+      <path d="M62 104q40 -14 76 0" strokeDasharray="2 8" strokeOpacity="0.55" />
+    </>
+  ),
+};
+
+export function ArticleDoodle({ slug, className }: { slug: string; className?: string }) {
+  const art = ARTICLE_ART[slug];
+  if (!art) return null;
+  return (
+    <svg viewBox="0 0 200 130" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {art}
+      </g>
+    </svg>
+  );
+}

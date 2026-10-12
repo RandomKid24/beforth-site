@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import NotFound from './NotFound';
 import { PUBLISHED_INSIGHTS, formatInsightDate } from '@/data/insights';
 import { getPlatform } from '@/components/platforms/catalog';
+import { ArticleDoodle } from '@/components/Doodles';
 
 /** /insights/:slug — one article. Unknown slugs fall through to the 404 page. */
 export default function InsightArticle() {
@@ -19,7 +20,8 @@ export default function InsightArticle() {
   return (
     <article>
       <header className="pt-32 md:pt-40 pb-10 md:pb-14">
-        <div className="wrap">
+        <div className="wrap relative">
+          <ArticleDoodle slug={a.slug} className="hidden xl:block absolute right-0 top-14 w-[300px]" />
           <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2 label">
             <Link to="/" className="hover:text-signal transition-colors">Home</Link>
             <span aria-hidden>/</span>

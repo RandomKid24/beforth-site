@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowRight } from 'lucide-react';
 
 import Reveal from '@/components/Reveal';
 import SectionHead from '@/components/SectionHead';
+import { InsightsDoodle, ArticleDoodle } from '@/components/Doodles';
 import { PUBLISHED_INSIGHTS, TOPIC_BACKLOG, formatInsightDate } from '@/data/insights';
 
 /**
@@ -25,7 +26,8 @@ export default function InsightsPage() {
   return (
     <>
       <section className="pt-32 md:pt-40 pb-12 md:pb-16">
-        <div className="wrap">
+        <div className="wrap relative">
+          <InsightsDoodle className="hidden xl:block absolute right-0 top-6 w-[360px]" />
           <Reveal>
             <div className="rule mb-6" />
             <span className="label block mb-7">Insights</span>
@@ -60,6 +62,7 @@ export default function InsightsPage() {
                         </span>
                         <span className="body block mt-2">{a.summary}</span>
                       </span>
+                      <ArticleDoodle slug={a.slug} className="hidden md:block w-32 shrink-0" />
                       <span className="w-8 h-8 border border-ink/15 flex items-center justify-center shrink-0 transition-[background-color,border-color,color] duration-300 group-hover:bg-signal group-hover:border-signal group-hover:text-white">
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </span>
