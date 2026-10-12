@@ -158,40 +158,35 @@ export function HeroDoodle({ className }: Props) {
 /* What we do: one place, everything connected                          */
 /* ------------------------------------------------------------------ */
 export function HubDoodle({ className }: Props) {
-  // Five things the business runs on, all joined to one place.
-  const nodes: { x: number; y: number; icon: React.ReactNode }[] = [
-    { x: 120, y: 26, icon: <><path d="M-9 6l6 -7l5 4l9 -9" /><path d="M2 -8h7v7" /></> }, // sales
-    { x: 200, y: 70, icon: <><path d="M-8 -4l8 -4l8 4v10l-8 4l-8 -4z" /><path d="M-8 -4l8 4l8 -4M0 0v10" strokeWidth="1.8" /></> }, // inventory
-    { x: 172, y: 154, icon: <><path d="M-8 3a8 8 0 0 1 16 0" /><rect x="-10" y="1" width="4" height="8" rx="1.5" /><rect x="6" y="1" width="4" height="8" rx="1.5" /></> }, // service
-    { x: 68, y: 154, icon: <><circle cx="0" cy="0" r="9" /><path d="M-4 -4h8M-4 0h8M-3 -4c8 0 8 8 0 8l6 5" strokeWidth="1.8" /></> }, // finance
-    { x: 40, y: 70, icon: <><path d="M-8 9v-8M-2 9v-14M4 9v-10M10 9v-4" strokeWidth="3" /></> }, // reporting
+  // One cabinet, five drawers: everything the business runs on, in one place.
+  const drawers: { y: number; icon: React.ReactNode }[] = [
+    { y: 22, icon: <path d="M-7 4l4 -5l4 3l7 -8" /> }, // sales
+    { y: 54, icon: <path d="M-7 -3l7 -4l7 4v8l-7 4l-7 -4zM-7 -3l7 4l7 -4" /> }, // inventory
+    { y: 86, icon: <><path d="M-7 3a7 7 0 0 1 14 0" /><path d="M-9 1v6M9 1v6" strokeWidth="3" /></> }, // service
+    { y: 118, icon: <><circle r="7" /><path d="M-3 -2h6M-3 2h6" strokeWidth="1.6" /></> }, // finance
+    { y: 150, icon: <path d="M-7 6v-6M-2 6v-11M3 6v-8M8 6v-4" strokeWidth="3" /> }, // reporting
   ];
   return (
-    <svg viewBox="0 0 240 180" className={className} aria-hidden="true" focusable="false" {...common}>
+    <svg viewBox="0 0 240 200" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        {/* the ring that joins neighbours */}
-        <path d="M120 26L200 70L172 154L68 154L40 70Z" strokeOpacity="0.28" strokeDasharray="2 8" strokeWidth="2.6" />
-        {/* spokes into the middle */}
-        <g stroke={SIGNAL} strokeWidth="2.8">
-          <path d="M120 70V48" />
-          <path d="M141 90Q168 88 182 76" />
-          <path d="M134 110Q150 128 160 140" />
-          <path d="M106 110Q92 128 80 140" />
-          <path d="M99 90Q72 88 58 76" />
-        </g>
-        {/* the middle: one place */}
-        <circle cx="120" cy="90" r="34" stroke={SIGNAL} strokeOpacity="0.35" strokeDasharray="1 9" strokeWidth="3" />
-        <circle cx="120" cy="90" r="24" fill={BONE} stroke={SIGNAL} strokeWidth="3" />
-        <path d="M109 91l8 8l15 -17" stroke={SIGNAL} strokeWidth="3.4" />
-        {/* the five systems */}
-        {nodes.map((n) => (
-          <g key={`${n.x}-${n.y}`} transform={`translate(${n.x} ${n.y})`}>
-            <circle r="19" fill={PAPER} />
-            {n.icon}
+        <rect x="46" y="10" width="148" height="182" rx="6" fill={PAPER} />
+        {drawers.map((d, i) => (
+          <g key={d.y}>
+            <rect x="56" y={d.y} width="128" height="26" fill={i % 2 ? PAPER : BONE} strokeWidth="1.8" />
+            <g transform={`translate(78 ${d.y + 13})`}>{d.icon}</g>
+            <rect x="106" y={d.y + 9} width="40" height="8" rx="4" fill={PAPER} strokeWidth="1.8" />
           </g>
         ))}
-        <path d="M222 22v10M217 27h10" stroke={SIGNAL} strokeWidth="2.4" />
-        <path d="M14 126v10M9 131h10" stroke={SIGNAL} strokeWidth="2.4" />
+        {/* a papers-sticking-out top drawer, slightly open */}
+        <path d="M70 22l6 -10h30l4 10" stroke={SIGNAL} strokeWidth="1.8" fill={PAPER} />
+        {/* one lock bar runs through every drawer */}
+        <path d="M168 14v174" stroke={SIGNAL} strokeWidth="3.4" />
+        <g fill={SIGNAL} stroke="none">
+          {drawers.map((d) => (
+            <circle key={d.y} cx="168" cy={d.y + 13} r="4" />
+          ))}
+        </g>
+        <path d="M16 194H224" strokeOpacity="0.3" strokeWidth="2" />
       </g>
     </svg>
   );
@@ -219,15 +214,17 @@ export function SheetDoodle({ className }: Props) {
 
 /** Not fits: a plain website. */
 export function SiteDoodle({ className }: Props) {
+  // "Just need a simple website": a business card with a web address.
   return (
     <svg viewBox="0 0 120 96" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2" stroke={INK}>
-        <rect x="14" y="18" width="92" height="64" rx="3" fill={PAPER} />
-        <path d="M14 34H106" />
-        <circle cx="24" cy="26" r="2" fill={INK} />
-        <circle cx="32" cy="26" r="2" fill={INK} />
-        <rect x="24" y="44" width="34" height="26" fill={BONE} />
-        <path d="M66 46h30M66 56h30M66 66h20" strokeWidth="1.8" />
+        <g transform="rotate(-6 60 50)">
+          <rect x="14" y="20" width="92" height="58" fill={PAPER} />
+          <circle cx="32" cy="38" r="9" fill={BONE} />
+          <path d="M48 34h44M48 44h30" strokeWidth="1.8" />
+          <path d="M26 64h44" strokeWidth="1.8" strokeOpacity="0.6" />
+          <path d="M80 62l5 -4l5 4" stroke={SIGNAL} strokeWidth="2.2" />
+        </g>
       </g>
     </svg>
   );
@@ -476,9 +473,6 @@ const Person = ({ x, y, color = INK }: { x: number; y: number; color?: string })
   </g>
 );
 
-const Sparks = ({ x, y }: { x: number; y: number }) => (
-  <path d={`M${x} ${y - 6}v12M${x - 6} ${y}h12`} stroke={SIGNAL} strokeWidth="2.4" />
-);
 
 const ART: Record<string, React.ReactNode> = {
   'delivery-tracking': (
@@ -499,7 +493,6 @@ const ART: Record<string, React.ReactNode> = {
         <path d="M10 52q8 -14 14 0t14 -6" strokeWidth="2" />
         <path d="M14 70l7 7l15 -16" stroke={SIGNAL} strokeWidth="3.4" />
       </g>
-      <Sparks x={36} y={44} />
     </>
   ),
   'salon-erp': (
@@ -520,7 +513,6 @@ const ART: Record<string, React.ReactNode> = {
         <circle cx="228" cy="116" r="3" fill={INK} />
       </g>
       <Pin x={282} y={52} />
-      <Sparks x={190} y={40} />
     </>
   ),
   hrms: (
@@ -633,7 +625,6 @@ const ART: Record<string, React.ReactNode> = {
       </g>
       <path d="M92 150C108 120 124 112 150 108" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
       <path d="M232 128C210 104 192 100 176 96" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
-      <Sparks x={40} y={60} />
     </>
   ),
   'seo-tracking': (
@@ -655,7 +646,6 @@ const ART: Record<string, React.ReactNode> = {
       <path d="M214 190l24 -30l16 14l34 -52" stroke={SIGNAL} strokeWidth="3.4" />
       <path d="M278 114l8 -2l-2 12" stroke={SIGNAL} strokeWidth="3.4" />
       <path d="M210 200H292" strokeWidth="2.2" />
-      <Sparks x={230} y={96} />
     </>
   ),
   payroll: (
@@ -712,7 +702,6 @@ const ART: Record<string, React.ReactNode> = {
         <path d="M0 0v34M6 0v34M10 0v34M18 0v34M24 0v34M30 0v34M38 0v34M44 0v34M52 0v34M58 0v34M66 0v34M72 0v34M80 0v34" strokeWidth="2.2" />
       </g>
       <path d="M150 140H190" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 8" />
-      <Sparks x={176} y={26} />
     </>
   ),
 };
@@ -737,24 +726,21 @@ export function AboutDoodle({ className }: Props) {
   return (
     <svg viewBox="0 0 360 240" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        {/* the business: a small factory */}
-        <rect x="20" y="124" width="142" height="96" fill={PAPER} />
-        <path d="M20 124V88l36 36V88l36 36V88l36 36V88l34 36" fill={BONE} />
-        <rect x="136" y="40" width="20" height="60" fill={PAPER} />
-        <path d="M146 28c-8 -6 0 -14 8 -12c6 -10 20 -4 14 6" strokeOpacity="0.55" />
-        <rect x="34" y="150" width="26" height="24" fill={BONE} />
-        <rect x="70" y="150" width="26" height="24" fill={BONE} />
-        <rect x="106" y="150" width="26" height="24" fill={BONE} />
-        <rect x="84" y="184" width="32" height="36" fill={PAPER} />
-        {/* the software: a piece that fits */}
-        <g transform="translate(178 40) scale(2.3)">
-          <path d="M12 24h10c-5 -11 13 -11 8 0h12v10c10 -5 10 13 0 8v10H12z" fill={BONE} stroke={SIGNAL} strokeWidth="1.4" />
-          <path d="M20 38l6 6l11 -13" stroke={SIGNAL} strokeWidth="1.8" />
-        </g>
-        <path d="M118 184C150 184 160 150 186 140" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
-        <Sparks x={330} y={36} />
-        <Sparks x={196} y={22} />
-        <path d="M292 202l6 -8l6 8l8 -2l-4 8l4 8l-8 -2l-6 8l-6 -8l-8 2l4 -8l-4 -8z" stroke={SIGNAL} strokeWidth="2" transform="translate(6 -4) scale(0.9)" />
+        {/* a young company: a sapling growing out of a laptop */}
+        <path d="M66 214h228l-16 -16H82z" fill={BONE} />
+        <rect x="92" y="128" width="176" height="72" rx="5" fill={PAPER} />
+        <path d="M110 150h46M110 164h30M110 178h40" strokeWidth="1.8" strokeOpacity="0.5" />
+        <path d="M180 128C180 104 176 84 184 62" stroke={SIGNAL} strokeWidth="3.2" />
+        <path d="M180 108c-26 -2 -44 -16 -46 -34c26 0 42 12 46 34z" fill={BONE} stroke={SIGNAL} />
+        <path d="M181 92c24 -2 42 -14 44 -32c-24 0 -40 10 -44 32z" fill={BONE} stroke={SIGNAL} />
+        <path d="M184 62c-14 -6 -16 -22 -10 -34c14 6 18 20 10 34z" fill={BONE} stroke={SIGNAL} />
+        {/* the year it started, on a plant tag */}
+        <path d="M226 96l22 -6" strokeOpacity="0.6" />
+        <rect x="236" y="64" width="62" height="30" rx="3" fill={PAPER} transform="rotate(-8 267 79)" />
+        <text x="246" y="86" fontSize="19" fontWeight="800" fill={INK} stroke="none" fontFamily="inherit" transform="rotate(-8 267 79)">2025</text>
+        {/* where it is: Nashik, on the map */}
+        <Pin x={318} y={196} />
+        <path d="M296 204q10 4 18 -2" strokeOpacity="0.45" strokeDasharray="2 7" />
       </g>
     </svg>
   );
@@ -834,45 +820,51 @@ export function ValueDoodle({ index, className }: { index: number; className?: s
 
 /** Team hero: the same people scope it, build it and support it. */
 export function TeamDoodle({ className }: Props) {
+  const cards = [24, 140, 256];
   return (
     <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        {/* scope: a plan */}
-        <g transform="translate(34 30)">
-          <rect x="0" y="0" width="52" height="64" fill={PAPER} />
-          <path d="M10 14h32M10 26h24M10 38h30" strokeWidth="1.8" />
-          <path d="M10 52l6 5l12 -12" stroke={SIGNAL} strokeWidth="2.8" />
+        {cards.map((x) => (
+          <rect key={x} x={x} y="24" width="80" height="112" fill={PAPER} />
+        ))}
+        {/* strategy and growth: bars climbing to a flag */}
+        <g transform="translate(24 24)">
+          <path d="M14 98v-18M30 98v-34M46 98v-50M62 98v-66" stroke={SIGNAL} strokeWidth="6" />
+          <path d="M10 106H70" />
+          <path d="M62 24V8" />
+          <path d="M62 8l16 5l-16 6z" fill={SIGNAL} stroke={SIGNAL} />
         </g>
-        {/* build: code */}
-        <g transform="translate(154 34)">
-          <rect x="0" y="0" width="64" height="52" rx="4" fill={BONE} />
-          <path d="M20 16l-9 10l9 10M44 16l9 10l-9 10M35 12l-6 28" stroke={SIGNAL} strokeWidth="2.8" />
+        {/* architecture and backend: a database wired to services */}
+        <g transform="translate(140 24)">
+          <ellipse cx="40" cy="26" rx="20" ry="7" fill={BONE} />
+          <path d="M20 26v22c0 4 9 7 20 7s20 -3 20 -7V26" fill={PAPER} />
+          <path d="M20 37c0 4 9 7 20 7s20 -3 20 -7" strokeWidth="1.8" />
+          <path d="M40 55v14M40 69H18M40 69h22" stroke={SIGNAL} strokeWidth="2.6" />
+          <rect x="6" y="78" width="24" height="18" fill={PAPER} stroke={SIGNAL} />
+          <rect x="50" y="78" width="24" height="18" fill={PAPER} stroke={SIGNAL} />
         </g>
-        {/* support: a headset */}
-        <g transform="translate(274 30)">
-          <path d="M6 40a24 24 0 0 1 48 0" />
-          <rect x="0" y="36" width="12" height="22" rx="4" fill={PAPER} />
-          <rect x="48" y="36" width="12" height="22" rx="4" fill={PAPER} />
-          <path d="M54 58q0 10 -16 10" />
+        {/* product and frontend: a wireframe and a pen */}
+        <g transform="translate(256 24)">
+          <rect x="10" y="14" width="60" height="50" fill={PAPER} />
+          <path d="M10 26H70" />
+          <rect x="16" y="32" width="26" height="26" fill={BONE} strokeWidth="1.8" />
+          <path d="M48 36h16M48 46h12" strokeWidth="1.8" />
+          <path d="M20 96l30 -26l8 8l-26 30l-12 4z" fill={PAPER} />
+          <path d="M50 70l8 8" stroke={SIGNAL} strokeWidth="3" />
         </g>
-        {/* one line, one team */}
-        <path d="M100 62H146M226 62H266" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
-        <path d="M60 104V150M186 100V150M306 104V150" stroke={SIGNAL} strokeWidth="2.6" strokeDasharray="2 8" />
-        <g>
-          <g transform="translate(60 196)">
-            <circle cx="0" cy="-22" r="10" fill={PAPER} />
-            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+        {/* the same three people, start to finish: initials on one line */}
+        <path d="M64 196H300" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M64 136v60M180 136v60M296 136v60" strokeDasharray="2 8" strokeOpacity="0.5" />
+        {[
+          [64, 'VZ'],
+          [180, 'RM'],
+          [296, 'AB'],
+        ].map(([x, t]) => (
+          <g key={t as string}>
+            <circle cx={x as number} cy="196" r="20" fill={PAPER} stroke={SIGNAL} strokeWidth="2.8" />
+            <text x={x as number} y="203" textAnchor="middle" fontSize="18" fontWeight="800" fill={SIGNAL} stroke="none" fontFamily="inherit">{t}</text>
           </g>
-          <g transform="translate(186 196)" stroke={SIGNAL}>
-            <circle cx="0" cy="-22" r="10" fill={PAPER} />
-            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
-          </g>
-          <g transform="translate(306 196)">
-            <circle cx="0" cy="-22" r="10" fill={PAPER} />
-            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
-          </g>
-        </g>
-        <path d="M30 222q150 12 300 0" stroke={SIGNAL} strokeWidth="2.6" />
+        ))}
       </g>
     </svg>
   );
@@ -930,47 +922,34 @@ export function DisciplineIcon({ name, className }: { name: string; className?: 
 /* ------------------------------------------------------------------ */
 /** Hero: you describe the mess, we show the system. */
 export function ContactDoodle({ className }: Props) {
-  const bubble = 'M34 24h96a12 12 0 0 1 12 12v50a12 12 0 0 1 -12 12H84l-22 22v-22H34a12 12 0 0 1 -12 -12V36a12 12 0 0 1 12 -12z';
   return (
     <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        {/* the owner's side: the problem */}
-        <path d={bubble} fill={PAPER} />
-        <g transform="rotate(-4 82 66)">
-          <rect x="44" y="42" width="76" height="48" fill={PAPER} />
-          <rect x="44" y="42" width="76" height="12" fill={BONE} />
-          <path d="M44 66H120M44 78H120M69 54V90M95 54V90" strokeWidth="1.5" />
-          <path d="M50 60q6 -5 12 0M100 72l14 12M114 72l-14 12" strokeWidth="1.8" />
+        {/* a desk phone: call us */}
+        <rect x="22" y="146" width="96" height="48" rx="8" fill={PAPER} />
+        <rect x="26" y="116" width="88" height="22" rx="11" fill={BONE} />
+        <circle cx="48" cy="170" r="11" />
+        <path d="M48 164v12M42 170h12" strokeWidth="1.6" />
+        <path d="M74 160h26M74 172h26M74 184h20" strokeWidth="1.8" />
+        <path d="M30 128q-14 -4 -12 -22" stroke={SIGNAL} strokeWidth="2.6" />
+        {/* chai in a glass: let's talk over a cup */}
+        <path d="M150 128h64l-8 62h-48z" fill={PAPER} />
+        <path d="M154 150h56l-4 40h-48z" fill={BONE} strokeWidth="1.6" />
+        <ellipse cx="182" cy="196" rx="44" ry="7" fill={PAPER} />
+        <path d="M214 140q20 2 16 22t-26 14" />
+        <g stroke={SIGNAL} strokeWidth="2.6">
+          <path d="M168 112q-10 -10 0 -22t0 -22" />
+          <path d="M184 112q-10 -10 0 -22t0 -22" />
+          <path d="M200 112q-10 -10 0 -22t0 -22" />
         </g>
-        <g transform="translate(70 206)">
-          <circle cx="0" cy="-22" r="10" fill={PAPER} />
-          <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+        {/* a letter: write to us */}
+        <g transform="translate(250 112) rotate(5)">
+          <rect x="0" y="22" width="92" height="64" fill={PAPER} />
+          <path d="M0 22l46 34l46 -34" />
+          <rect x="14" y="0" width="62" height="40" fill={BONE} stroke={SIGNAL} strokeWidth="2" />
+          <path d="M24 12h40M24 24h26" strokeWidth="1.8" stroke={SIGNAL} />
         </g>
-
-        {/* our side: the system */}
-        <g transform="translate(360 0) scale(-1 1)">
-          <path d={bubble} fill={PAPER} />
-        </g>
-        <g stroke={SIGNAL} strokeWidth="2.4">
-          <path d="M278 66L254 46M278 66L302 46M278 66L254 86M278 66L302 86" />
-          <circle cx="278" cy="66" r="10" fill={BONE} />
-          <path d="M273 66l4 4l7 -8" strokeWidth="2.6" />
-          <circle cx="252" cy="44" r="6" fill={PAPER} />
-          <circle cx="304" cy="44" r="6" fill={PAPER} />
-          <circle cx="252" cy="88" r="6" fill={PAPER} />
-          <circle cx="304" cy="88" r="6" fill={PAPER} />
-        </g>
-        <g transform="translate(290 206)" stroke={SIGNAL}>
-          <circle cx="0" cy="-22" r="10" fill={PAPER} />
-          <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
-        </g>
-
-        {/* the conversation between them */}
-        <path d="M150 62H206" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
-        <path d="M198 52l12 10l-12 10" stroke={SIGNAL} strokeWidth="2.8" />
-        <path d="M146 156q34 -20 68 0" strokeOpacity="0.5" strokeDasharray="2 8" />
-        <Sparks x={180} y={112} />
-        <path d="M24 224H336" strokeOpacity="0.25" strokeWidth="2" />
+        <path d="M14 204H346" strokeOpacity="0.3" strokeWidth="2" />
       </g>
     </svg>
   );
@@ -1043,7 +1022,6 @@ export function NotFoundDoodle({ className }: Props) {
         <circle cx="76" cy="196" r="3" strokeOpacity="0.45" />
         <path d="M60 52q0 -12 12 -12q12 0 12 10q0 8 -10 11v6" stroke={SIGNAL} strokeWidth="3" />
         <circle cx="76" cy="76" r="2.6" fill={SIGNAL} stroke="none" />
-        <Sparks x={212} y={70} />
         <path d="M14 204H346" strokeOpacity="0.3" strokeWidth="2" />
       </g>
     </svg>
@@ -1100,7 +1078,9 @@ const ARTICLE_ART: Record<string, React.ReactNode> = {
       <path d="M130 76h54q-4 14 -27 14t-27 -14z" fill={PAPER} />
       <rect x="32" y="58" width="26" height="24" fill={BONE} />
       <path d="M32 66h26M45 58v8" strokeWidth="1.8" />
-      <path d="M140 66h8c-3 -9 11 -9 7 0h8v8c8 -4 8 10 0 6" fill={BONE} stroke={SIGNAL} strokeWidth="2.2" transform="translate(-2 -6)" />
+      <rect x="138" y="58" width="40" height="16" fill={PAPER} stroke={SIGNAL} strokeWidth="2.2" />
+      <ellipse cx="138" cy="66" rx="4" ry="8" fill={BONE} stroke={SIGNAL} strokeWidth="2.2" />
+      <path d="M148 64h24M148 70h16" stroke={SIGNAL} strokeWidth="1.6" />
       <circle cx="100" cy="24" r="5" fill={PAPER} />
     </>
   ),
