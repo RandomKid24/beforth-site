@@ -458,3 +458,273 @@ export function FaqDoodle({ className }: Props) {
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Product pages: one drawing per product, in the hero                  */
+/* ------------------------------------------------------------------ */
+const Pin = ({ x, y, color = SIGNAL }: { x: number; y: number; color?: string }) => (
+  <g transform={`translate(${x} ${y})`} stroke={color}>
+    <path d="M0 0c-9 -11 -13 -17 -13 -23a13 13 0 0 1 26 0c0 6 -4 12 -13 23z" fill={PAPER} />
+    <circle cx="0" cy="-23" r="4.5" fill={color} stroke="none" />
+  </g>
+);
+
+const Person = ({ x, y, color = INK }: { x: number; y: number; color?: string }) => (
+  <g transform={`translate(${x} ${y})`} stroke={color}>
+    <circle cx="0" cy="-22" r="10" fill={PAPER} />
+    <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+  </g>
+);
+
+const Sparks = ({ x, y }: { x: number; y: number }) => (
+  <path d={`M${x} ${y - 6}v12M${x - 6} ${y}h12`} stroke={SIGNAL} strokeWidth="2.4" />
+);
+
+const ART: Record<string, React.ReactNode> = {
+  'delivery-tracking': (
+    <>
+      <path d="M52 176C96 176 92 120 148 128S236 132 266 66" stroke={SIGNAL} strokeWidth="3.2" strokeDasharray="2 10" />
+      <Pin x={52} y={182} color={INK} />
+      <Pin x={266} y={70} />
+      <g transform="translate(120 82)">
+        <rect x="0" y="0" width="38" height="26" fill={BONE} />
+        <path d="M38 8h14l10 10v8H38z" fill={PAPER} />
+        <circle cx="12" cy="30" r="6" fill={PAPER} />
+        <circle cx="50" cy="30" r="6" fill={PAPER} />
+        <path d="M8 -10l-6 -6M20 -12v-8M32 -10l6 -6" stroke={SIGNAL} strokeWidth="2.4" />
+      </g>
+      <g transform="translate(212 118) rotate(7)">
+        <rect x="0" y="0" width="50" height="84" rx="9" fill={PAPER} />
+        <path d="M18 8h14" strokeWidth="2" />
+        <path d="M10 52q8 -14 14 0t14 -6" strokeWidth="2" />
+        <path d="M14 70l7 7l15 -16" stroke={SIGNAL} strokeWidth="3.4" />
+      </g>
+      <Sparks x={36} y={44} />
+    </>
+  ),
+  'salon-erp': (
+    <>
+      <g transform="translate(26 36)">
+        <rect x="0" y="0" width="130" height="126" fill={PAPER} />
+        <rect x="0" y="0" width="130" height="26" fill={BONE} />
+        <path d="M30 -8v14M100 -8v14" strokeWidth="3.4" />
+        <path d="M0 52H130M0 78H130M0 104H130M32 26V126M65 26V126M98 26V126" strokeWidth="1.6" />
+        <rect x="35" y="55" width="27" height="20" fill={SIGNAL} fillOpacity="0.25" stroke={SIGNAL} />
+        <path d="M43 66l6 6l9 -12" stroke={SIGNAL} strokeWidth="2.8" />
+        <path d="M68 108h24M6 82h20" strokeWidth="2" />
+      </g>
+      <g strokeWidth="2.8">
+        <circle cx="206" cy="176" r="13" fill={PAPER} />
+        <circle cx="250" cy="176" r="13" fill={PAPER} />
+        <path d="M211 165L252 62M245 165L208 62" />
+        <circle cx="228" cy="116" r="3" fill={INK} />
+      </g>
+      <Pin x={282} y={52} />
+      <Sparks x={190} y={40} />
+    </>
+  ),
+  hrms: (
+    <>
+      <circle cx="62" cy="62" r="30" fill={PAPER} />
+      <path d="M62 44v18l13 8" strokeWidth="3" />
+      <g transform="translate(220 34)">
+        <rect x="0" y="0" width="64" height="56" fill={PAPER} />
+        <rect x="0" y="0" width="64" height="14" fill={BONE} />
+        <path d="M0 30H64M0 44H64M22 14V56M43 14V56" strokeWidth="1.5" />
+        <path d="M24 32l6 6l10 -12" stroke={SIGNAL} strokeWidth="2.8" />
+      </g>
+      <g stroke={SIGNAL} strokeWidth="2.4">
+        <path d="M144 70a14 14 0 0 1 28 0M138 76a20 20 0 0 1 40 0M150 70a8 8 0 0 1 16 0" transform="translate(0 -10)" />
+        <path d="M158 62v22" transform="translate(0 -10)" />
+      </g>
+      <Person x={70} y={176} />
+      <Person x={158} y={176} color={SIGNAL} />
+      <Person x={246} y={176} />
+      <path d="M158 114v-26" stroke={SIGNAL} strokeWidth="2.6" strokeDasharray="2 8" />
+    </>
+  ),
+  crm: (
+    <>
+      <g fill={PAPER}>
+        <path d="M48 56H272L196 140V178H124V140Z" />
+      </g>
+      <path d="M84 92H236M112 124H208" strokeWidth="2" />
+      <g>
+        <circle cx="96" cy="22" r="7" fill={BONE} />
+        <circle cx="132" cy="14" r="7" fill={BONE} />
+        <circle cx="170" cy="24" r="7" fill={BONE} />
+        <circle cx="206" cy="14" r="7" fill={BONE} />
+        <circle cx="240" cy="26" r="7" fill={BONE} />
+        <path d="M110 36v10M152 36v10M190 36v10M222 36v10" stroke={SIGNAL} strokeWidth="2.4" />
+      </g>
+      <circle cx="160" cy="204" r="13" stroke={SIGNAL} strokeWidth="3" fill={PAPER} />
+      <path d="M153 204l5 5l9 -11" stroke={SIGNAL} strokeWidth="3" />
+      <g transform="translate(246 130)">
+        <path d="M0 0h50a8 8 0 0 1 8 8v26a8 8 0 0 1 -8 8H30l-12 10v-10H8a8 8 0 0 1 -8 -8V8a8 8 0 0 1 8 -8z" fill={PAPER} />
+        <path d="M10 15h.1M29 15h.1M48 15h.1" stroke={SIGNAL} strokeWidth="3.4" />
+      </g>
+    </>
+  ),
+  'mobile-apps': (
+    <>
+      <g transform="translate(52 36) rotate(-7 40 70)">
+        <rect x="0" y="0" width="84" height="148" rx="12" fill={PAPER} />
+        <path d="M30 10h24" strokeWidth="2.2" />
+        <rect x="10" y="26" width="64" height="24" rx="4" fill={BONE} strokeWidth="1.8" />
+        <rect x="10" y="58" width="64" height="24" rx="4" fill={BONE} strokeWidth="1.8" />
+        <rect x="10" y="90" width="64" height="24" rx="4" fill={BONE} strokeWidth="1.8" />
+        <path d="M18 38h26M18 70h20M18 102h30" strokeWidth="2" />
+      </g>
+      <g transform="translate(178 52) rotate(7 40 70)">
+        <rect x="0" y="0" width="84" height="148" rx="12" fill={PAPER} />
+        <path d="M30 10h24" strokeWidth="2.2" />
+        <path d="M14 112c10 -30 28 -6 36 -34s14 -24 20 -34" stroke={SIGNAL} strokeWidth="2.6" strokeDasharray="2 7" />
+        <Pin x={70} y={46} />
+      </g>
+      <g transform="translate(226 14)">
+        <path d="M0 0h40a6 6 0 0 1 6 6v16a6 6 0 0 1 -6 6H24l-9 8v-8H6a6 6 0 0 1 -6 -6V6a6 6 0 0 1 6 -6z" fill={PAPER} stroke={SIGNAL} />
+        <path d="M10 14h26" stroke={SIGNAL} strokeWidth="2.4" />
+      </g>
+      <g stroke={INK} strokeWidth="2.4" transform="translate(-118 -186)">
+        <path d="M138 196a22 22 0 0 1 32 0M145 204a12 12 0 0 1 18 0" />
+        <circle cx="154" cy="211" r="1.8" fill={INK} />
+        <path d="M134 214L176 190" stroke={SIGNAL} strokeWidth="3" />
+      </g>
+    </>
+  ),
+  websites: (
+    <>
+      <g transform="translate(34 34)">
+        <rect x="0" y="0" width="236" height="150" fill={PAPER} />
+        <path d="M0 24H236" />
+        <circle cx="12" cy="12" r="3" fill={INK} />
+        <circle cx="24" cy="12" r="3" fill={INK} />
+        <circle cx="36" cy="12" r="3" fill={INK} />
+        <rect x="62" y="6" width="120" height="12" rx="6" strokeWidth="1.6" />
+        <rect x="14" y="38" width="112" height="64" fill={BONE} />
+        <path d="M24 56h72M24 70h52" strokeWidth="2.2" />
+        <rect x="24" y="82" width="38" height="14" fill={SIGNAL} stroke={SIGNAL} />
+        <path d="M140 42h82M140 58h60M140 74h72M140 90h40" strokeWidth="1.8" />
+        <path d="M14 116h56M14 130h38M96 116h56M96 130h38M178 116h44" strokeWidth="1.6" strokeOpacity="0.55" />
+      </g>
+      <path d="M270 6l-22 34h16l-8 26l28 -38h-16z" fill={SIGNAL} fillOpacity="0.2" stroke={SIGNAL} strokeWidth="2.8" />
+      <g transform="translate(232 150)">
+        <rect x="0" y="12" width="26" height="22" rx="3" fill={PAPER} stroke={SIGNAL} />
+        <path d="M6 12v-6a7 7 0 0 1 14 0v6" stroke={SIGNAL} />
+      </g>
+    </>
+  ),
+  tunnelgate: (
+    <>
+      <g transform="translate(18 118)">
+        <rect x="8" y="0" width="64" height="42" rx="3" fill={PAPER} />
+        <path d="M0 52h80l-6 -10H6z" fill={BONE} />
+        <path d="M22 14l10 8l-10 8M40 30h16" stroke={SIGNAL} strokeWidth="2.6" />
+      </g>
+      <g transform="translate(228 100)">
+        <rect x="0" y="0" width="74" height="52" fill={PAPER} />
+        <rect x="8" y="8" width="58" height="34" fill={BONE} />
+        <path d="M37 52v14M20 66h34" strokeWidth="3" />
+      </g>
+      <g transform="translate(112 22)">
+        <path d="M24 70h70a20 20 0 0 0 4 -40a28 28 0 0 0 -52 -8a24 24 0 0 0 -22 48z" fill={PAPER} />
+        <path d="M60 30l16 6v14c0 10 -8 16 -16 20c-8 -4 -16 -10 -16 -20V36z" stroke={SIGNAL} strokeWidth="2.8" fill={BONE} />
+        <path d="M53 50l5 5l9 -11" stroke={SIGNAL} strokeWidth="2.8" />
+      </g>
+      <path d="M92 150C108 120 124 112 150 108" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+      <path d="M232 128C210 104 192 100 176 96" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+      <Sparks x={40} y={60} />
+    </>
+  ),
+  'seo-tracking': (
+    <>
+      <rect x="30" y="20" width="250" height="36" rx="18" fill={PAPER} />
+      <circle cx="56" cy="38" r="9" />
+      <path d="M63 45l8 8" strokeWidth="3.2" />
+      <path d="M88 38h92" strokeWidth="2.2" strokeOpacity="0.6" />
+      <g transform="translate(30 76)">
+        <rect x="0" y="0" width="160" height="30" fill={BONE} stroke={SIGNAL} strokeWidth="2.8" />
+        <circle cx="18" cy="15" r="9" fill={SIGNAL} stroke="none" />
+        <path d="M18 9v12" stroke={PAPER} strokeWidth="2.6" />
+        <path d="M36 11h90M36 21h60" strokeWidth="1.8" />
+        <rect x="0" y="40" width="160" height="30" fill={PAPER} />
+        <path d="M36 51h90M36 61h50" strokeWidth="1.8" strokeOpacity="0.6" />
+        <rect x="0" y="80" width="160" height="30" fill={PAPER} strokeOpacity="0.6" />
+        <path d="M36 91h90M36 101h44" strokeWidth="1.8" strokeOpacity="0.4" />
+      </g>
+      <path d="M214 190l24 -30l16 14l34 -52" stroke={SIGNAL} strokeWidth="3.4" />
+      <path d="M278 114l8 -2l-2 12" stroke={SIGNAL} strokeWidth="3.4" />
+      <path d="M210 200H292" strokeWidth="2.2" />
+      <Sparks x={230} y={96} />
+    </>
+  ),
+  payroll: (
+    <>
+      <g transform="translate(34 24) rotate(-4 55 80)">
+        <rect x="0" y="0" width="114" height="152" fill={PAPER} />
+        <rect x="0" y="0" width="114" height="26" fill={BONE} />
+        <path d="M14 13h40" strokeWidth="2.4" />
+        <path d="M14 46h86M14 62h86M14 78h60M14 94h86M14 110h50" strokeWidth="1.8" />
+        <path d="M66 138h34" stroke={SIGNAL} strokeWidth="3.2" />
+        <circle cx="90" cy="13" r="8" />
+        <path d="M86 10h8M86 14h8" strokeWidth="1.6" />
+      </g>
+      <g transform="translate(166 120)">
+        <ellipse cx="22" cy="48" rx="22" ry="8" fill={PAPER} />
+        <ellipse cx="22" cy="34" rx="22" ry="8" fill={PAPER} />
+        <ellipse cx="22" cy="20" rx="22" ry="8" fill={BONE} />
+        <path d="M0 20v28M44 20v28" />
+      </g>
+      <g transform="translate(228 44)">
+        <path d="M0 40L40 10L80 40z" fill={BONE} />
+        <path d="M6 44h68M12 48v50M30 48v50M50 48v50M68 48v50M6 102h68" />
+        <path d="M32 28h16" strokeWidth="2.2" />
+      </g>
+      <path d="M216 156q22 8 46 -4" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 8" />
+      <path d="M262 152l-9 -2l3 10" stroke={SIGNAL} strokeWidth="3" />
+    </>
+  ),
+  pos: (
+    <>
+      <g transform="translate(34 14)">
+        <path d="M18 0h64v70H18z" fill={PAPER} />
+        <path d="M28 14h44M28 28h30M28 42h38" strokeWidth="1.8" />
+        <path d="M82 70l-5 6l-5 -6l-5 6l-5 -6l-5 6l-5 -6l-5 6l-5 -6l-5 6l-5 -6" fill="none" />
+      </g>
+      <g transform="translate(26 92)">
+        <rect x="0" y="0" width="120" height="84" rx="8" fill={PAPER} />
+        <rect x="12" y="12" width="96" height="30" fill={BONE} />
+        <path d="M20 22h40M20 32h24" strokeWidth="2" />
+        <path d="M82 28l5 5l9 -12" stroke={SIGNAL} strokeWidth="2.8" />
+        <path d="M18 56h.1M38 56h.1M58 56h.1M78 56h.1M98 56h.1M18 70h.1M38 70h.1M58 70h.1M78 70h.1M98 70h.1" strokeWidth="5" />
+      </g>
+      <g transform="translate(200 40)">
+        <rect x="0" y="0" width="84" height="84" fill={PAPER} />
+        <rect x="8" y="8" width="22" height="22" />
+        <rect x="54" y="8" width="22" height="22" />
+        <rect x="8" y="54" width="22" height="22" />
+        <rect x="14" y="14" width="10" height="10" fill={INK} />
+        <rect x="60" y="14" width="10" height="10" fill={INK} />
+        <rect x="14" y="60" width="10" height="10" fill={INK} />
+        <path d="M40 10v8M46 22v8M40 40h10M58 44v10M70 40h6M48 58v14M62 64h12M70 76h4M38 66h4" strokeWidth="3.2" stroke={SIGNAL} />
+      </g>
+      <g transform="translate(200 150)">
+        <path d="M0 0v34M6 0v34M10 0v34M18 0v34M24 0v34M30 0v34M38 0v34M44 0v34M52 0v34M58 0v34M66 0v34M72 0v34M80 0v34" strokeWidth="2.2" />
+      </g>
+      <path d="M150 140H190" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 8" />
+      <Sparks x={176} y={26} />
+    </>
+  ),
+};
+
+export function ProductDoodle({ slug, className }: { slug: string; className?: string }) {
+  const art = ART[slug];
+  if (!art) return null;
+  return (
+    <svg viewBox="0 0 320 220" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {art}
+      </g>
+    </svg>
+  );
+}

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, ArrowDown, Check } from 'lucide-react';
 
 import Reveal from '@/components/Reveal';
+import { ProductDoodle } from '@/components/Doodles';
 import SectionHead from '@/components/SectionHead';
 import { Magnetic } from '@/components/Magnetic';
 import { getPlatform } from '@/components/platforms/catalog';
@@ -120,6 +121,8 @@ export default function ProductPage() {
               )}
             </div>
 
+            <div className="flex flex-col gap-6">
+            <ProductDoodle slug={p.slug} className="w-full max-w-[340px] mx-auto lg:max-w-none" />
             <Reveal delay={0.12}>
               <aside className="surface p-6 md:p-7" aria-label={`${p.name} at a glance`}>
                 <span className="label">Built for</span>
@@ -140,6 +143,7 @@ export default function ProductPage() {
                 </div>
               </aside>
             </Reveal>
+            </div>
           </div>
         </div>
       </section>
