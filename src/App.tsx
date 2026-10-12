@@ -311,7 +311,7 @@ function Positioning() {
           <Reveal>
             <div className="rule mb-5" />
             <span className="label">What we do</span>
-            <HubDoodle className="hidden lg:block w-36 mt-8" />
+            <HubDoodle className="hidden lg:block w-44 mt-8" />
           </Reveal>
           <Reveal delay={0.08}>
             <p className="display-lg text-xl md:text-[28px] leading-[1.3] max-w-[30ch]">
@@ -552,7 +552,7 @@ function Why() {
                 ))}
               </ul>
 
-              <TangleDoodle className="relative w-40 mt-5 -mb-1" />
+              <TangleDoodle className="relative w-56 mt-5 -mb-1" />
 
               <p className="relative mt-3 pt-5 border-t border-paper/15 text-[13px] text-paper/65 leading-relaxed">
                 A system you own and that fits your process — not a subscription you adapt to.

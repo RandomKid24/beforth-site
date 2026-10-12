@@ -158,19 +158,40 @@ export function HeroDoodle({ className }: Props) {
 /* What we do: one place, everything connected                          */
 /* ------------------------------------------------------------------ */
 export function HubDoodle({ className }: Props) {
+  // Five things the business runs on, all joined to one place.
+  const nodes: { x: number; y: number; icon: React.ReactNode }[] = [
+    { x: 120, y: 26, icon: <><path d="M-9 6l6 -7l5 4l9 -9" /><path d="M2 -8h7v7" /></> }, // sales
+    { x: 200, y: 70, icon: <><path d="M-8 -4l8 -4l8 4v10l-8 4l-8 -4z" /><path d="M-8 -4l8 4l8 -4M0 0v10" strokeWidth="1.8" /></> }, // inventory
+    { x: 172, y: 154, icon: <><path d="M-8 3a8 8 0 0 1 16 0" /><rect x="-10" y="1" width="4" height="8" rx="1.5" /><rect x="6" y="1" width="4" height="8" rx="1.5" /></> }, // service
+    { x: 68, y: 154, icon: <><circle cx="0" cy="0" r="9" /><path d="M-4 -4h8M-4 0h8M-3 -4c8 0 8 8 0 8l6 5" strokeWidth="1.8" /></> }, // finance
+    { x: 40, y: 70, icon: <><path d="M-8 9v-8M-2 9v-14M4 9v-10M10 9v-4" strokeWidth="3" /></> }, // reporting
+  ];
   return (
-    <svg viewBox="0 0 200 150" className={className} aria-hidden="true" focusable="false" {...common}>
-      <g filter="url(#sketch)" strokeWidth="2.2" stroke={INK}>
-        <g stroke={SIGNAL}>
-          <path d="M100 75L36 32M100 75L168 30M100 75L28 112M100 75L172 118M100 75V16" />
+    <svg viewBox="0 0 240 180" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the ring that joins neighbours */}
+        <path d="M120 26L200 70L172 154L68 154L40 70Z" strokeOpacity="0.28" strokeDasharray="2 8" strokeWidth="2.6" />
+        {/* spokes into the middle */}
+        <g stroke={SIGNAL} strokeWidth="2.8">
+          <path d="M120 70V48" />
+          <path d="M141 90Q168 88 182 76" />
+          <path d="M134 110Q150 128 160 140" />
+          <path d="M106 110Q92 128 80 140" />
+          <path d="M99 90Q72 88 58 76" />
         </g>
-        <circle cx="100" cy="75" r="20" fill={BONE} />
-        <path d="M92 76l6 6l12 -14" stroke={SIGNAL} strokeWidth="2.6" />
-        <circle cx="36" cy="32" r="11" fill={PAPER} />
-        <circle cx="168" cy="30" r="11" fill={PAPER} />
-        <circle cx="28" cy="112" r="11" fill={PAPER} />
-        <circle cx="172" cy="118" r="11" fill={PAPER} />
-        <circle cx="100" cy="16" r="9" fill={PAPER} />
+        {/* the middle: one place */}
+        <circle cx="120" cy="90" r="34" stroke={SIGNAL} strokeOpacity="0.35" strokeDasharray="1 9" strokeWidth="3" />
+        <circle cx="120" cy="90" r="24" fill={BONE} stroke={SIGNAL} strokeWidth="3" />
+        <path d="M109 91l8 8l15 -17" stroke={SIGNAL} strokeWidth="3.4" />
+        {/* the five systems */}
+        {nodes.map((n) => (
+          <g key={`${n.x}-${n.y}`} transform={`translate(${n.x} ${n.y})`}>
+            <circle r="19" fill={PAPER} />
+            {n.icon}
+          </g>
+        ))}
+        <path d="M222 22v10M217 27h10" stroke={SIGNAL} strokeWidth="2.4" />
+        <path d="M14 126v10M9 131h10" stroke={SIGNAL} strokeWidth="2.4" />
       </g>
     </svg>
   );
@@ -380,15 +401,32 @@ export function ReasonDoodle({ index, className }: { index: number; className?: 
   );
 }
 
-/** Dark panel: a tangled line straightens out and ends in a tick. */
+/** A coil that unwinds into a straight line. Computed once, so it is exact and symmetrical. */
+const COIL = (() => {
+  const pts: string[] = [];
+  const n = 140;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const r = 24 * Math.pow(1 - t, 1.3);
+    const th = Math.PI * 2 * 5.5 * Math.pow(t, 0.85);
+    const x = 12 + 150 * t + r * Math.sin(th);
+    const y = 46 + r * Math.cos(th) * 0.9;
+    pts.push(`${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  return pts.join('');
+})();
+
+/** Dark panel: the tangle unwinds into a straight line and ends at a tick. */
 export function TangleDoodle({ className }: Props) {
+  const wave = 'var(--color-wave)';
   return (
-    <svg viewBox="0 0 200 90" className={className} aria-hidden="true" focusable="false" {...common}>
-      <g filter="url(#sketch)" strokeWidth="2.6" stroke="var(--color-wave)">
-        <path d="M8 60c8 -40 38 -44 30 -16s-34 36 -14 28s38 -34 22 -48s-34 10 -6 30c12 8 26 -2 24 -10" strokeOpacity="0.8" />
-        <path d="M92 46H168" />
-        <path d="M158 36l12 10l-12 10" />
-        <path d="M184 40l5 6l9 -11" />
+    <svg viewBox="0 0 260 92" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.8" stroke={wave}>
+        <path d={COIL} />
+        <path d="M160 46H206" />
+        <path d="M196 37l11 9l-11 9" />
+        <circle cx="236" cy="46" r="15" />
+        <path d="M229 46l5 5l9 -11" strokeWidth="3.2" />
       </g>
     </svg>
   );
