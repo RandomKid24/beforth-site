@@ -2,8 +2,9 @@ import { track } from '@/lib/track';
 import React, { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
-import { Mail, Phone, MapPin, Clock, Send, ChevronDown, Check, AlertCircle } from 'lucide-react';
+import { Send, ChevronDown, Check, AlertCircle } from 'lucide-react';
 import Reveal from '../components/Reveal';
+import { ContactDoodle, ContactIcon } from '../components/Doodles';
 
 const SUBJECTS = [
   'General Inquiry',
@@ -140,7 +141,8 @@ export default function ContactPage() {
   return (
     <>
       <section className="pt-32 md:pt-40 pb-14 md:pb-20">
-        <div className="wrap">
+        <div className="wrap relative">
+          <ContactDoodle className="hidden xl:block absolute right-0 top-4 w-[360px]" />
           <Reveal>
             <div className="rule mb-6" />
             <span className="label block mb-7">Contact</span>
@@ -185,24 +187,20 @@ export default function ContactPage() {
               <div className="flex flex-col gap-6">
                 {[
                   {
-                    icon: Mail,
                     label: 'Email',
                     lines: [
                       { text: 'support@beforth.in', href: 'mailto:support@beforth.in' },
                     ],
                   },
                   {
-                    icon: Phone,
                     label: 'Phone',
                     lines: [{ text: '+91 97661 83834', href: 'tel:+919766183834' }],
                   },
                   {
-                    icon: MapPin,
                     label: 'Office',
                     lines: [{ text: 'Nashik, Maharashtra, India' }],
                   },
                   {
-                    icon: Clock,
                     label: 'Hours',
                     lines: [{ text: 'Mon – Fri, 9:00 AM – 6:00 PM IST' }],
                   },
@@ -210,7 +208,7 @@ export default function ContactPage() {
                   <Reveal key={item.label} delay={i * 0.05}>
                     <div className="flex items-start gap-4">
                       <span className="w-9 h-9 border border-ink/15 flex items-center justify-center shrink-0">
-                        <item.icon className="w-4 h-4 text-ash" />
+                        <ContactIcon name={item.label} className="w-5 h-5 text-ink" />
                       </span>
                       <div>
                         <span className="flabel !mb-1">{item.label}</span>

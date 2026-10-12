@@ -924,3 +924,89 @@ export function DisciplineIcon({ name, className }: { name: string; className?: 
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Contact                                                              */
+/* ------------------------------------------------------------------ */
+/** Hero: you describe the mess, we show the system. */
+export function ContactDoodle({ className }: Props) {
+  const bubble = 'M34 24h96a12 12 0 0 1 12 12v50a12 12 0 0 1 -12 12H84l-22 22v-22H34a12 12 0 0 1 -12 -12V36a12 12 0 0 1 12 -12z';
+  return (
+    <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the owner's side: the problem */}
+        <path d={bubble} fill={PAPER} />
+        <g transform="rotate(-4 82 66)">
+          <rect x="44" y="42" width="76" height="48" fill={PAPER} />
+          <rect x="44" y="42" width="76" height="12" fill={BONE} />
+          <path d="M44 66H120M44 78H120M69 54V90M95 54V90" strokeWidth="1.5" />
+          <path d="M50 60q6 -5 12 0M100 72l14 12M114 72l-14 12" strokeWidth="1.8" />
+        </g>
+        <g transform="translate(70 206)">
+          <circle cx="0" cy="-22" r="10" fill={PAPER} />
+          <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+        </g>
+
+        {/* our side: the system */}
+        <g transform="translate(360 0) scale(-1 1)">
+          <path d={bubble} fill={PAPER} />
+        </g>
+        <g stroke={SIGNAL} strokeWidth="2.4">
+          <path d="M278 66L254 46M278 66L302 46M278 66L254 86M278 66L302 86" />
+          <circle cx="278" cy="66" r="10" fill={BONE} />
+          <path d="M273 66l4 4l7 -8" strokeWidth="2.6" />
+          <circle cx="252" cy="44" r="6" fill={PAPER} />
+          <circle cx="304" cy="44" r="6" fill={PAPER} />
+          <circle cx="252" cy="88" r="6" fill={PAPER} />
+          <circle cx="304" cy="88" r="6" fill={PAPER} />
+        </g>
+        <g transform="translate(290 206)" stroke={SIGNAL}>
+          <circle cx="0" cy="-22" r="10" fill={PAPER} />
+          <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+        </g>
+
+        {/* the conversation between them */}
+        <path d="M150 62H206" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+        <path d="M198 52l12 10l-12 10" stroke={SIGNAL} strokeWidth="2.8" />
+        <path d="M146 156q34 -20 68 0" strokeOpacity="0.5" strokeDasharray="2 8" />
+        <Sparks x={180} y={112} />
+        <path d="M24 224H336" strokeOpacity="0.25" strokeWidth="2" />
+      </g>
+    </svg>
+  );
+}
+
+/** Contact details: envelope, phone, pin, clock. */
+const CONTACT_ICONS: Record<string, React.ReactNode> = {
+  Email: (
+    <>
+      <path d="M3 6h18v12H3z" />
+      <path d="M3 7l9 7l9 -7" />
+    </>
+  ),
+  Phone: <path d="M6 3l3 1l1 4l-2 1.5a10 10 0 0 0 6 6l1.5 -2l4 1l1 3a2 2 0 0 1 -2 2C9 19 5 12 4 5a2 2 0 0 1 2 -2z" />,
+  Office: (
+    <>
+      <path d="M12 21c-4 -5 -6 -8 -6 -11a6 6 0 0 1 12 0c0 3 -2 6 -6 11z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </>
+  ),
+  Hours: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+};
+
+export function ContactIcon({ name, className }: { name: string; className?: string }) {
+  const icon = CONTACT_ICONS[name];
+  if (!icon) return null;
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch-sm)" stroke="currentColor" strokeWidth="1.6">
+        {icon}
+      </g>
+    </svg>
+  );
+}
