@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import { Magnetic } from '../components/Magnetic';
+import { TeamDoodle, DisciplineIcon } from '../components/Doodles';
 
 const TEAM = [
   {
@@ -32,10 +33,11 @@ const DISCIPLINES = [
   'Engineering', 'Product design', 'Requirements', 'QA & testing', 'DevOps', 'Client partnership',
 ];
 
-function PageHead({ label, title, lead }: { label: string; title: React.ReactNode; lead?: string }) {
+function PageHead({ label, title, lead, art }: { label: string; title: React.ReactNode; lead?: string; art?: React.ReactNode }) {
   return (
     <section className="pt-32 md:pt-40 pb-12 md:pb-16">
-      <div className="wrap">
+      <div className="wrap relative">
+        {art}
         <Reveal>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
@@ -54,6 +56,7 @@ export default function TeamPage() {
         label="Team"
         title={<>A small team that <span className="accent">owns</span> the outcome.</>}
         lead="The people who scope your project are the people who build and support it. No handoffs."
+        art={<TeamDoodle className="hidden xl:block absolute right-0 top-2 w-[360px]" />}
       />
 
       <section className="pb-20 md:pb-24">
@@ -102,7 +105,8 @@ export default function TeamPage() {
             <Reveal delay={0.08}>
               <div className="flex flex-wrap gap-2.5">
                 {DISCIPLINES.map((d) => (
-                  <span key={d} className="label bg-white border border-ink/15 px-4 py-2.5">
+                  <span key={d} className="label inline-flex items-center gap-2.5 bg-white border border-ink/15 px-4 py-2.5">
+                    <DisciplineIcon name={d} className="w-5 h-5 shrink-0" />
                     {d}
                   </span>
                 ))}

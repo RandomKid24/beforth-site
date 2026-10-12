@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import { Magnetic } from '../components/Magnetic';
+import { ProductDoodle } from '../components/Doodles';
 
 const SERVICES = [
   {
@@ -72,6 +73,8 @@ const SERVICES = [
     detail:
       'Modern web platforms from internal applications to complex dashboards and customer-facing systems, with a focus on usability, performance, maintainability and scalable architecture.',
     stack: 'Next.js · React · Node.js · PostgreSQL',
+    art: 'websites',
+    more: { to: '/product/websites', label: 'See how we build websites and portals' },
   },
   {
     n: '07',
@@ -80,6 +83,8 @@ const SERVICES = [
     detail:
       'Applications for employees, field teams, customers and business operations — from field apps to enterprise mobile workflows, designed around the people actually using them.',
     stack: 'Flutter · React Native · Swift · Kotlin',
+    art: 'mobile-apps',
+    more: { to: '/product/mobile-apps', label: 'See how we build mobile apps' },
   },
 ];
 
@@ -177,6 +182,18 @@ export default function ServicesPage() {
                             </li>
                           ))}
                         </ul>
+                      </>
+                    )}
+                    {service.art && (
+                      <>
+                        <ProductDoodle slug={service.art} className="w-full max-w-[380px] mx-auto" />
+                        {service.more && (
+                          <p className="mt-4 text-center">
+                            <Link to={service.more.to} className="ulink">
+                              {service.more.label} <ArrowUpRight className="w-3.5 h-3.5" />
+                            </Link>
+                          </p>
+                        )}
                       </>
                     )}
                     {i === 0 && (

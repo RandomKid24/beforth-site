@@ -728,3 +728,199 @@ export function ProductDoodle({ slug, className }: { slug: string; className?: s
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* About and Team                                                       */
+/* ------------------------------------------------------------------ */
+/** About hero: software that fits the business, like a piece into a puzzle. */
+export function AboutDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 360 240" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the business: a small factory */}
+        <rect x="20" y="124" width="142" height="96" fill={PAPER} />
+        <path d="M20 124V88l36 36V88l36 36V88l36 36V88l34 36" fill={BONE} />
+        <rect x="136" y="40" width="20" height="60" fill={PAPER} />
+        <path d="M146 28c-8 -6 0 -14 8 -12c6 -10 20 -4 14 6" strokeOpacity="0.55" />
+        <rect x="34" y="150" width="26" height="24" fill={BONE} />
+        <rect x="70" y="150" width="26" height="24" fill={BONE} />
+        <rect x="106" y="150" width="26" height="24" fill={BONE} />
+        <rect x="84" y="184" width="32" height="36" fill={PAPER} />
+        {/* the software: a piece that fits */}
+        <g transform="translate(178 40) scale(2.3)">
+          <path d="M12 24h10c-5 -11 13 -11 8 0h12v10c10 -5 10 13 0 8v10H12z" fill={BONE} stroke={SIGNAL} strokeWidth="1.4" />
+          <path d="M20 38l6 6l11 -13" stroke={SIGNAL} strokeWidth="1.8" />
+        </g>
+        <path d="M118 184C150 184 160 150 186 140" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+        <Sparks x={330} y={36} />
+        <Sparks x={196} y={22} />
+        <path d="M292 202l6 -8l6 8l8 -2l-4 8l4 8l-8 -2l-6 8l-6 -8l-8 2l4 -8l-4 -8z" stroke={SIGNAL} strokeWidth="2" transform="translate(6 -4) scale(0.9)" />
+      </g>
+    </svg>
+  );
+}
+
+/** Vision: looking ahead. `dark` flips the line colour for the dark card. */
+export function VisionDoodle({ className, dark }: Props & { dark?: boolean }) {
+  const ink = dark ? 'var(--color-paper)' : INK;
+  const accent = dark ? 'var(--color-wave)' : SIGNAL;
+  return (
+    <svg viewBox="0 0 160 110" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={ink}>
+        <path d="M18 74L84 36l12 22L30 96z" fill={dark ? 'none' : BONE} />
+        <path d="M84 36l10 -6l14 24l-10 6" />
+        <path d="M52 78L38 106M62 84l12 22" />
+        <g stroke={accent} strokeWidth="2.6">
+          <path d="M130 18v16M122 26h16" />
+          <path d="M146 54v8M142 58h8" />
+          <path d="M112 10v6M109 13h6" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+/** Mission: an arrow into the middle of the target. */
+export function MissionDoodle({ className, dark }: Props & { dark?: boolean }) {
+  const ink = dark ? 'var(--color-paper)' : INK;
+  const accent = dark ? 'var(--color-wave)' : SIGNAL;
+  return (
+    <svg viewBox="0 0 160 110" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={ink}>
+        <circle cx="62" cy="64" r="38" />
+        <circle cx="62" cy="64" r="24" />
+        <circle cx="62" cy="64" r="9" fill={accent} fillOpacity="0.35" stroke={accent} />
+        <path d="M62 64L128 14" stroke={accent} strokeWidth="3" />
+        <path d="M128 14l12 -2l-3 12M118 22l12 -2l-3 12" stroke={accent} strokeWidth="2.6" />
+      </g>
+    </svg>
+  );
+}
+
+/** About values: Clarity, Craft, Ownership, Continuity. */
+export function ValueDoodle({ index, className }: { index: number; className?: string }) {
+  const art = [
+    <>
+      <path d="M32 8a17 17 0 0 0 -9 31v7h18v-7a17 17 0 0 0 -9 -31z" fill={BONE} />
+      <path d="M26 52h12M28 58h8" />
+      <path d="M8 14l5 4M56 14l-5 4M4 30h6M54 30h6" stroke={SIGNAL} strokeWidth="2.6" />
+    </>,
+    <>
+      <path d="M12 52l3 -12L42 12l9 9L24 49z" fill={BONE} />
+      <path d="M12 52l3 -12l9 9z" fill={SIGNAL} stroke={SIGNAL} />
+      <path d="M38 16l9 9" />
+      <path d="M44 56h14" stroke={SIGNAL} strokeWidth="2.6" />
+    </>,
+    <>
+      <circle cx="20" cy="30" r="11" fill={BONE} />
+      <circle cx="20" cy="30" r="3" fill={INK} stroke="none" />
+      <path d="M31 30h26M48 30v9M56 30v7" />
+      <path d="M44 14l3 4l7 -9" stroke={SIGNAL} strokeWidth="2.8" />
+    </>,
+    <>
+      <path d="M50 30a18 18 0 1 0 -4 14" />
+      <path d="M54 16l-3 14l-14 -4" stroke={SIGNAL} strokeWidth="2.8" />
+      <path d="M32 24v8l6 4" strokeWidth="2.2" />
+    </>,
+  ];
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch-md)" strokeWidth="2.4" stroke={INK}>
+        {art[index % art.length]}
+      </g>
+    </svg>
+  );
+}
+
+/** Team hero: the same people scope it, build it and support it. */
+export function TeamDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* scope: a plan */}
+        <g transform="translate(34 30)">
+          <rect x="0" y="0" width="52" height="64" fill={PAPER} />
+          <path d="M10 14h32M10 26h24M10 38h30" strokeWidth="1.8" />
+          <path d="M10 52l6 5l12 -12" stroke={SIGNAL} strokeWidth="2.8" />
+        </g>
+        {/* build: code */}
+        <g transform="translate(154 34)">
+          <rect x="0" y="0" width="64" height="52" rx="4" fill={BONE} />
+          <path d="M20 16l-9 10l9 10M44 16l9 10l-9 10M35 12l-6 28" stroke={SIGNAL} strokeWidth="2.8" />
+        </g>
+        {/* support: a headset */}
+        <g transform="translate(274 30)">
+          <path d="M6 40a24 24 0 0 1 48 0" />
+          <rect x="0" y="36" width="12" height="22" rx="4" fill={PAPER} />
+          <rect x="48" y="36" width="12" height="22" rx="4" fill={PAPER} />
+          <path d="M54 58q0 10 -16 10" />
+        </g>
+        {/* one line, one team */}
+        <path d="M100 62H146M226 62H266" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+        <path d="M60 104V150M186 100V150M306 104V150" stroke={SIGNAL} strokeWidth="2.6" strokeDasharray="2 8" />
+        <g>
+          <g transform="translate(60 196)">
+            <circle cx="0" cy="-22" r="10" fill={PAPER} />
+            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+          </g>
+          <g transform="translate(186 196)" stroke={SIGNAL}>
+            <circle cx="0" cy="-22" r="10" fill={PAPER} />
+            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+          </g>
+          <g transform="translate(306 196)">
+            <circle cx="0" cy="-22" r="10" fill={PAPER} />
+            <path d="M-19 10c0 -16 9 -22 19 -22s19 6 19 22z" fill={PAPER} />
+          </g>
+        </g>
+        <path d="M30 222q150 12 300 0" stroke={SIGNAL} strokeWidth="2.6" />
+      </g>
+    </svg>
+  );
+}
+
+/** Team capabilities: one icon per discipline. */
+const DISCIPLINE_ICONS: Record<string, React.ReactNode> = {
+  Engineering: <path d="M8 7l-5 5l5 5M16 7l5 5l-5 5M13 5l-2 14" />,
+  'Product design': (
+    <>
+      <path d="M4 20l1 -5L16 4l4 4L9 19z" />
+      <path d="M14 6l4 4" />
+    </>
+  ),
+  Requirements: (
+    <>
+      <path d="M7 5h10v16H7z" />
+      <path d="M9 3h6v4H9zM10 12h4M10 16h4" />
+    </>
+  ),
+  'QA & testing': (
+    <>
+      <path d="M9 9a3 3 0 0 1 6 0v6a3 3 0 0 1 -6 0z" />
+      <path d="M5 11h4M15 11h4M5 17h4M15 17h4M10 5l-2 -2M14 5l2 -2" />
+    </>
+  ),
+  DevOps: (
+    <>
+      <path d="M5 12a7 7 0 0 1 12 -5l2 -2v6h-6l2 -2a5 5 0 0 0 -8 3" />
+      <path d="M19 12a7 7 0 0 1 -12 5l-2 2v-6h6l-2 2a5 5 0 0 0 8 -3" />
+    </>
+  ),
+  'Client partnership': (
+    <>
+      <path d="M3 5h11v7H8l-3 3v-3H3z" />
+      <path d="M12 10h9v7h-2v3l-3 -3h-4z" />
+    </>
+  ),
+};
+
+export function DisciplineIcon({ name, className }: { name: string; className?: string }) {
+  const icon = DISCIPLINE_ICONS[name];
+  if (!icon) return null;
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch-sm)" stroke="currentColor" strokeWidth="1.6">
+        {icon}
+      </g>
+    </svg>
+  );
+}

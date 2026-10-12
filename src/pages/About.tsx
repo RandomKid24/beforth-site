@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import { Magnetic } from '../components/Magnetic';
+import { AboutDoodle, VisionDoodle, MissionDoodle, ValueDoodle, SectorIcon } from '../components/Doodles';
 
 const POINTS = [
   { n: '01', t: 'Business first', d: "We start with the problem, not the technology." },
@@ -33,10 +34,11 @@ const INDUSTRIES = [
   'Human Resources', 'Growing Businesses',
 ];
 
-function PageHead({ label, title, children }: { label: string; title: React.ReactNode; children?: React.ReactNode }) {
+function PageHead({ label, title, children, art }: { label: string; title: React.ReactNode; children?: React.ReactNode; art?: React.ReactNode }) {
   return (
     <section className="pt-32 md:pt-40 pb-12 md:pb-16">
-      <div className="wrap">
+      <div className="wrap relative">
+        {art}
         <Reveal>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
@@ -54,6 +56,7 @@ export default function AboutPage() {
       <PageHead
         label="About · Founded 2025 · Nashik, India"
         title={<>Technology that <span className="accent">fits</span> the business.</>}
+        art={<AboutDoodle className="hidden xl:block absolute right-0 top-0 w-[340px]" />}
       >
         <div className="grid md:grid-cols-2 gap-8 md:gap-14 max-w-5xl">
           <p className="lead">
@@ -72,22 +75,24 @@ export default function AboutPage() {
         <div className="wrap">
           <div className="grid md:grid-cols-2 gap-5">
             <Reveal>
-              <div className="surface p-7 md:p-9 h-full">
+              <div className="surface p-7 md:p-9 h-full flex flex-col">
                 <span className="label block mb-5">Vision</span>
                 <p className="display-md text-lg md:text-[24px] leading-[1.28]">
                   Business technology that is simpler, smarter and accessible to any company, at
                   any size.
                 </p>
+                <VisionDoodle className="mt-auto pt-6 w-44 self-end" />
               </div>
             </Reveal>
             <Reveal delay={0.07}>
-              <div className="surface-ink p-7 md:p-9 h-full">
+              <div className="surface-ink p-7 md:p-9 h-full flex flex-col">
                 <span className="label !text-paper/50 block mb-5">Mission</span>
                 <p className="display-md text-lg md:text-[24px] leading-[1.28] text-paper">
                   Replace manual processes and disconnected tools with practical, scalable
                   technology that makes businesses run better. Our job is not simply to deliver
                   software — it is to understand the problem behind the request.
                 </p>
+                <MissionDoodle dark className="mt-auto pt-6 w-44 self-end" />
               </div>
             </Reveal>
           </div>
@@ -154,7 +159,7 @@ export default function AboutPage() {
             {VALUES.map((value, i) => (
               <Reveal key={value.k} delay={i * 0.06}>
                 <div>
-                  <span className="block w-7 h-px bg-signal mb-4" />
+                  <ValueDoodle index={i} className="w-14 h-14 -ml-1 mb-3" />
                   <h3 className="display-md text-base mb-2">{value.k}</h3>
                   <p className="body-tight">{value.v}</p>
                 </div>
@@ -178,8 +183,9 @@ export default function AboutPage() {
                 {INDUSTRIES.map((industry) => (
                   <span
                     key={industry}
-                    className="label border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
+                    className="label inline-flex items-center gap-2.5 border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
                   >
+                    <SectorIcon name={industry} className="w-5 h-5 shrink-0" />
                     {industry}
                   </span>
                 ))}
