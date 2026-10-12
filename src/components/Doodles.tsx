@@ -1010,3 +1010,42 @@ export function ContactIcon({ name, className }: { name: string; className?: str
     </svg>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* 404: the page took an early exit                                     */
+/* ------------------------------------------------------------------ */
+export function NotFoundDoodle({ className }: Props) {
+  return (
+    <svg viewBox="0 0 360 230" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the exit: a door, ajar, with a sign above it */}
+        <rect x="236" y="34" width="98" height="166" fill={BONE} />
+        <rect x="248" y="46" width="74" height="154" fill={PAPER} strokeOpacity="0.4" />
+        <path d="M236 34l52 14v152l-52 -2z" fill={PAPER} />
+        <circle cx="274" cy="126" r="3.4" fill={INK} stroke="none" />
+        <rect x="258" y="6" width="58" height="20" fill={SIGNAL} stroke={SIGNAL} />
+        <path d="M268 16h30M290 10l8 6l-8 6" stroke={PAPER} strokeWidth="2.6" />
+
+        {/* the page itself, running for it */}
+        <g>
+          <path d="M120 84h38l16 16v54H120z" fill={PAPER} />
+          <path d="M158 84v16h16" />
+          <circle cx="136" cy="116" r="2.8" fill={INK} stroke="none" />
+          <circle cx="158" cy="116" r="2.8" fill={INK} stroke="none" />
+          <path d="M138 130q9 8 18 0" />
+          <path d="M120 112l-16 -10M174 108l18 -16" />
+          <path d="M136 154l-16 22l-16 -4M160 154l16 20l14 22" />
+        </g>
+
+        {/* motion and a lost question */}
+        <path d="M24 108h56M40 128h46M30 148h40" strokeOpacity="0.45" strokeDasharray="2 9" strokeWidth="2.6" />
+        <circle cx="96" cy="200" r="4" strokeOpacity="0.45" />
+        <circle cx="76" cy="196" r="3" strokeOpacity="0.45" />
+        <path d="M60 52q0 -12 12 -12q12 0 12 10q0 8 -10 11v6" stroke={SIGNAL} strokeWidth="3" />
+        <circle cx="76" cy="76" r="2.6" fill={SIGNAL} stroke="none" />
+        <Sparks x={212} y={70} />
+        <path d="M14 204H346" strokeOpacity="0.3" strokeWidth="2" />
+      </g>
+    </svg>
+  );
+}

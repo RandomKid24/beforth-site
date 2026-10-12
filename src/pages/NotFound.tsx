@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as m from 'motion/react-m';
 import { ArrowLeft } from 'lucide-react';
+import { NotFoundDoodle } from '@/components/Doodles';
 
 const SUGGESTIONS = [
   { to: '/services', label: 'Services' },
@@ -54,6 +55,8 @@ export default function NotFound() {
             </m.div>
           </div>
 
+          <div className="flex flex-col gap-6">
+            <NotFoundDoodle className="w-full max-w-[380px] mx-auto lg:mx-0" />
           <m.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,6 +82,7 @@ export default function NotFound() {
               ))}
             </ul>
           </m.div>
+          </div>
         </div>
       </div>
     </section>
