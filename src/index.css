@@ -204,3 +204,29 @@
   html { scroll-behavior: auto; }
 }
 
+
+/* Hero drawing: the mess is drawn first, then the system wires itself up.
+   Default state is the finished drawing; the animation only plays when motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  .hd-draw { stroke-dasharray: 1; animation: hd-draw 0.7s ease-out both; }
+  .hd-d1 { animation-delay: 0.5s; } .hd-d2 { animation-delay: 1s; animation-duration: 0.25s; } .hd-d3 { animation-delay: 0.9s; animation-duration: 0.4s; }
+  .hd-w0 { animation-delay: 1.5s; } .hd-w1 { animation-delay: 1.6s; } .hd-w2 { animation-delay: 1.7s; } .hd-w3 { animation-delay: 1.8s; }
+  .hd-d4 { animation-delay: 2.3s; animation-duration: 0.5s; } .hd-d5 { animation-delay: 2.6s; animation-duration: 0.4s; }
+  .hd-hub, .hd-sat, .hd-dots { transform-box: fill-box; transform-origin: center; }
+  .hd-hub { animation: hd-pop 0.5s cubic-bezier(.3,1.4,.5,1) 1.2s both; }
+  .hd-dots { animation: hd-fade 0.3s ease-out 2s both; }
+  .hd-sat { animation: hd-pop 0.45s cubic-bezier(.3,1.4,.5,1) both; }
+  .hd-s0 { animation-delay: 1.9s; } .hd-s1 { animation-delay: 2s; } .hd-s2 { animation-delay: 2.1s; } .hd-s3 { animation-delay: 2.2s; }
+  .hd-bars { transform-box: fill-box; transform-origin: bottom; animation: hd-grow 0.6s ease-out 1.6s both; }
+}
+@keyframes hd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes hd-pop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes hd-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hd-grow { from { transform: scaleY(0.05); } to { transform: scaleY(1); } }
+/* As the page scrolls, the mess recedes and the system stays. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hd-mess { animation: hd-recede linear both; animation-timeline: scroll(root); animation-range: 0 420px; }
+  }
+}
+@keyframes hd-recede { to { opacity: 0.25; transform: translateX(-14px); } }

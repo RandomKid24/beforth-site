@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 import Reveal from '@/components/Reveal';
 import { PortfolioDoodle, VerifiedDoodle } from '@/components/Doodles';
@@ -9,7 +9,7 @@ import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { CLIENTS } from '@/data/clients';
 
 /**
- * /portfolio — the systems BeForth builds, shown running.
+ * /portfolio: the systems BeForth builds, shown running.
  *
  * Everything here comes from the product catalog, so a card can never say
  * something its product page does not. The previews are interactive builds on
@@ -79,17 +79,26 @@ function Thumb({ Preview }: { Preview: Platform['Preview'] }) {
   );
 }
 
-function Card({ p, n }: { p: Platform; n: number }) {
+function Features({ p }: { p: Platform }) {
   return (
-    <li className="surface group relative flex flex-col transition-colors duration-300 hover:border-signal">
+    <p className="text-[13.5px] leading-relaxed text-ink/80">
+      <span className="label !text-[11px] mr-2">{p.slug === 'erp' ? 'Modules' : 'Includes'}</span>
+      {p.features.map((f) => f.title).join(', ')}.
+    </p>
+  );
+}
+
+/** The lead system: a large live preview beside the whole story. */
+function Featured({ p, n }: { p: Platform; n: number }) {
+  return (
+    <li className="group relative grid lg:grid-cols-[1.35fr_1fr] gap-x-12 gap-y-8 pb-14 mb-2 border-b border-ink/15 items-center">
       <Thumb Preview={p.Preview} />
-      <div className="p-6 md:p-7 flex flex-col flex-1">
+      <div>
         <div className="flex items-center gap-3 mb-4">
           <span className="label text-signal">{String(n).padStart(2, '0')}</span>
-          <span className="h-px flex-1 bg-ink/12" />
           <span className="label">{p.sub}</span>
         </div>
-        <h3 className="display-lg text-xl md:text-2xl mb-3">
+        <h3 className="display-lg text-[clamp(1.8rem,3.4vw,2.8rem)] mb-4">
           <Link
             to={`/product/${p.slug}`}
             className="transition-colors duration-300 group-hover:text-signal after:absolute after:inset-0 after:content-['']"
@@ -97,23 +106,44 @@ function Card({ p, n }: { p: Platform; n: number }) {
             {p.name}
           </Link>
         </h3>
-        <p className="body-tight mb-5">{p.lead}</p>
+        <p className="body mb-4">{p.lead}</p>
         <p className="body-tight mb-5">
           <span className="text-ink font-semibold">Built for </span>
           {p.built}
         </p>
-        <span className="label block mb-3">{p.slug === 'erp' ? 'Modules' : 'Includes'}</span>
-        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 mb-7">
-          {p.features.map((f) => (
-            <li key={f.title} className="flex items-start gap-2.5">
-              <Check className="w-3.5 h-3.5 text-signal mt-1 shrink-0" />
-              <span className="text-[13.5px] text-ink/85 leading-snug">{f.title}</span>
-            </li>
-          ))}
-        </ul>
-        <span className="mt-auto inline-flex items-center gap-1.5 text-[15px] font-semibold text-ink transition-colors duration-300 group-hover:text-signal">
+        <Features p={p} />
+        <span className="mt-7 inline-flex items-center gap-1.5 text-[15px] font-semibold text-ink transition-colors duration-300 group-hover:text-signal">
           See the product <ArrowUpRight className="w-4 h-4" />
         </span>
+      </div>
+    </li>
+  );
+}
+
+/** Every other system: a small live preview, then the short version. */
+function Row({ p, n }: { p: Platform; n: number }) {
+  return (
+    <li className="group relative grid md:grid-cols-[300px_1fr] lg:grid-cols-[340px_1fr] gap-x-10 gap-y-5 py-8 border-b border-ink/15 items-start">
+      <Thumb Preview={p.Preview} />
+      <div className="md:max-w-2xl">
+        <div className="flex items-baseline gap-3 mb-2">
+          <span className="label text-signal">{String(n).padStart(2, '0')}</span>
+          <span className="label">{p.sub}</span>
+        </div>
+        <h3 className="display-lg text-xl md:text-2xl mb-2">
+          <Link
+            to={`/product/${p.slug}`}
+            className="transition-colors duration-300 group-hover:text-signal after:absolute after:inset-0 after:content-['']"
+          >
+            {p.name}
+          </Link>
+        </h3>
+        <p className="body-tight mb-3">{p.lead}</p>
+        <p className="body-tight mb-3">
+          <span className="text-ink font-semibold">Built for </span>
+          {p.built}
+        </p>
+        <Features p={p} />
       </div>
     </li>
   );
@@ -175,10 +205,14 @@ export default function PortfolioPage() {
             </div>
           </div>
 
-          <ul className="grid md:grid-cols-2 gap-5 md:gap-6">
-            {shown.map((p) => (
-              <Card key={p.slug} p={p} n={PLATFORMS.indexOf(p) + 1} />
-            ))}
+          <ul className="border-t border-ink/15 pt-10">
+            {shown.map((p, i) =>
+              i === 0 ? (
+                <Featured key={p.slug} p={p} n={PLATFORMS.indexOf(p) + 1} />
+              ) : (
+                <Row key={p.slug} p={p} n={PLATFORMS.indexOf(p) + 1} />
+              ),
+            )}
           </ul>
         </div>
       </section>

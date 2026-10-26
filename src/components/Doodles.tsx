@@ -54,6 +54,7 @@ export function HeroDoodle({ className }: Props) {
     <svg viewBox="0 0 540 400" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
         {/* ---- the mess ---- */}
+        <g className="hd-mess">
         {/* a fanned stack of sheets */}
         <g transform="rotate(9 120 110)">
           <rect x="52" y="34" width="140" height="108" fill={PAPER} strokeOpacity="0.45" />
@@ -93,60 +94,63 @@ export function HeroDoodle({ className }: Props) {
         <path d="M128 330l8 -5l4 9l8 -8M132 346l9 -4l8 5" strokeWidth="1.6" strokeOpacity="0.7" />
         <path d="M16 62c14 -34 40 8 62 -16s34 14 56 -8" strokeOpacity="0.65" strokeWidth="2" />
         <path d="M206 330c8 -12 20 6 30 -4s16 8 28 -2" strokeOpacity="0.45" strokeWidth="1.8" />
+        </g>
 
         {/* ---- the turn ---- */}
-        <path d="M236 232C262 188 296 186 332 216" strokeWidth="3" />
-        <path d="M318 226l17 -9l-10 -16" strokeWidth="3" />
-        <path d="M280 150v-16M262 158l-10 -11M298 158l10 -11" stroke={SIGNAL} strokeWidth="2.8" />
+        <path className="hd-draw hd-d1" pathLength="1" d="M236 232C262 188 296 186 332 216" strokeWidth="3" />
+        <path className="hd-draw hd-d2" pathLength="1" d="M318 226l17 -9l-10 -16" strokeWidth="3" />
+        <path className="hd-draw hd-d3" pathLength="1" d="M280 150v-16M262 158l-10 -11M298 158l10 -11" stroke={SIGNAL} strokeWidth="2.8" />
 
         {/* ---- the system ---- */}
         <g stroke={SIGNAL} strokeWidth="2.8">
-          <path d="M388 164C372 148 362 134 350 120" />
-          <path d="M444 164C460 148 470 134 480 120" />
-          <path d="M388 242C372 258 362 300 350 314" />
-          <path d="M444 242C460 258 470 300 480 314" />
+          <path className="hd-draw hd-w0" pathLength="1" d="M388 164C372 148 362 134 350 120" />
+          <path className="hd-draw hd-w1" pathLength="1" d="M444 164C460 148 470 134 480 120" />
+          <path className="hd-draw hd-w2" pathLength="1" d="M388 242C372 258 362 300 350 314" />
+          <path className="hd-draw hd-w3" pathLength="1" d="M444 242C460 258 470 300 480 314" />
         </g>
-        <g fill={SIGNAL} stroke="none">
+        <g className="hd-dots" fill={SIGNAL} stroke="none">
           <circle cx="350" cy="119" r="4" />
           <circle cx="480" cy="119" r="4" />
           <circle cx="350" cy="315" r="4" />
           <circle cx="480" cy="315" r="4" />
         </g>
         {/* the hub: a small live dashboard */}
+        <g className="hd-hub">
         <rect x="368" y="160" width="96" height="86" rx="8" stroke={SIGNAL} strokeWidth="3.2" fill={PAPER} />
         <path d="M380 176h30" stroke={SIGNAL} strokeWidth="3" />
         <circle cx="448" cy="176" r="3" fill={SIGNAL} stroke="none" />
-        <path d="M388 232v-14M406 232v-26M424 232v-18M442 232v-34" stroke={SIGNAL} strokeWidth="5" />
-        <path d="M380 190l16 -4l14 4l18 -8" stroke={INK} strokeWidth="1.8" />
+        <path className="hd-bars" d="M388 232v-14M406 232v-26M424 232v-18M442 232v-34" stroke={SIGNAL} strokeWidth="5" />
+        <path className="hd-draw hd-d4" pathLength="1" d="M380 190l16 -4l14 4l18 -8" stroke={INK} strokeWidth="1.8" />
+        </g>
 
         {/* sales */}
-        <g transform="translate(308 62)">
+        <g className="hd-sat hd-s0"><g transform="translate(308 62)">
           <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
           <path d="M12 44l18 -14l12 8l28 -24" />
           <path d="M56 14h14v14" />
-        </g>
+        </g></g>
         {/* stock */}
-        <g transform="translate(438 62)">
+        <g className="hd-sat hd-s1"><g transform="translate(438 62)">
           <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
           <rect x="14" y="28" width="26" height="20" fill={BONE} />
           <rect x="44" y="28" width="26" height="20" fill={BONE} />
           <rect x="29" y="8" width="26" height="20" fill={BONE} />
-        </g>
+        </g></g>
         {/* people */}
-        <g transform="translate(308 316)">
+        <g className="hd-sat hd-s2"><g transform="translate(308 316)">
           <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
           <circle cx="42" cy="21" r="9" />
           <path d="M22 48c2 -13 11 -18 20 -18s18 5 20 18" />
-        </g>
+        </g></g>
         {/* accounts */}
-        <g transform="translate(438 316)">
+        <g className="hd-sat hd-s3"><g transform="translate(438 316)">
           <rect x="0" y="0" width="84" height="58" rx="6" fill={PAPER} />
           <circle cx="42" cy="29" r="15" />
           <path d="M36 23h13M36 29h13M40 23c9 0 9 13 0 13l9 7" strokeWidth="2.2" />
-        </g>
+        </g></g>
 
         {/* a tick and a few sparks, to say it works */}
-        <path d="M498 176l9 9l18 -20" stroke={SIGNAL} strokeWidth="3.4" />
+        <path className="hd-draw hd-d5" pathLength="1" d="M498 176l9 9l18 -20" stroke={SIGNAL} strokeWidth="3.4" />
         <path d="M512 214v10M507 219h10" stroke={SIGNAL} strokeWidth="2.6" />
         <path d="M296 330v10M291 335h10" stroke={SIGNAL} strokeWidth="2.6" />
       </g>
