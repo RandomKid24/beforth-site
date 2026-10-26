@@ -18,7 +18,7 @@ const TEAM = [
     initials: 'RM',
     role: 'Chief Technology Officer',
     focus: 'Architecture & Backend',
-    desc: 'Owns architecture, data modelling and backend engineering — the decisions that outlast the project.',
+    desc: 'Owns architecture, data modelling and backend engineering, the decisions that outlast the project.',
   },
   {
     name: 'Aditya Badgujar',
@@ -93,7 +93,7 @@ export default function TeamPage() {
                 Everything under one roof.
               </h2>
               <p className="body max-w-sm mb-7">
-                Requirements, design, engineering, testing and deployment — same team throughout.
+                Requirements, design, engineering, testing and deployment, same team throughout.
               </p>
               <Magnetic>
                 <Link to="/contact" className="btn-solid">

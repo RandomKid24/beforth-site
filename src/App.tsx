@@ -13,6 +13,8 @@ import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
 import { FAQ } from '@/data/faq';
 import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
+import { DEMO_WORK } from '@/data/demoWork';
+import { CLIENTS } from '@/data/clients';
 import { routeGraph } from '@/lib/schema';
 import { track } from '@/lib/track';
 import ConsentBanner from '@/components/ConsentBanner';
@@ -59,6 +61,8 @@ const loadTeam = TeamPage.preload;
 const ContactPage = lazyRoute(() => import('./pages/Contact'));
 const loadContact = ContactPage.preload;
 const NotFound = lazyRoute(() => import('./pages/NotFound'));
+const PortfolioPage = lazyRoute(() => import('./pages/Portfolio'));
+const loadPortfolio = PortfolioPage.preload;
 const InsightsPage = lazyRoute(() => import('./pages/Insights'));
 const loadInsights = InsightsPage.preload;
 const InsightArticle = lazyRoute(() => import('./pages/InsightArticle'));
@@ -71,6 +75,7 @@ const loadProductPage = ProductPage.preload;
 const NAV = [
   { path: '/', label: 'Home' },
   { path: '/services', label: 'Services' },
+  { path: '/portfolio', label: 'Portfolio' },
   { path: '/insights', label: 'Insights' },
   { path: '/about', label: 'About' },
   { path: '/team', label: 'Team' },
@@ -128,8 +133,12 @@ const OUTCOMES = [
 ];
 
 const INDUSTRIES = [
-  'Manufacturing', 'Logistics & Distribution', 'Pharma', 'Sales & Marketing',
-  'Human Resources', 'Growing Businesses',
+  { name: 'Manufacturing', does: 'Production steps tied to the raw material and stock they use.' },
+  { name: 'Logistics & Distribution', does: 'Assigned routes, proof of delivery and a live view of every order.' },
+  { name: 'Pharma', does: 'Orders, stock and deliveries on one record, so billing and dispatch never disagree.' },
+  { name: 'Sales & Marketing', does: 'Leads and follow-ups tracked in one place instead of chat threads.' },
+  { name: 'Human Resources', does: 'Attendance from biometric punches, shifts, leave and approvals.' },
+  { name: 'Growing Businesses', does: 'Start with the processes you need today and add modules as you grow.' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -318,8 +327,8 @@ function Positioning() {
           </Reveal>
           <Reveal delay={0.08}>
             <p className="display-lg text-xl md:text-[28px] leading-[1.3] max-w-[30ch]">
-              We build the systems a business runs on — sales, inventory, service, finance and
-              reporting — <span className="accent">connected in one place.</span>
+              We build the systems a business runs on: sales, inventory, service, finance and
+              reporting, <span className="accent">connected in one place.</span>
             </p>
           </Reveal>
         </div>
@@ -336,7 +345,6 @@ function Fit() {
     <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
-          label="Who it's for"
           title={<>Built for companies that have <span className="accent">outgrown spreadsheets.</span></>}
         />
 
@@ -376,7 +384,7 @@ function Fit() {
           <div className="mt-5 border border-ink/12 bg-paper px-6 py-5">
             <span className="label">Typical client</span>
             <p className="display-md text-base mt-1.5">
-              Manufacturing, pharma, distribution and service — 20 to 500 people.
+              Manufacturing, pharma, distribution and service firms with 20 to 500 people.
             </p>
           </div>
         </Reveal>
@@ -433,8 +441,7 @@ function ProductProof() {
     <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
-          label="The work"
-          title={<>This is what we <span className="accent">actually build.</span></>}
+          title="This is what we actually build."
           note="A representative screen from a business management system."
         />
 
@@ -505,60 +512,43 @@ function Why() {
     <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
-          label="Why BeForth"
           title={<>Software built around <span className="accent">your business.</span></>}
-          note="Four commitments we hold every project to — and what they change for you."
+          note="Four commitments we hold every project to, and what they change for you."
         />
 
-        <div className="grid lg:grid-cols-12 gap-4 lg:gap-5 items-stretch">
-          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-3 lg:gap-4">
-            {REASONS.map((reason, i) => {
-              return (
-                <Reveal key={reason.title} delay={i * 0.06} className="h-full">
-                  <div className="group h-full bg-white border border-ink/12 p-6 flex flex-col transition-[border-color,box-shadow,transform] duration-500 hover:border-signal/50 hover:shadow-[0_16px_34px_-22px_rgba(28,117,188,0.55)] hover:-translate-y-0.5">
-                    <div className="flex items-start justify-between mb-8">
-                      <ReasonDoodle index={i} className="w-14 h-14 -ml-1 -mt-1" />
-                      <span className="label !text-[10px]">0{i + 1}</span>
-                    </div>
-                    <h3 className="display-md text-[19px]">{reason.title}</h3>
-                    <p className="body-tight mt-1.5 !text-[14px]">{reason.desc}</p>
-                    <p className="mt-auto pt-5 text-[13px] leading-snug text-ink/75">
-                      <span className="block h-px w-8 bg-signal mb-3" />
-                      {reason.how}
-                    </p>
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <ol className="lg:col-span-7 border-t border-ink/15">
+            {REASONS.map((reason, i) => (
+              <Reveal key={reason.title} delay={i * 0.05}>
+                <li className="grid grid-cols-[56px_1fr] sm:grid-cols-[72px_1fr] gap-x-5 py-6 border-b border-ink/15">
+                  <ReasonDoodle index={i} className="w-14 h-14 sm:w-[72px] sm:h-[72px]" />
+                  <div>
+                    <h3 className="display-md text-[19px] md:text-[21px]">{reason.title}</h3>
+                    <p className="body-tight mt-1 !text-[14.5px] !text-ink/80">{reason.desc}</p>
+                    <p className="body-tight mt-2 !text-[13.5px]">{reason.how}</p>
                   </div>
-                </Reveal>
-              );
-            })}
-          </div>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
 
-          <Reveal delay={0.1} className="lg:col-span-5 h-full">
-            <div className="relative h-full overflow-hidden bg-ink text-paper p-6 md:p-8 flex flex-col">
-              <span aria-hidden className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-signal/30 blur-3xl" />
-              <span aria-hidden className="pointer-events-none absolute -bottom-28 -left-16 w-64 h-64 rounded-full bg-wave/15 blur-3xl" />
-              <div className="relative">
-                <span className="label !text-wave">What changes</span>
-                <h3 className="display-lg text-[clamp(1.4rem,2.4vw,1.85rem)] mt-3 mb-7 max-w-[18ch]">From workarounds to a system that fits.</h3>
-              </div>
-
-              <ul className="relative flex-1 flex flex-col">
+          <Reveal delay={0.1} className="lg:col-span-5">
+            <div className="bg-ink text-paper p-6 md:p-8 flex flex-col">
+              <h3 className="display-lg text-[clamp(1.4rem,2.4vw,1.85rem)] mb-6 max-w-[18ch]">From workarounds to a system that fits.</h3>
+              <ul className="flex flex-col">
                 {OUTCOMES.map((row) => (
-                  <li key={row.to} className="group grid grid-cols-[1fr] gap-1 py-4 border-t border-paper/15">
+                  <li key={row.to} className="grid gap-1 py-4 border-t border-paper/15">
                     <span className="text-[13px] text-paper/65 line-through decoration-paper/40 decoration-1">{row.from}</span>
-                    <span className="flex items-center gap-3 text-[17px] md:text-[18px] font-semibold tracking-[-0.015em] transition-transform duration-500 group-hover:translate-x-1">
-                      <span className="w-5 h-5 shrink-0 rounded-full bg-wave/20 text-wave flex items-center justify-center">
-                        <Check className="w-3 h-3" strokeWidth={3} />
-                      </span>
+                    <span className="flex items-center gap-3 text-[17px] md:text-[18px] font-semibold tracking-[-0.015em]">
+                      <Check className="w-4 h-4 shrink-0 text-wave" strokeWidth={3} />
                       {row.to}
                     </span>
                   </li>
                 ))}
               </ul>
-
-              <TangleDoodle className="relative w-56 mt-5 -mb-1" />
-
-              <p className="relative mt-3 pt-5 border-t border-paper/15 text-[13px] text-paper/65 leading-relaxed">
-                A system you own and that fits your process — not a subscription you adapt to.
+              <TangleDoodle className="w-56 mt-5 -mb-1" />
+              <p className="mt-3 pt-5 border-t border-paper/15 text-[13px] text-paper/65 leading-relaxed">
+                A system you own and that fits your process, not a subscription you adapt to.
               </p>
             </div>
           </Reveal>
@@ -580,31 +570,17 @@ function Why() {
  * once a genuine, verifiable engagement exists. When that list is empty this
  * section says so plainly instead of showing filler.
  */
-const DEMO_WORK = [
-  {
-    title: 'Global Logistics ERP',
-    kind: 'Demonstration build · Supply chain',
-    desc: 'A demonstration interface for logistics management, bringing shipments, vendors, routes, reports and an operations centre into one centralised view. Built with sample data to show the workflow, not a client deployment.',
-    points: ['Shipment management', 'Vendor management', 'Routes', 'Operations dashboard', 'Reporting'],
-  },
-  {
-    title: 'SalesPulse CRM',
-    kind: 'Demonstration build · CRM',
-    desc: 'A demonstration sales-management platform built around leads, customer activity, pipeline stages and sales reporting. Built with sample data to show the workflow, not a client deployment.',
-    points: ['Lead management', 'Sales pipeline', 'Lead trends', 'Customer activity', 'Sales metrics'],
-  },
-];
 
 function SelectedWork() {
   const realWork = PUBLISHED_CASE_STUDIES;
   const hasRealWork = realWork.length > 0;
   const items = hasRealWork ? realWork : DEMO_WORK;
+  if (items.length === 0) return null;
 
   return (
     <section className="section bg-bone">
       <div className="wrap relative z-10">
         <SectionHead
-          label="Selected work"
           title={hasRealWork ? (
             <>Client systems we built and <span className="accent">stand behind.</span></>
           ) : (
@@ -649,6 +625,29 @@ function SelectedWork() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Clients: names only, as supplied by the owner (src/data/clients.ts)  */
+/* ------------------------------------------------------------------ */
+function ClientsLine() {
+  return (
+    <section className="pt-4 pb-14 md:pb-20">
+      <div className="wrap grid lg:grid-cols-[260px_1fr] gap-x-14 gap-y-5 items-baseline">
+        <p className="display-md text-[18px] md:text-xl">Businesses already running on our systems.</p>
+        <div>
+          <ul className="flex flex-wrap gap-x-7 gap-y-1.5 display-md text-[17px] md:text-[22px] !text-ink/85">
+            {CLIENTS.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+          <Link to="/portfolio#clients" className="inline-flex items-center gap-1.5 mt-5 text-[14px] font-semibold text-signal hover:text-signal-deep">
+            See the work <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Technology                                                           */
 /* ------------------------------------------------------------------ */
 const TECH = [
@@ -663,14 +662,13 @@ function Technology() {
     <section className="section">
       <div className="wrap">
         <SectionHead
-          label="Technology"
-          title={<>Chosen per product, not by <span className="accent">default.</span></>}
+          title="Chosen per product, not by default."
+          note="We confirm the stack during discovery, once we know what the system has to do."
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/12 border border-ink/12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-8 border-t border-ink/15 pt-6">
           {TECH.map((group) => (
-            <div key={group.group} className="bg-paper p-6">
-              <span className="block w-6 h-px bg-signal mb-4" />
+            <div key={group.group}>
               <h3 className="display-md text-sm uppercase tracking-[0.1em] mb-3">{group.group}</h3>
               <ul className="flex flex-col gap-1.5">
                 {group.items.map((item) => (
@@ -706,7 +704,7 @@ function Faq() {
   return (
     <section className="pb-20 md:pb-28">
       <div className="wrap">
-        <SectionHead label="FAQ" title={<>Questions worth <span className="accent">answering.</span></>} />
+        <SectionHead label="FAQ" title="Questions worth answering." />
         <div className="grid lg:grid-cols-[1fr_260px] gap-x-14 items-start">
         <div className="border-t border-ink/12">
           {FAQ.map((item, i) => (
@@ -748,18 +746,18 @@ function Sectors() {
   return (
     <section className="pb-20 md:py-20">
       <div className="wrap">
-        <SectionHead label="Sectors" title={<>Where we do our best work.</>} />
-        <div className="flex flex-wrap gap-2.5">
+        <SectionHead title="Where we do our best work." />
+        <ul className="grid md:grid-cols-2 gap-x-14 border-t border-ink/15">
           {INDUSTRIES.map((industry) => (
-            <span
-              key={industry}
-              className="label inline-flex items-center gap-2.5 border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
-            >
-              <SectorIcon name={industry} className="w-5 h-5 shrink-0" />
-              {industry}
-            </span>
+            <li key={industry.name} className="grid grid-cols-[28px_1fr] gap-x-4 py-5 border-b border-ink/15">
+              <SectorIcon name={industry.name} className="w-6 h-6 mt-0.5" />
+              <div>
+                <h3 className="display-md text-[17px]">{industry.name}</h3>
+                <p className="body-tight mt-1">{industry.does}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -786,7 +784,7 @@ function CTA() {
                   Tell us how your business runs today.
                 </h2>
                 <p className="text-paper/60 text-base leading-relaxed">
-                  We will show you the technology it should run on — even when the answer is less
+                  We will show you the technology it should run on, even when the answer is less
                   software than you expected.
                 </p>
               </div>
@@ -941,6 +939,12 @@ const META: Record<string, { title: string; description: string; keywords: strin
       'Beforth builds custom ERP, CRM, HRMS, inventory, automation, web and mobile software, designed around how your organisation actually operates.',
     keywords: 'custom ERP software Nashik, CRM development India, HRMS and payroll software, inventory management system, business automation, custom software company Maharashtra',
   },
+  '/portfolio': {
+    title: 'Portfolio | ERP, CRM, HRMS & Mobile Systems — Beforth',
+    description:
+      'Eleven business systems by Beforth, shown running: custom ERP, delivery tracking, salon ERP, HRMS, CRM, payroll, POS, apps and websites. Nashik, India.',
+    keywords: 'Beforth portfolio, ERP software examples, CRM demo, HRMS payroll software, delivery tracking app, custom software Nashik',
+  },
   '/insights': {
     title: 'Insights | Practical Notes on Business Systems — BeForth',
     description:
@@ -1007,6 +1011,7 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   const p = pathname.replace(/\/+$/, '') || '/';
   if (p === '/') return loadShowcase();
   if (p === '/services') return loadServices();
+  if (p === '/portfolio') return loadPortfolio();
   if (p === '/about') return loadAbout();
   if (p === '/team') return loadTeam();
   if (p === '/contact') return loadContact();
@@ -1188,8 +1193,9 @@ export default function App() {
         <main id="main-content" key={pathname} className={animate.current ? 'page-enter' : undefined}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+              <Route path="/" element={<><Hero /><Positioning /><ClientsLine /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
+              <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/insights" element={<InsightsPage />} />
               <Route path="/insights/:slug" element={<InsightArticle />} />
               <Route path="/about" element={<AboutPage />} />

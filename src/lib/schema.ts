@@ -261,6 +261,7 @@ function faqPageFor(pathname: string) {
 const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/': [],
   '/services': [{ name: 'Services', path: '/services' }],
+  '/portfolio': [{ name: 'Portfolio', path: '/portfolio' }],
   '/insights': [{ name: 'Insights', path: '/insights' }],
   '/about': [{ name: 'About', path: '/about' }],
   '/team': [{ name: 'Team', path: '/team' }],
@@ -331,6 +332,7 @@ const PAGE_TYPE: Record<string, string> = {
   '/team': 'AboutPage',
   '/contact': 'ContactPage',
   '/insights': 'CollectionPage',
+  '/portfolio': 'CollectionPage',
 };
 
 /** The page itself, tied to the site, the organisation and its breadcrumb. */

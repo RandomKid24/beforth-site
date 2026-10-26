@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Browser } from './chrome';
 
 type Device = 'desktop' | 'tablet' | 'mobile';
@@ -55,30 +55,10 @@ function Site() {
 }
 
 export default function WebPreview() {
-  const [device, setDevice] = useState<Device>('desktop');
-  const opts: { id: Device; label: string; Icon: typeof Monitor }[] = [
-    { id: 'desktop', label: 'Desktop', Icon: Monitor }, { id: 'tablet', label: 'Tablet', Icon: Tablet }, { id: 'mobile', label: 'Phone', Icon: Smartphone },
-  ];
+  const device: Device = 'desktop';
 
   return (
     <div className="flex flex-col gap-4 max-w-[640px] mx-auto">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-[12px] font-semibold">Same site, every screen</p>
-        <div className="flex border border-ink/15 bg-white" role="group" aria-label="Preview device">
-          {opts.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setDevice(id)}
-              aria-pressed={device === id}
-              className={`flex items-center gap-1.5 px-3 min-h-[32px] text-[11.5px] transition-colors ${device === id ? 'bg-ink text-paper' : 'text-ash hover:text-ink'}`}
-            >
-              <Icon className="w-3.5 h-3.5" /><span className="hidden sm:inline">{label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="flex justify-center bg-ink/[0.035] border border-ink/10 py-5 px-3 min-h-[300px]">
         <Browser url="sahyadri-supply.in" className="transition-[width] duration-500 ease-out self-start" style={{ width: WIDTH[device], minWidth: 210 }}>
           <Site />

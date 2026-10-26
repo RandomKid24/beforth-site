@@ -41,6 +41,10 @@
       "destination": "/contact/index.html"
     },
     {
+      "source": "/portfolio",
+      "destination": "/portfolio/index.html"
+    },
+    {
       "source": "/insights",
       "destination": "/insights/index.html"
     },
@@ -55,6 +59,10 @@
     {
       "source": "/insights/spreadsheets-fail-at-a-second-location",
       "destination": "/insights/spreadsheets-fail-at-a-second-location/index.html"
+    },
+    {
+      "source": "/product/erp",
+      "destination": "/product/erp/index.html"
     },
     {
       "source": "/product/delivery-tracking",

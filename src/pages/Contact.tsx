@@ -23,7 +23,7 @@ const STATUSES = [
   'We reply to every serious enquiry within one working day.',
   'Currently taking on new projects for this quarter.',
   'Discovery calls available this week.',
-  'Tell us the problem — we will say if software is the answer.',
+  'Tell us the problem. We will say if software is the answer.',
 ];
 
 function Dropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {

@@ -23,18 +23,18 @@ export default function ConsentBanner() {
     <div
       role="region"
       aria-label="Cookie choice"
-      className="fixed z-[55] bottom-3 left-3 right-3 md:right-auto md:max-w-[420px] surface p-5 shadow-[0_18px_40px_-24px_rgba(35,31,32,0.45)]"
+      className="fixed z-[55] bottom-0 inset-x-0 bg-paper border-t border-ink/15 px-4 md:px-10 py-3 flex flex-col md:flex-row md:items-center gap-3 md:gap-8"
     >
-      <p className="body-tight !text-ink/80">
-        We use a live chat widget (Tawk.to) that sets cookies and processes chat data. It loads only if you
-        accept. See our <Link to="/cookie-policy" className="underline hover:text-signal">Cookie Policy</Link> and{' '}
+      <p className="body-tight !text-ink/80 md:flex-1">
+        Our live chat (Tawk.to) sets cookies and loads only if you accept.{' '}
+        <Link to="/cookie-policy" className="underline hover:text-signal">Cookie Policy</Link>,{' '}
         <Link to="/privacy-policy" className="underline hover:text-signal">Privacy Policy</Link>.
       </p>
-      <div className="mt-4 flex gap-3">
-        <button type="button" onClick={() => setConsent('yes')} className="btn-signal !px-5 !py-2.5 !text-[13px]">
+      <div className="flex gap-3 shrink-0">
+        <button type="button" onClick={() => setConsent('yes')} className="btn-signal !px-5 !py-2 !text-[13px]">
           Accept
         </button>
-        <button type="button" onClick={() => setConsent('no')} className="btn-line !px-5 !py-2.5 !text-[13px]">
+        <button type="button" onClick={() => setConsent('no')} className="btn-line !px-5 !py-2 !text-[13px]">
           Decline
         </button>
       </div>

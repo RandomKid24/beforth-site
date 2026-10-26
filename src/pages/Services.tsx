@@ -11,7 +11,7 @@ const SERVICES = [
     title: 'Custom ERP',
     summary: 'A business management system designed around your operations.',
     detail:
-      'Manage departments, workflows and business data through one connected platform — starting with the processes you need today and expanding as the business grows.',
+      'Manage departments, workflows and business data through one connected platform, starting with the processes you need today and expanding as the business grows.',
     points: [
       'Inventory management', 'Purchase management', 'Sales management',
       'Production workflows', 'Finance & operations', 'Employee management',
@@ -35,7 +35,7 @@ const SERVICES = [
     title: 'HRMS & Payroll',
     summary: 'One system for your workforce operations.',
     detail:
-      'Employee information, attendance, shifts, leave and payroll through workflows designed around your policies and salary structure — whether the team is ten people or several hundred.',
+      'Employee information, attendance, shifts, leave and payroll through workflows designed around your policies and salary structure, whether the team is ten people or several hundred.',
     points: [
       'Employee management', 'Attendance tracking', 'Shift management',
       'Leave management', 'Payroll processing', 'Salary calculations',
@@ -81,7 +81,7 @@ const SERVICES = [
     title: 'Mobile Applications',
     summary: 'Take your business wherever work happens.',
     detail:
-      'Applications for employees, field teams, customers and business operations — from field apps to enterprise mobile workflows, designed around the people actually using them.',
+      'Applications for employees, field teams, customers and business operations, from field apps to enterprise mobile workflows, designed around the people actually using them.',
     stack: 'Flutter · React Native · Swift · Kotlin',
     art: 'mobile-apps',
     more: { to: '/product/mobile-apps', label: 'See how we build mobile apps' },
@@ -118,7 +118,7 @@ const SECTORS = [
 
 const ENGAGEMENT = [
   { k: 'Discovery', v: 'We map your process and agree what success looks like.' },
-  { k: 'Proposal', v: 'Scope, sequence and cost — in plain language.' },
+  { k: 'Proposal', v: 'Scope, sequence and cost, in plain language.' },
   { k: 'Build', v: 'Modular delivery, with working software early.' },
   { k: 'Handover', v: 'Training, documentation and support.' },
 ];
@@ -218,29 +218,21 @@ export default function ServicesPage() {
       <section className="section bg-bone">
         <div className="wrap relative z-10">
           <div className="rule mb-6" />
-          <span className="label block mb-4">Solutions by business need</span>
           <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-12 max-w-[20ch]">
             Common use cases, by sector.
           </h2>
 
-          <div className="grid sm:grid-cols-2 gap-5">
+          <ul className="grid md:grid-cols-2 gap-x-14 border-t border-ink/15">
             {SECTORS.map((sector, i) => (
               <Reveal key={sector.n} delay={(i % 2) * 0.06}>
-                <div className="h-full p-6 md:p-7 bg-paper border border-ink/12">
-                  <h3 className="display-md text-base mb-2">{sector.n}</h3>
-                  <p className="body-tight mb-5">{sector.desc}</p>
-                  <span className="label block mb-2.5 !text-[10px]">Common use cases</span>
-                  <ul className="flex flex-wrap gap-1.5">
-                    {sector.uses.map((u) => (
-                      <li key={u} className="label !text-[10px] border border-ink/12 px-2.5 py-1">
-                        {u}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <li className="py-6 border-b border-ink/15 h-full">
+                  <h3 className="display-md text-[18px] mb-1.5">{sector.n}</h3>
+                  <p className="body-tight mb-3">{sector.desc}</p>
+                  <p className="text-[13.5px] leading-relaxed text-ink/75">{sector.uses.join(', ')}.</p>
+                </li>
               </Reveal>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
@@ -257,15 +249,15 @@ export default function ServicesPage() {
               </p>
             </Reveal>
 
-            <div className="grid sm:grid-cols-2 gap-px bg-paper/15 border border-paper/15">
+            <div className="grid sm:grid-cols-2 gap-x-10 border-t border-paper/20">
               {ENGAGEMENT.map((step, i) => (
                 <Reveal key={step.k} delay={i * 0.06}>
-                  <div className="bg-ink p-6 h-full">
+                  <div className="py-6 border-b border-paper/20 h-full">
                     <span className="label !text-wave block mb-3">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <h3 className="display-md text-base mb-1.5">{step.k}</h3>
-                    <p className="text-paper/55 text-[13.5px] leading-relaxed">{step.v}</p>
+                    <p className="text-paper/70 text-[13.5px] leading-relaxed">{step.v}</p>
                   </div>
                 </Reveal>
               ))}

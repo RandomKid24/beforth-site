@@ -105,6 +105,11 @@ const ROUTE_META = {
     title: 'Custom ERP, CRM, HRMS and automation | BeForth',
     sub: 'Seven service lines, one accountable partner.',
   },
+  '/portfolio': {
+    eyebrow: 'Portfolio',
+    title: 'Eleven business systems, shown running | BeForth',
+    sub: 'ERP, CRM, HRMS, payroll, POS, apps and websites.',
+  },
   '/insights': {
     eyebrow: 'Insights',
     title: 'Practical notes on business systems | BeForth',

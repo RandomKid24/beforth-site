@@ -674,6 +674,31 @@ const ART: Record<string, React.ReactNode> = {
       <path d="M262 152l-9 -2l3 10" stroke={SIGNAL} strokeWidth="3" />
     </>
   ),
+  // custom ERP: an order is approved and the stock it uses drops
+  erp: (
+    <>
+      <g transform="translate(24 24)">
+        <path d="M0 0h96v128H0z" fill={PAPER} />
+        <path d="M14 20h50M14 38h68M14 56h40" strokeWidth="1.8" />
+        <rect x="14" y="76" width="68" height="34" fill={BONE} />
+        <circle cx="60" cy="93" r="11" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M54 93l4 4l8 -9" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M22 98h20" strokeWidth="2" />
+      </g>
+      <path d="M132 88H182" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 8" />
+      <path d="M182 88l-9 -6M182 88l-9 6" stroke={SIGNAL} strokeWidth="3" />
+      <g transform="translate(196 98)">
+        <rect x="0" y="40" width="40" height="40" fill={BONE} />
+        <rect x="44" y="40" width="40" height="40" fill={BONE} />
+        <rect x="22" y="0" width="40" height="40" fill={PAPER} />
+        <path d="M0 60h40M44 60h40M22 20h40" strokeWidth="1.8" />
+      </g>
+      <g transform="translate(196 28)">
+        <path d="M0 40h84" />
+        <path d="M0 40V16M28 40V4M56 40V24M84 40V12" strokeWidth="5" stroke={SIGNAL} />
+      </g>
+    </>
+  ),
   pos: (
     <>
       <g transform="translate(34 14)">
@@ -1126,6 +1151,73 @@ export function ArticleDoodle({ slug, className }: { slug: string; className?: s
     <svg viewBox="0 0 200 130" className={className} aria-hidden="true" focusable="false" {...common}>
       <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
         {art}
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Portfolio: a board of eleven small screens, one of them being used  */
+/* ------------------------------------------------------------------ */
+/** One tiny scene per product, in catalog order, drawn inside a 62x48 tile. */
+const PORTFOLIO_GLYPHS: React.ReactNode[] = [
+  <g key="erp"><rect x="10" y="28" width="16" height="12" /><rect x="28" y="28" width="16" height="12" /><rect x="19" y="15" width="16" height="12" /></g>,
+  <path key="delivery" d="M10 38L22 28L34 33L52 18M10 38h0M22 28h0M34 33h0M52 18h0" strokeWidth="3" />,
+  <g key="salon"><rect x="10" y="18" width="14" height="10" /><rect x="28" y="24" width="14" height="14" /><rect x="10" y="32" width="14" height="6" /></g>,
+  <g key="hrms"><circle cx="31" cy="29" r="12" /><path d="M31 22v7l5 3" /></g>,
+  <g key="crm"><path d="M10 18h10M26 18h10M42 18h10" /><rect x="10" y="23" width="10" height="7" /><rect x="10" y="33" width="10" height="6" /><rect x="26" y="23" width="10" height="7" /><rect x="42" y="23" width="10" height="7" /></g>,
+  <g key="apps"><rect x="23" y="16" width="16" height="26" /><path d="M29 38h4" /></g>,
+  <g key="web"><rect x="10" y="17" width="42" height="24" /><path d="M10 24h42M15 31h14M15 35h22" /></g>,
+  <g key="tunnel"><path d="M12 40V30a19 19 0 0 1 38 0v10" /><path d="M24 40V32a7 7 0 0 1 14 0v8" /></g>,
+  <path key="seo" d="M12 40V34M22 40V30M32 40V25M42 40V20M12 24l10 -4l10 -4l12 -4" />,
+  <g key="payroll"><rect x="14" y="16" width="34" height="26" /><path d="M20 24h22M20 30h22M20 36h12" /></g>,
+  <g key="pos"><rect x="12" y="17" width="26" height="22" /><path d="M16 22h18M16 28h6M26 28h8M16 33h6M26 33h8" /><rect x="42" y="25" width="10" height="14" /></g>,
+];
+
+export function PortfolioDoodle({ className }: Props) {
+  const tile = (i: number) => {
+    const x = 14 + (i % 6) * 60;
+    const y = 36 + Math.floor(i / 6) * 84;
+    const on = i === 4; // the CRM tile is the one being opened
+    return (
+      <g key={i} transform={`translate(${x} ${y}) scale(0.88)`}>
+        <rect width="62" height="48" fill={on ? PAPER : BONE} stroke={on ? SIGNAL : INK} strokeWidth={on ? 2.8 : 2.2} />
+        <path d="M0 9h62" strokeWidth="1.6" strokeOpacity="0.5" stroke={on ? SIGNAL : INK} />
+        <g stroke={on ? SIGNAL : INK} strokeWidth="2">{PORTFOLIO_GLYPHS[i]}</g>
+      </g>
+    );
+  };
+  return (
+    <svg viewBox="0 0 380 240" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
+        {/* the board and its pins */}
+        <rect x="6" y="6" width="368" height="196" fill={PAPER} />
+        <path d="M60 202v26M320 202v26M40 228h40M300 228h40" />
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(tile)}
+        {/* a cursor opening the CRM tile */}
+        <path d="M284 66l0 30l8 -7l6 14l6 -3l-6 -13l11 -1z" fill={INK} stroke={PAPER} strokeWidth="1.6" />
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Portfolio, client work: a checked document (drawn for dark)          */
+/* ------------------------------------------------------------------ */
+export function VerifiedDoodle({ className }: Props) {
+  const wave = 'var(--color-wave)';
+  return (
+    <svg viewBox="0 0 240 180" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.4" stroke={PAPER}>
+        {/* a case study with a before and after figure */}
+        <path d="M30 14h110l24 24v128H30z" />
+        <path d="M140 14v24h24" />
+        <path d="M46 56h72M46 74h56M46 120h40M104 120h18" strokeOpacity="0.6" strokeWidth="1.8" />
+        <path d="M46 100l18 -10l16 6l20 -14" stroke={wave} />
+        {/* the figures being checked */}
+        <circle cx="156" cy="112" r="30" fill="none" />
+        <path d="M178 134l32 32" strokeWidth="5" />
+        <path d="M142 112l10 10l18 -20" stroke={wave} strokeWidth="3" />
       </g>
     </svg>
   );

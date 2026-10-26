@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Truck, Scissors, Users, Kanban, Smartphone, Globe, ShieldCheck, TrendingUp, IndianRupee, ReceiptText,
+  Truck, Scissors, Boxes, Users, Kanban, Smartphone, Globe, ShieldCheck, TrendingUp, IndianRupee, ReceiptText,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -14,6 +14,7 @@ import TunnelPreview from './Tunnel';
 import SeoPreview from './Seo';
 import PayrollPreview from './Payroll';
 import PosPreview from './Pos';
+import ErpPreview from './Erp';
 
 export interface Platform {
   /** URL slug: /product/<slug> */
@@ -43,6 +44,47 @@ export interface Platform {
 }
 
 export const PLATFORMS: Platform[] = [
+  {
+    slug: 'erp',
+    name: 'Custom ERP',
+    sub: 'Sales · inventory · approvals',
+    icon: Boxes,
+    Preview: ErpPreview,
+    summary: 'Sales, purchase, inventory, people and finance on one system built around how your business runs, not the other way round.',
+    built: 'Manufacturing, pharma, distribution and service companies',
+    caps: ['Sales and purchase', 'Inventory', 'Approvals', 'Reporting'],
+    seoTitle: 'Custom ERP Software for Indian Businesses | Beforth',
+    seoDescription: 'Custom ERP for manufacturing, pharma, distribution and service firms: sales, purchase, inventory, approvals and reports on one system. Built by Beforth, Nashik.',
+    keywords: 'custom ERP software India, ERP development Nashik, manufacturing ERP, inventory and sales ERP, approval workflow software, business management software',
+    headline: ['One system for the business,', 'built around your process.'],
+    lead: 'Sales, purchase, inventory, approvals and reporting in one connected system, designed from your workflows rather than a generic template. Start with the processes you need today and add modules as the business grows.',
+    changes: [
+      { from: 'Orders in one sheet, stock in another', to: 'One system where an approved sale updates stock' },
+      { from: 'Approvals chased over calls and chats', to: 'Approvals tracked, with an owner and a status' },
+      { from: 'Reports assembled by hand each month', to: 'Dashboards that are current whenever you open them' },
+    ],
+    features: [
+      { title: 'Sales and purchase', desc: 'Quotes, orders and purchases run through one flow, with the customer and supplier history attached.' },
+      { title: 'Inventory', desc: 'Stock levels, movements and reorder alerts across stores and warehouses.' },
+      { title: 'Approvals', desc: 'Orders, purchases and leave move through the approvers you define, with a clear status at each step.' },
+      { title: 'Production workflows', desc: 'For manufacturers, raw material and production steps tied to the stock they use.' },
+      { title: 'People and finance', desc: 'Employee records and the finance and operations data your teams share, in the same system.' },
+      { title: 'Reports and dashboards', desc: 'The views your owners and managers ask for, built from the data as it is entered.' },
+    ],
+    flow: [
+      { title: 'Map the process', desc: 'We study your workflows, departments, users and bottlenecks, and agree what success looks like.' },
+      { title: 'Design the system', desc: 'Database, roles, permissions and integrations are planned before building starts.' },
+      { title: 'Build in stages', desc: 'Working modules are delivered in order, so progress is reviewed throughout.' },
+      { title: 'Launch and grow', desc: 'We migrate data, train users and extend the system as requirements change.' },
+    ],
+    faq: [
+      { q: 'Why build a custom ERP instead of buying one?', a: 'A custom ERP follows your process, so your team does not have to change how it works to fit the software. It is the right choice when your workflows are specific, when off-the-shelf tools need heavy workarounds, or when you want to own the system. We cover the trade-offs in our guide on custom versus off-the-shelf ERP.' },
+      { q: 'Do we have to build everything at once?', a: 'No. We start with the processes that matter most today, such as sales and inventory, and add modules in stages. Each stage is reviewed before the next begins, so the business is using working software early rather than waiting for a single large release.' },
+      { q: 'Can it connect to our accounts and other tools?', a: 'Yes. Integrations with accounting software, CRM, biometric devices and other APIs are part of what we build, so the same customer or order is not typed in twice. We confirm what needs to connect during discovery.' },
+      { q: 'What happens after launch?', a: 'We migrate your existing data, train your users and stay on to support and extend the system. Requirements change as a business grows, and the system is built to be added to rather than replaced.' },
+    ],
+    related: ['crm', 'hrms', 'pos'],
+  },
   {
     slug: 'delivery-tracking',
     name: 'Delivery tracking',

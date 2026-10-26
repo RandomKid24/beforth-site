@@ -49,6 +49,7 @@ const PRISTINE_INDEX = path.join(ROOT, 'node_modules', '.cache', 'prerender-inde
 const ROUTES = [
   '/',
   '/services',
+  '/portfolio',
   '/insights',
   '/insights/custom-erp-or-off-the-shelf',
   '/insights/what-to-expect-during-erp-discovery',
@@ -60,6 +61,7 @@ const ROUTES = [
   '/terms',
   '/cookie-policy',
   ...[
+    'erp',
     'delivery-tracking',
     'salon-erp',
     'hrms',

@@ -1,0 +1,528 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>HRMS Dynamic Setup Guide | BeForth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"/>
+<style>
+  :root {
+    --paper: #F2F7F9; --bone: #D6E7F1; --ink: #231F20; --ash: #5F6571;
+    --signal: #1C75BC; --wave: #75BAE6; --signal-deep: #165B93;
+    --rule: rgba(35,31,32,.14);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: 9.6pt; line-height: 1.62;
+  }
+
+  /* ---------- Page setup ---------- */
+  @page {
+    size: A4;
+    margin: 24mm 18mm 22mm 18mm;
+    background: var(--paper);
+    @top-left   { content: "BEFORTH"; font: 700 7.5pt "Plus Jakarta Sans", Arial; letter-spacing: .14em; color: var(--signal); }
+    @top-right  { content: "HRMS Dynamic Setup Guide"; font: 500 7.5pt "Plus Jakarta Sans", Arial; color: var(--ash); }
+    @bottom-left  { content: "Confidential · prepared by BeForth for Aureole"; font: 500 7.5pt "Plus Jakarta Sans", Arial; color: var(--ash); }
+    @bottom-right { content: counter(page) " / " counter(pages); font: 600 7.5pt "Plus Jakarta Sans", Arial; color: var(--ink); }
+  }
+  @page :first {
+    margin: 0;
+    @top-left { content: none; } @top-right { content: none; }
+    @bottom-left { content: none; } @bottom-right { content: none; }
+  }
+
+  /* ---------- Type ---------- */
+  h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -.02em; color: var(--ink); break-after: avoid; }
+  h1.sec { font-size: 22pt; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin: 0 0 5mm; padding-top: 4mm; border-top: 1.2pt solid var(--ink); }
+  h1.sec .n { color: var(--signal); margin-right: 3mm; }
+  h1.sec.top0 { border-top: 0; padding-top: 0; font-size: 17pt; margin-bottom: 4mm; }
+  h1.sec.toc-h { break-before: page; }
+  h2 { font-size: 13pt; margin: 6.5mm 0 2.5mm; }
+  h2 .n { color: var(--signal); margin-right: 2mm; }
+  h3 { font-size: 10.5pt; font-weight: 600; margin: 4mm 0 1.5mm; }
+  p { margin: 0 0 3mm; max-width: 158mm; }
+  .label { font-size: 7.5pt; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
+  ul { margin: 0 0 3mm; padding-left: 5mm; }
+  li { margin-bottom: 1.2mm; }
+  li::marker { color: var(--signal); }
+  .sec-break { break-before: page; }
+  .keep { break-inside: avoid; }
+
+  code { font-family: "JetBrains Mono", Menlo, monospace; font-size: .86em; font-weight: 500; background: rgba(214,231,241,.75); padding: .2mm 1.1mm; color: var(--ink); white-space: nowrap; }
+  td.cd code { background: var(--bone); }
+
+  /* ---------- Callouts ---------- */
+  .note { background: var(--bone); border-left: 2.4pt solid var(--signal); padding: 3mm 4mm; margin: 3.5mm 0 4mm; break-inside: avoid; }
+  .note .label { color: var(--signal-deep); display: block; margin-bottom: 1mm; }
+  .note p { margin: 0; font-size: 9pt; }
+  .example { background: #fff; border: .6pt solid var(--rule); border-left: 2.4pt solid var(--ink); padding: 3mm 4mm; margin: 3.5mm 0 4mm; break-inside: avoid; }
+  .example .label { display: block; margin-bottom: 1mm; color: var(--ink); }
+  .example .label::before { content: "Example · "; color: var(--ash); }
+  .example p { margin: 0; font-size: 9pt; }
+
+  /* ---------- Tables ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 5mm; font-size: 8.8pt; line-height: 1.45; }
+  th { text-align: left; background: var(--bone); font-size: 7.3pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); padding: 2.2mm 2.6mm; border-bottom: 1.2pt solid var(--ink); }
+  td { padding: 2mm 2.6mm; border-bottom: .6pt solid var(--rule); vertical-align: top; background: #fff; }
+  tr { break-inside: avoid; }
+  table.first-b td:first-child { font-weight: 600; }
+  table.cat { font-size: 8.3pt; }
+  table.cat td { padding: 1.7mm 2.4mm; }
+  thead { display: table-header-group; }
+
+  /* ---------- Steps ---------- */
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0 0 4mm; }
+  ol.steps li { counter-increment: s; display: flex; gap: 3.2mm; margin: 0 0 2.3mm; align-items: flex-start; break-inside: avoid; }
+  ol.steps li::before { content: counter(s); flex: none; width: 5.4mm; height: 5.4mm; border-radius: 50%; background: var(--signal); color: #fff; font-size: 7.4pt; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: .3mm; }
+
+  /* ---------- Vocabulary, cards, figures ---------- */
+  dl.vocab { margin: 0 0 4mm; }
+  dl.vocab > div { display: grid; grid-template-columns: 40mm 1fr; gap: 4mm; padding: 2.1mm 0; border-bottom: .6pt solid var(--rule); break-inside: avoid; }
+  dl.vocab dt { font-weight: 700; }
+  dl.vocab dd { margin: 0; }
+  .cards3, .cards2 { display: grid; gap: 4mm; margin: 2mm 0 4mm; }
+  .cards3 { grid-template-columns: repeat(3, 1fr); }
+  .cards2 { grid-template-columns: repeat(2, 1fr); }
+  .card { background: #fff; border: .6pt solid var(--rule); border-top: 2pt solid var(--signal); padding: 4mm; break-inside: avoid; }
+  .card h3 { margin: 0 0 1.5mm; font-size: 10pt; }
+  .card p { margin: 0; font-size: 8.8pt; }
+  figure.fig { margin: 4mm 0 5mm; background: #fff; border: .6pt solid var(--rule); padding: 4mm 4mm 2mm; text-align: center; }
+  figure.fig svg { width: 100%; height: auto; }
+  figure.fig figcaption { font-size: 8pt; color: var(--ash); margin-top: 1mm; padding-bottom: 1mm; }
+
+  /* ---------- Sign-off ---------- */
+  .signoff { display: grid; grid-template-columns: 1fr 1fr; gap: 14mm; margin-top: 14mm; }
+  .signoff .line { height: 16mm; border-bottom: 1pt solid var(--ink); margin: 1mm 0 2mm; }
+  .signoff b { font-size: 9pt; }
+
+  /* ---------- Contents ---------- */
+  .toc { column-count: 2; column-gap: 10mm; margin-top: 2mm; }
+  .toc .grp { break-inside: avoid; margin-bottom: 2.6mm; }
+  .toc .row { display: flex; align-items: baseline; gap: 1.6mm; padding: .5mm 0; }
+  .toc .row .t { }
+  .toc .row .dots { flex: 1; border-bottom: .8pt dotted rgba(35,31,32,.35); transform: translateY(-1mm); min-width: 4mm; }
+  .toc .row .p { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .toc .l1 { font-weight: 700; font-size: 9.6pt; margin-bottom: .6mm; }
+  .toc .l1 .n { color: var(--signal); display: inline-block; width: 6mm; }
+  .toc .l2 { padding-left: 6mm; font-size: 8.4pt; color: rgba(35,31,32,.82); }
+  .toc .l2 .n { color: var(--ash); display: inline-block; width: 8mm; }
+
+  /* ---------- Cover ---------- */
+  .cover { position: relative; width: 210mm; height: 297mm; overflow: hidden; page-break-after: always; break-after: page; background: var(--paper); }
+  .cover .top { position: absolute; left: 20mm; top: 18mm; right: 20mm; display: flex; justify-content: space-between; align-items: center; }
+  .cover .top img { height: 11mm; }
+  .cover .top .tag { font-size: 7.5pt; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ash); }
+  .cover .title { position: absolute; left: 20mm; top: 46mm; width: 165mm; }
+  .cover .title .kicker { font-size: 8.5pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--signal); margin-bottom: 5mm; }
+  .cover h1 { font-size: 46pt; font-weight: 800; line-height: .98; letter-spacing: -.04em; margin: 0; border: 0; padding: 0; }
+  .cover .proj { margin-top: 6mm; font-size: 15pt; font-weight: 600; letter-spacing: -.01em; color: var(--signal); }
+  .cover .intro { margin-top: 6mm; font-size: 10.5pt; line-height: 1.6; max-width: 130mm; color: rgba(35,31,32,.82); }
+  .cover .art { position: absolute; left: 20mm; top: 140mm; width: 170mm; }
+  .cover .meta { position: absolute; left: 20mm; right: 20mm; bottom: 44mm; display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr; gap: 5mm 8mm; border-top: 1.2pt solid var(--ink); padding-top: 5mm; }
+  .cover .meta div b { display: block; font-size: 7pt; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ash); margin-bottom: 1mm; }
+  .cover .meta div span { font-size: 10pt; font-weight: 600; }
+  .cover .band { position: absolute; left: 0; right: 0; bottom: 0; height: 30mm; background: var(--ink); color: var(--paper); padding: 0 20mm; display: flex; align-items: center; justify-content: space-between; }
+  .cover .band img { height: 9mm; }
+  .cover .band .c { font-size: 8.5pt; line-height: 1.6; text-align: right; color: rgba(242,247,249,.78); }
+  .cover .band .c b { color: var(--wave); font-weight: 600; }
+
+</style></head><body>
+<section class="cover">
+  <div class="top"><img src="LOGO_DARK" alt="BeForth"/><span class="tag">HRMS · Admin handbook</span></div>
+  <div class="title">
+    <div class="kicker">Prepared for Aureole — HRMS administrators</div>
+    <h1>Dynamic<br/>Setup Guide</h1>
+    <div class="proj">Approvals, Access, Servers &amp; WiFi</div>
+    <p class="intro">A plain-language guide to everything an admin can change in HRMS without touching code: who can do what (RBAC), who approves what (approval templates), which servers people can reach, which WiFi networks are trusted, and the other settings that are configurable.</p>
+  </div>
+  <svg class="art" viewBox="0 0 440 210" fill="none" stroke="#231F20" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <!-- settings panel: switches -->
+    <rect x="10" y="14" width="190" height="150" fill="#fff"/>
+    <rect x="10" y="14" width="190" height="28" fill="#D6E7F1"/><path d="M26 28h60" stroke-width="3"/>
+    <path d="M26 66h70" stroke-width="2"/><rect x="132" y="56" width="48" height="22" rx="11" fill="#1C75BC" stroke="#1C75BC"/><circle cx="169" cy="67" r="7" fill="#fff" stroke="none"/>
+    <path d="M26 104h58" stroke-width="2"/><rect x="132" y="94" width="48" height="22" rx="11" fill="#fff"/><circle cx="143" cy="105" r="7" fill="#231F20" stroke="none"/>
+    <path d="M26 142h80" stroke-width="2"/><rect x="132" y="132" width="48" height="22" rx="11" fill="#1C75BC" stroke="#1C75BC"/><circle cx="169" cy="143" r="7" fill="#fff" stroke="none"/>
+    <!-- approval chain below -->
+    <circle cx="34" cy="188" r="10" fill="#fff"/><circle cx="104" cy="188" r="10" fill="#fff"/><circle cx="174" cy="188" r="10" fill="#fff"/>
+    <path d="M44 188h50M114 188h50" stroke="#1C75BC" stroke-dasharray="1 7" stroke-width="3"/>
+    <path d="M168 188l4 4l7 -9" stroke="#1C75BC" stroke-width="2.8"/>
+    <!-- link to the servers -->
+    <path d="M206 90C226 90 232 90 252 90" stroke="#1C75BC" stroke-width="3" stroke-dasharray="1 8"/>
+    <path d="M244 82l10 8l-10 8" stroke="#1C75BC" stroke-width="2.8"/>
+    <!-- server rack with wifi and lock -->
+    <rect x="272" y="62" width="130" height="38" fill="#fff"/><circle cx="288" cy="81" r="3.5" fill="#1C75BC" stroke="none"/><path d="M304 81h76" stroke-width="2"/>
+    <rect x="272" y="108" width="130" height="38" fill="#fff"/><circle cx="288" cy="127" r="3.5" fill="#1C75BC" stroke="none"/><path d="M304 127h60" stroke-width="2"/>
+    <path d="M308 156v10M366 156v10M296 168h92"/>
+    <path d="M312 40a30 30 0 0 1 52 0M322 50a18 18 0 0 1 32 0" stroke="#1C75BC" stroke-width="2.8"/><circle cx="338" cy="58" r="3" fill="#1C75BC" stroke="none"/>
+    <g transform="translate(398 22)"><rect x="0" y="12" width="26" height="22" rx="3" fill="#fff"/><path d="M5 12v-5a8 8 0 0 1 16 0v5" stroke="#1C75BC"/></g>
+  </svg>
+  <div class="meta">
+    <div><b>Prepared by</b><span>BeForth</span></div>
+    <div><b>Prepared for</b><span>Aureole — HRMS administrators</span></div>
+    <div><b>Date</b><span>October 2026</span></div>
+    <div><b>Version</b><span>1.0</span></div>
+  </div>
+  <div class="band"><img src="LOGO_WHITE" alt="BeForth"/><div class="c"><b>support@beforth.in</b> · +91 97661 83834<br/>Nashik, Maharashtra, India · beforth.in</div></div>
+</section>
+<section>
+<h1 class="sec top0"><span class="n">&#9679;</span>Document information</h1>
+<table>
+<tr><th style="width:42mm">Item</th><th>Detail</th></tr>
+<tr><td><b>Document title</b></td><td>Dynamic Setup Guide: Approvals, Access, Servers &amp; WiFi</td></tr>
+<tr><td><b>Prepared by</b></td><td>BeForth</td></tr>
+<tr><td><b>Prepared for</b></td><td>Aureole — HRMS administrators</td></tr>
+<tr><td><b>Date</b></td><td>October 2026</td></tr>
+<tr><td><b>Version</b></td><td>1.0</td></tr>
+</table>
+<div class="note"><span class="label">How to read this document</span><p>Part 1 gives the big picture. Parts 2 to 6 each cover one area and can be read on their own. Part 7 lists smaller settings, and Part 8 is a quick checklist.</p></div>
+<h1 class="sec top0 toc-h"><span class="n">&#9679;</span>Contents</h1>
+<div class="toc">{{TOC}}</div>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s1"><span class="n">1</span>The Big Picture</h1>
+<p>HRMS is built so that most day-to-day rules are <b>settings, not code</b>. An administrator can change who sees a page, who approves a leave request, which servers an employee can open, and which office WiFi is trusted, all from the browser. Nobody has to edit code or restart anything.</p>
+<p>This guide explains each of those controls in simple terms, where to find it, and what happens behind the scenes.</p>
+<h2 id="s1-1"><span class="n">1.1</span>What is configurable</h2>
+<table class="first-b">
+<tr><th style="width:34mm">Area</th><th>What you control</th><th style="width:58mm">Where in HRMS</th></tr>
+<tr><td>Roles and permissions</td><td>Who can see and do what</td><td>Admin &gt; RBAC &gt; Roles / Permissions / User Roles</td></tr>
+<tr><td>Approval templates</td><td>Who approves a request, and in how many levels</td><td>Workflows &gt; Approval Templates</td></tr>
+<tr><td>Template mapping</td><td>Which template applies to which person, department or role</td><td>Leave &gt; Template Mapping</td></tr>
+<tr><td>Servers</td><td>Which servers exist and which employees may connect</td><td>Admin &gt; Servers</td></tr>
+<tr><td>WiFi access</td><td>Which office WiFi networks are trusted for server access</td><td>Settings &gt; WiFi Access Control</td></tr>
+<tr><td>Geofence locations</td><td>Where employees may mark attendance from</td><td>Settings &gt; Geofence Locations</td></tr>
+<tr><td>Company settings</td><td>Company profile and shared dropdown values</td><td>Settings &gt; Company</td></tr>
+<tr><td>Email settings</td><td>Outgoing email account and email templates</td><td>Settings &gt; Email</td></tr>
+<tr><td>Intranet apps</td><td>The tiles shown in the app launcher</td><td>Intranet &gt; Apps</td></tr>
+</table>
+<h2 id="s1-2"><span class="n">1.2</span>How the pieces fit together</h2>
+<figure class="fig keep"><svg viewBox="0 0 700 170" font-family="Plus Jakarta Sans, Arial, sans-serif" role="img" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#1C75BC"/></marker></defs><rect x="8" y="56" width="120" height="54" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="68.0" y="79.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Employee</text><text x="68.0" y="92.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">logs in</text><rect x="180" y="8" width="150" height="58" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="255.0" y="33.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Roles and permissions:</text><text x="255.0" y="46.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">can they open this page?</text><rect x="380" y="8" width="150" height="58" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="455.0" y="33.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Approval template:</text><text x="455.0" y="46.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">who must approve it?</text><rect x="580" y="8" width="114" height="58" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="637.0" y="33.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Approver is notified</text><text x="637.0" y="46.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">by email and in-app</text><rect x="180" y="104" width="150" height="58" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="255.0" y="129.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Servers and WiFi:</text><text x="255.0" y="142.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">can they connect remotely?</text><path d="M128 70 C150 70 154 38 178 38" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M128 96 C150 96 154 132 178 132" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M330 37 H378" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M530 37 H578" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/></svg><figcaption>Who can do what, and who approves it</figcaption></figure>
+<div class="note"><span class="label">Three questions, three settings</span><p><b>Can you do it?</b> is answered by roles and permissions. <b>Who must approve it?</b> is answered by approval templates. <b>Can you connect from here?</b> is answered by server access and the WiFi whitelist.</p></div>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s2"><span class="n">2</span>Roles &amp; Permissions (RBAC)</h1>
+<p>RBAC means Role Based Access Control. Instead of deciding for each person what they can click, you give them a role, and the role carries a bundle of permissions.</p>
+<h2 id="s2-1"><span class="n">2.1</span>The vocabulary</h2>
+<dl class="vocab">
+<div><dt>Permission</dt><dd>One single ability, written as <code>module.action</code>, for example <code>leave.view</code> or <code>server.manage</code>.</dd></div>
+<div><dt>Role</dt><dd>A named bundle of permissions, for example HR Manager.</dd></div>
+<div><dt>User role</dt><dd>The link that gives a person a role. One person can hold more than one.</dd></div>
+<div><dt>Direct permission</dt><dd>A single permission given to one person outside any role. It can have an expiry date.</dd></div>
+<div><dt>Level</dt><dd>A number from 1 (view only) up to 4 or 5 (admin) that shows how powerful a permission or role is.</dd></div>
+<div><dt>Superuser</dt><dd>A built-in super administrator. Passes every check automatically.</dd></div>
+</dl>
+<h2 id="s2-2"><span class="n">2.2</span>How HRMS decides yes or no</h2>
+<p>Every protected page and button asks the same question. The answer is found in this order, and the first yes wins.</p>
+<ol class="steps">
+<li>Not logged in? The answer is no.</li>
+<li>Superuser? The answer is yes, always.</li>
+<li>Does the person have this permission given directly, and has it not expired? Then yes.</li>
+<li>Does any of the person's active roles include this permission? Then yes.</li>
+<li>Otherwise the answer is no.</li>
+</ol>
+<div class="note"><span class="label">Department scope</span><p>Passing the permission check is not always enough. A role can be limited to one department or team, so a person may be allowed to view leave but only for their own department's data.</p></div>
+<h2 id="s2-3"><span class="n">2.3</span>The default roles</h2>
+<p>These are created automatically when the permission catalog is seeded. They can be edited, and new roles can be added.</p>
+<table class="first-b">
+<tr><th style="width:44mm">Role</th><th style="width:36mm">Type</th><th style="width:14mm">Level</th><th>In simple terms</th></tr>
+<tr><td>Administrator / Super Admin</td><td>admin</td><td>4</td><td>Everything, including RBAC and settings</td></tr>
+<tr><td>HR Manager</td><td>hr</td><td>3</td><td>People, leave, attendance, recruitment, onboarding, resignation</td></tr>
+<tr><td>Manager</td><td>manager</td><td>2</td><td>Team view, attendance marking, DSR and expense approval views</td></tr>
+<tr><td>Employee</td><td>employee</td><td>1</td><td>Own leave, attendance check-in, own DSR and expenses</td></tr>
+<tr><td>Marketing Manager</td><td>marketing_manager</td><td>3</td><td>The full marketing module plus DSR and expenses</td></tr>
+</table>
+<div class="example"><span class="label">Giving someone access</span><p>Priya in Accounts needs to see the server list but is not an administrator. Do not make her an admin. Give her the single permission <code>server.view</code>, and nothing else changes for her.</p></div>
+<h2 id="s2-4"><span class="n">2.4</span>Giving access, step by step</h2>
+<ol class="steps">
+<li>Open Admin &gt; RBAC &gt; User Roles and pick the person.</li>
+<li>Add a role, or open that person's permissions and add a single permission. Set an expiry date if the access is temporary.</li>
+<li>Role and permission changes are not instant for everyone. They are sent as a request and wait for someone with <code>rbac.approve_assignments</code>.</li>
+<li>The approver opens Pending Requests and approves or rejects, one request or a whole batch at a time.</li>
+<li>After approval the access is live straight away. The change is written to the audit log.</li>
+</ol>
+<figure class="fig keep"><svg viewBox="0 0 700 170" font-family="Plus Jakarta Sans, Arial, sans-serif" role="img" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#1C75BC"/></marker></defs><rect x="6" y="62" width="112" height="52" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="62.0" y="84.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Admin requests</text><text x="62.0" y="97.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">a role or permission</text><rect x="150" y="62" width="112" height="52" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="206.0" y="84.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Pending request</text><text x="206.0" y="97.9" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">or batch</text><polygon points="344,46 406,88 344,130 282,88" fill="#D6E7F1" stroke="#1C75BC" stroke-width="1.6"/><text x="344" y="85.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">Approver</text><text x="344" y="97.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">decides</text><rect x="470" y="18" width="112" height="42" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="526.0" y="42.4" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Access is granted</text><rect x="470" y="116" width="112" height="42" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="526.0" y="140.4" text-anchor="middle" font-size="9.5" font-weight="500" fill="#231F20">Nothing changes</text><rect x="604" y="66" width="92" height="44" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="650.0" y="84.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Written to</text><text x="650.0" y="97.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">audit log</text><path d="M118 88 H148" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M262 88 H280" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M376 54 C410 38 430 39 468 39" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="420" y="32" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">Approve</text><path d="M376 122 C410 138 430 137 468 137" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="420" y="156" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">Reject</text><path d="M582 39 C600 39 600 80 602 84" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M582 137 C600 137 600 96 602 92" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/></svg><figcaption>How an access change is approved</figcaption></figure>
+<h2 id="s2-5"><span class="n">2.5</span>Building your own role</h2>
+<ol class="steps">
+<li>Admin &gt; RBAC &gt; Roles &gt; Create. Give it a clear name and a type.</li>
+<li>Open the role's permissions and tick what it should be able to do.</li>
+<li>Assign the role to people as in 2.4.</li>
+</ol>
+<div class="note"><span class="label">Never judge by role name</span><p>HRMS checks permissions, not role names. Renaming a role never removes access, and a new role works the moment its permissions are ticked. The one exception is the fallback approval chain in Part 4, which looks at the role types <code>hr</code>, <code>manager</code> and <code>ceo</code>.</p></div>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s3"><span class="n">3</span>The Permission Catalog</h1>
+<p>Every permission has a code, a short description and a level. The tables below list them by module. Codes are the exact text shown in the Permissions screen.</p>
+<h2 id="s3-1"><span class="n">3.1</span>People &amp; Organization</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>employee.view</code></td><td>See the employee list and details</td><td>1</td></tr>
+<tr><td class="cd"><code>employee.create</code> / <code>employee.edit</code></td><td>Add or change employees</td><td>2</td></tr>
+<tr><td class="cd"><code>employee.delete</code></td><td>Delete employees</td><td>3</td></tr>
+<tr><td class="cd"><code>employee.import</code> / <code>employee.export</code></td><td>Bulk import or export</td><td>2/1</td></tr>
+<tr><td class="cd"><code>reports.employee</code></td><td>Headcount reports by department and designation</td><td>1</td></tr>
+<tr><td class="cd"><code>org.view_departments</code> / <code>org.view_designations</code></td><td>See departments and designations</td><td>1</td></tr>
+<tr><td class="cd"><code>org.manage_departments</code> / <code>org.manage_designations</code></td><td>Create and edit them</td><td>3</td></tr>
+<tr><td class="cd"><code>holiday.view</code></td><td>See the holiday calendar</td><td>1</td></tr>
+<tr><td class="cd"><code>holiday.manage</code> / <code>manage_years</code> / <code>manage_weekly_offs</code></td><td>Maintain holidays, years and weekly offs</td><td>3</td></tr>
+</table>
+<h2 id="s3-2"><span class="n">3.2</span>Leave, Attendance &amp; Resignation</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>leave.view</code></td><td>See own leave applications</td><td>1</td></tr>
+<tr><td class="cd"><code>leave.create</code></td><td>Apply for leave</td><td>2</td></tr>
+<tr><td class="cd"><code>leave.view_all</code></td><td>See every employee's leave and its approval history</td><td>1</td></tr>
+<tr><td class="cd"><code>leave.apply_on_behalf</code></td><td>Apply for someone else</td><td>2</td></tr>
+<tr><td class="cd"><code>leave.dashboard</code></td><td>Leave dashboard and live roster</td><td>1</td></tr>
+<tr><td class="cd"><code>leave.balances_view</code> / <code>leave.balances_edit</code></td><td>See or import leave balances</td><td>1/2</td></tr>
+<tr><td class="cd"><code>attendance.view</code> / <code>attendance.checkin</code></td><td>See own records, check in and out</td><td>1</td></tr>
+<tr><td class="cd"><code>attendance.view_all</code> / <code>attendance.mark</code></td><td>See everyone's attendance, mark for others</td><td>2</td></tr>
+<tr><td class="cd"><code>attendance.edit</code></td><td>Edit attendance records</td><td>3</td></tr>
+<tr><td class="cd"><code>attendance.manage_comp_off</code></td><td>Manage comp-off</td><td>2</td></tr>
+<tr><td class="cd"><code>resignation.view</code> / <code>resignation.submit</code></td><td>See and submit own resignation</td><td>1</td></tr>
+<tr><td class="cd"><code>resignation.view_all</code> / <code>manage_handover</code></td><td>See all, manage handover</td><td>2</td></tr>
+<tr><td class="cd"><code>resignation.approve</code> / <code>resignation.reject</code></td><td>Decide a resignation</td><td>3</td></tr>
+</table>
+<h2 id="s3-3"><span class="n">3.3</span>Recruitment &amp; Onboarding</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>recruitment.view</code> / <code>view_applicants</code></td><td>See job openings and applicants</td><td>1</td></tr>
+<tr><td class="cd"><code>recruitment.create_job</code> / <code>edit_job</code></td><td>Create and edit openings</td><td>2</td></tr>
+<tr><td class="cd"><code>recruitment.delete_job</code></td><td>Delete openings</td><td>3</td></tr>
+<tr><td class="cd"><code>recruitment.create_applicant</code> / <code>manage_applicants</code> / <code>send_emails</code></td><td>Add, update status, email applicants</td><td>2</td></tr>
+<tr><td class="cd"><code>recruitment.induct_applicant</code></td><td>Turn an applicant into an employee</td><td>3</td></tr>
+<tr><td class="cd"><code>onboarding.view</code></td><td>See onboarding form submissions</td><td>1</td></tr>
+<tr><td class="cd"><code>onboarding.send</code></td><td>Email the onboarding form</td><td>2</td></tr>
+<tr><td class="cd"><code>onboarding.approve</code></td><td>Approve submissions into the employee profile</td><td>3</td></tr>
+<tr><td class="cd"><code>onboarding_policy.view</code> / <code>create</code> / <code>edit</code> / <code>delete</code></td><td>Policies shown in the onboarding form</td><td>1/2/3/4</td></tr>
+</table>
+<h2 id="s3-4"><span class="n">3.4</span>DSR and Expenses</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>dsr.indoor_view</code> / <code>create</code> / <code>edit</code></td><td>Own indoor daily service report</td><td>1</td></tr>
+<tr><td class="cd"><code>dsr.indoor_delete</code></td><td>Delete an indoor DSR</td><td>2</td></tr>
+<tr><td class="cd"><code>dsr.outdoor_view</code></td><td>See outdoor DSR</td><td>1</td></tr>
+<tr><td class="cd"><code>dsr.outdoor_create</code> / <code>edit</code> / <code>delete</code></td><td>Manage outdoor DSR</td><td>2</td></tr>
+<tr><td class="cd"><code>dsr.view_all</code></td><td>See every employee's DSRs</td><td>2</td></tr>
+<tr><td class="cd"><code>dsr.view_submissions</code></td><td>Who has submitted, daily, weekly, monthly</td><td>2</td></tr>
+<tr><td class="cd"><code>dsr.assign_task</code></td><td>Log a DSR under another employee's name</td><td>2</td></tr>
+<tr><td class="cd"><code>expense_report.view</code> / <code>create</code> / <code>edit</code></td><td>Own daily expense voucher</td><td>1</td></tr>
+<tr><td class="cd"><code>expense_report.view_all</code></td><td>See all vouchers and approve or reject them</td><td>2</td></tr>
+<tr><td class="cd"><code>expense_report.delete</code></td><td>Delete a voucher</td><td>2</td></tr>
+</table>
+<h2 id="s3-5"><span class="n">3.5</span>Service</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>service.view</code> / <code>view_departments</code></td><td>See the Service section</td><td>1</td></tr>
+<tr><td class="cd"><code>service.create_contract</code> / <code>edit_contract</code></td><td>Maintenance contracts</td><td>2</td></tr>
+<tr><td class="cd"><code>service.delete_contract</code> / <code>service.delete</code></td><td>Delete contracts and records</td><td>3</td></tr>
+<tr><td class="cd"><code>service.manage_visit</code> / <code>manage_report</code></td><td>Visits and service reports</td><td>2</td></tr>
+<tr><td class="cd"><code>service.manage_work_order</code></td><td>Create and edit work orders</td><td>2</td></tr>
+<tr><td class="cd"><code>service.approve_work_order</code></td><td>Approve or reopen a work order</td><td>3</td></tr>
+<tr><td class="cd"><code>service.manage_dispatch</code></td><td>Store dispatch and proofs</td><td>2</td></tr>
+<tr><td class="cd"><code>service.create_complaint</code> / <code>manage_complaint</code></td><td>Raise and manage complaints</td><td>2</td></tr>
+<tr><td class="cd"><code>service.approve_complaint</code> / <code>reopen</code> / <code>close</code></td><td>Approve, reopen, close complaints</td><td>3</td></tr>
+</table>
+<h2 id="s3-6"><span class="n">3.6</span>Marketing</h2>
+<table class="cat">
+<tr><th style="width:78mm">Pattern</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>marketing.view_X</code></td><td>See the list (contact, customer, lead, domain, region, plant, organization, campaign, events, report, myteam, visiting_card_contact)</td><td>1</td></tr>
+<tr><td class="cd"><code>marketing.create_X</code> / <code>edit_X</code></td><td>Add or change that item</td><td>2</td></tr>
+<tr><td class="cd"><code>marketing.delete_X</code></td><td>Delete that item</td><td>3</td></tr>
+<tr><td class="cd"><code>marketing.assign_employee_region</code> / <code>assign_dashboard</code></td><td>Assign people to regions, assign dashboards</td><td>2</td></tr>
+<tr><td class="cd"><code>marketing.create_report</code></td><td>Submit own plans and reports</td><td>2</td></tr>
+<tr><td class="cd"><code>marketing.admin</code></td><td>Full marketing access</td><td>4</td></tr>
+</table>
+<h2 id="s3-7"><span class="n">3.7</span>Administration</h2>
+<table class="cat">
+<tr><th style="width:78mm">Code</th><th>What it allows</th><th style="width:17mm">Level</th></tr>
+<tr><td class="cd"><code>rbac.view_roles</code> / <code>view_permissions</code> / <code>view_domain_tab</code></td><td>See roles, permissions, Domain tab</td><td>1</td></tr>
+<tr><td class="cd"><code>rbac.assign_roles</code></td><td>Request a role assignment</td><td>3</td></tr>
+<tr><td class="cd"><code>rbac.assign_permissions</code></td><td>Request a permission assignment</td><td>4</td></tr>
+<tr><td class="cd"><code>rbac.approve_assignments</code></td><td>Approve or reject those requests</td><td>4</td></tr>
+<tr><td class="cd"><code>rbac.manage_roles</code> / <code>manage_permissions</code></td><td>Create and edit roles and permissions</td><td>4</td></tr>
+<tr><td class="cd"><code>settings.view</code></td><td>See system settings</td><td>1</td></tr>
+<tr><td class="cd"><code>settings.manage_templates</code></td><td>Edit email templates</td><td>2</td></tr>
+<tr><td class="cd"><code>settings.manage_email</code></td><td>Configure outgoing email</td><td>3</td></tr>
+<tr><td class="cd"><code>settings.manage_company</code> / <code>geofencing</code></td><td>Company settings, geofence locations</td><td>4</td></tr>
+<tr><td class="cd"><code>settings.wifi_networks</code></td><td>Manage the WiFi whitelist</td><td>4</td></tr>
+<tr><td class="cd"><code>settings.wifi_bypass</code></td><td>Exempt a person from the WiFi check</td><td>4</td></tr>
+<tr><td class="cd"><code>workflow.view</code> / <code>create</code> / <code>edit</code> / <code>delete</code></td><td>Workflows</td><td>1/2/2/3</td></tr>
+<tr><td class="cd"><code>workflow.approval_template_builder</code> / <code>approval_template_edit</code></td><td>Approval templates and mapping</td><td>4</td></tr>
+<tr><td class="cd"><code>forms.view</code> / <code>create</code> / <code>edit</code> / <code>delete</code></td><td>Forms</td><td>1/2/2/3</td></tr>
+<tr><td class="cd"><code>forms.response_view</code> / <code>edit</code> / <code>delete</code></td><td>Form responses</td><td>1/2/3</td></tr>
+<tr><td class="cd"><code>server.view</code></td><td>See the server list and look up others' access</td><td>2</td></tr>
+<tr><td class="cd"><code>server.manage</code> / <code>server.assign_access</code></td><td>Add servers, choose who can use them</td><td>3</td></tr>
+<tr><td class="cd"><code>server.access_all</code></td><td>Reach every server with no individual grant</td><td>4</td></tr>
+<tr><td class="cd"><code>intranet.view</code> / <code>intranet.manage</code></td><td>See or edit the app launcher</td><td>1/3</td></tr>
+<tr><td class="cd"><code>presence.view_users</code></td><td>See who is online</td><td>1</td></tr>
+</table>
+<div class="note"><span class="label">New permissions</span><p>A permission is only usable once it exists in the catalog. New codes follow the <code>module.action</code> pattern and are added to the seed command, then seeded with <code>python manage.py create_all_permissions</code>, which is safe to run again.</p></div>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s4"><span class="n">4</span>Approval Templates</h1>
+<p>An approval template answers one question: when this person submits something, who must approve it, and in what order. Leave, attendance, expenses, daily reports, marketing and service work orders can each have their own chain.</p>
+<h2 id="s4-1"><span class="n">4.1</span>The three building blocks</h2>
+<div class="cards3">
+<div class="card"><h3>Approval template</h3><p>A named chain, for example Senior Flow. It has a category and optionally a limit on how many levels are needed.</p></div>
+<div class="card"><h3>Step</h3><p>One level in the chain. Level 1 is asked first, then level 2, and so on. Each step names one approver.</p></div>
+<div class="card"><h3>Mapping (route)</h3><p>The rule that says this template applies to this person, this department or this role, for this kind of request.</p></div>
+</div>
+<h2 id="s4-2"><span class="n">4.2</span>Which requests can have templates</h2>
+<table class="first-b">
+<tr><th style="width:70mm">Template category</th><th>Used for</th></tr>
+<tr><td>Leave Management</td><td>Leave requests</td></tr>
+<tr><td>Attendance</td><td>Attendance corrections</td></tr>
+<tr><td>Marketing</td><td>Marketing approvals</td></tr>
+<tr><td>Expense</td><td>Daily expense vouchers</td></tr>
+<tr><td>Daily Service Report</td><td>DSR approvals</td></tr>
+<tr><td>Service Work Order</td><td>Work order approvals</td></tr>
+</table>
+<h2 id="s4-3"><span class="n">4.3</span>Who gets picked as approver</h2>
+<p>When someone submits a request, HRMS looks for a mapping in this order and stops at the first one it finds.</p>
+<ol class="steps">
+<li>A mapping set for that exact employee.</li>
+<li>Otherwise a mapping set for the employee's department.</li>
+<li>Otherwise a mapping set for the employee's role.</li>
+<li>Otherwise the built-in default chain.</li>
+</ol>
+<figure class="fig keep"><svg viewBox="0 0 700 290" font-family="Plus Jakarta Sans, Arial, sans-serif" role="img" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#1C75BC"/></marker></defs><rect x="6" y="20" width="112" height="44" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="62.0" y="38.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Request</text><text x="62.0" y="51.9" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">submitted</text><polygon points="222,2 300,42 222,82 144,42" fill="#D6E7F1" stroke="#1C75BC" stroke-width="1.6"/><text x="222" y="39.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">Mapping for</text><text x="222" y="51.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">this employee?</text><polygon points="402,2 480,42 402,82 324,42" fill="#D6E7F1" stroke="#1C75BC" stroke-width="1.6"/><text x="402" y="39.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">Mapping for their</text><text x="402" y="51.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">department?</text><polygon points="582,2 660,42 582,82 504,42" fill="#D6E7F1" stroke="#1C75BC" stroke-width="1.6"/><text x="582" y="39.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">Mapping for</text><text x="582" y="51.4" text-anchor="middle" font-size="9" font-weight="600" fill="#231F20">their role?</text><path d="M118 42 H142" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M300 42 H322" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="311" y="34" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">No</text><path d="M480 42 H502" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="491" y="34" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">No</text><rect x="120" y="142" width="380" height="40" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="310.0" y="165.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Use that template</text><path d="M222 82 V140" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="236" y="112" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">Yes</text><path d="M402 82 V140" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="416" y="112" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">Yes</text><path d="M560 76 C540 100 520 120 490 140" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="548" y="114" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">Yes</text><rect x="556" y="142" width="138" height="40" fill="#fff" stroke="#231F20" stroke-width="1.6"/><text x="625.0" y="165.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Built-in default chain</text><path d="M638 82 V140" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><text x="652" y="112" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1C75BC">No</text><rect x="230" y="236" width="240" height="40" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="350.0" y="259.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">Approver for the current level</text><path d="M310 182 C310 206 330 214 340 234" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/><path d="M625 182 C625 214 520 206 450 236" fill="none" stroke="#1C75BC" stroke-width="1.8"  marker-end="url(#ah)"/></svg><figcaption>Finding the approver</figcaption></figure>
+<div class="note"><span class="label">A found mapping is final</span><p>Once a mapping is found it is used completely. If the template has no step for the next level, the chain simply ends and the request is approved. HRMS does not fall back to the default chain.</p></div>
+<h2 id="s4-4"><span class="n">4.4</span>The built-in default chain</h2>
+<p>Used only when no mapping matches.</p>
+<table class="first-b">
+<tr><th style="width:44mm">Who submits</th><th>Level 1</th><th style="width:44mm">Level 2</th></tr>
+<tr><td>Regular employee</td><td>Their department manager</td><td>An HR user</td></tr>
+<tr><td>Manager</td><td>The CEO, or else the first superuser</td><td>None</td></tr>
+</table>
+<h2 id="s4-5"><span class="n">4.5</span>Setting up a chain, step by step</h2>
+<ol class="steps">
+<li>Open Workflows &gt; Approval Templates and choose New.</li>
+<li>Give it a name, pick the category, and add the steps. Level 1 first, then level 2, each with an approver.</li>
+<li>Optionally set Levels needed. If you configure three steps but set it to two, only two are used.</li>
+<li>Save, then open Assign (or Leave &gt; Template Mapping for bulk changes).</li>
+<li>Choose who it applies to: employees, a department, or a role.</li>
+<li>Check Active Mappings, a read-only page, to confirm who is covered.</li>
+</ol>
+<div class="example"><span class="label">Two-level leave approval for Service team</span><p>Template Service Leave has level 1 as the Service team lead and level 2 as the HR Manager. Map it to the Service department for Leave. Every leave request from anyone in Service now goes to the team lead first and then to HR. A single employee in Service can still get their own mapping, which wins over the department's.</p></div>
+<div class="note"><span class="label">One template per category per target</span><p>A person, department or role cannot be given two templates of the same category at once. Remove the old assignment first.</p></div>
+<h2 id="s4-6"><span class="n">4.6</span>Who may change templates</h2>
+<p>Both permissions below are level 4, so by default only administrators.</p>
+<ul><li><code>workflow.approval_template_builder</code> opens the builder and mapping pages.</li><li><code>workflow.approval_template_edit</code> allows editing and deleting templates.</li></ul>
+<h2 id="s4-7"><span class="n">4.7</span>For other systems</h2>
+<p>Other apps can read the resolved chain for any user over the API. They can read it but not change it.</p>
+<table class="first-b">
+<tr><th style="width:34mm">Item</th><th>Detail</th></tr>
+<tr><td>Endpoint</td><td><code>GET /api/rbac/approval-templates/?username=jane</code></td></tr>
+<tr><td>Authentication</td><td><code>Authorization: Token</code> (get one from <code>POST /api/rbac/login/</code>)</td></tr>
+<tr><td>Returns</td><td>For each request type, the template, its steps and whether it is custom or the system default</td></tr>
+<tr><td>Not available</td><td>Creating or editing templates over the API</td></tr>
+</table>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s5"><span class="n">5</span>Servers</h1>
+<p>HRMS keeps a directory of servers (RDP by default) and a list of which employees may connect to each one. The TunnelGate app asks HRMS which servers a person is allowed to see.</p>
+<div class="note"><span class="label">Addresses only, never passwords</span><p>HRMS stores the server's address and nothing else. People sign in on the server itself. There is nowhere in HRMS to type a server password.</p></div>
+<h2 id="s5-1"><span class="n">5.1</span>Adding a server</h2>
+<ol class="steps">
+<li>Open Admin &gt; Servers and choose Add. This needs <code>server.manage</code>.</li>
+<li>Enter a display name such as Accounts RDP.</li>
+<li>Enter the host: a name or IP only, for example <code>rdp-128.example.com</code> or <code>192.168.1.102</code>. No port, no <code>http://</code>, no spaces. It is stored in lower case and must be unique.</li>
+<li>Choose the protocol (RDP, SSH, VNC or Other) and add a short description.</li>
+<li>Save. The server is active straight away.</li>
+</ol>
+<h2 id="s5-2"><span class="n">5.2</span>Choosing who can connect</h2>
+<ol class="steps">
+<li>Open the server and choose Access. This needs <code>server.assign_access</code>.</li>
+<li>Tick the employees who may use it and save.</li>
+</ol>
+<table class="first-b">
+<tr><th style="width:64mm">Person</th><th>What they see through the API</th></tr>
+<tr><td>Employee with a grant</td><td>Only the servers they were granted</td></tr>
+<tr><td>Superuser</td><td>Every active server</td></tr>
+<tr><td>Holder of <code>server.access_all</code></td><td>Every active server, with no grants needed</td></tr>
+<tr><td>Employee with no grant</td><td>Nothing</td></tr>
+</table>
+<h2 id="s5-3"><span class="n">5.3</span>Switching off and removing</h2>
+<ul><li><b>Deactivate:</b> hides the server from the API but keeps its access list. Reactivate later and everyone is back.</li><li><b>Delete:</b> removes the server and all its access rows for good.</li><li>Access is per person. Department or role based access is not supported.</li></ul>
+<h2 id="s5-4"><span class="n">5.4</span>Server permissions at a glance</h2>
+<table class="cat">
+<tr><th style="width:48mm">Code</th><th style="width:16mm">Level</th><th>Meaning</th></tr>
+<tr><td class="cd"><code>server.view</code></td><td>2</td><td>See the list and use the look-up-another-user API</td></tr>
+<tr><td class="cd"><code>server.manage</code></td><td>3</td><td>Add, edit, activate, deactivate, delete</td></tr>
+<tr><td class="cd"><code>server.assign_access</code></td><td>3</td><td>Choose who can use each server</td></tr>
+<tr><td class="cd"><code>server.access_all</code></td><td>4</td><td>Unrestricted access to every server</td></tr>
+</table>
+<div class="note"><span class="label">Nobody has these by default</span><p>The server permissions are not attached to any default role. Until someone assigns them, only superusers can manage servers.</p></div>
+<h2 id="s5-5"><span class="n">5.5</span>What TunnelGate calls</h2>
+<table>
+<tr><th style="width:62mm">Call</th><th style="width:52mm">Who may use it</th><th>Returns</th></tr>
+<tr><td><code>GET /api/rbac/my-servers/</code></td><td>Any logged-in user</td><td>Servers that user can reach</td></tr>
+<tr><td><code>GET /api/rbac/servers/?username=jane</code></td><td>A service account with <code>server.view</code></td><td>Servers that named user can reach</td></tr>
+</table>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s6"><span class="n">6</span>WiFi Access Control</h1>
+<p>This feature lets administrators decide which office WiFi networks are trusted. HRMS keeps the list and answers one question: is this network allowed? It does not watch or block any traffic itself. The TunnelGate app detects the user's WiFi and asks HRMS before granting access.</p>
+<h2 id="s6-1"><span class="n">6.1</span>Adding a WiFi network</h2>
+<ol class="steps">
+<li>Open Settings &gt; WiFi Access Control. This needs <code>settings.wifi_networks</code>.</li>
+<li>Choose Add Network.</li>
+<li>Name: a label for people, such as Head Office or Branch 2.</li>
+<li>SSID: the exact WiFi name people see on their device.</li>
+<li>BSSID, optional: the access point's MAC address, written <code>AA:BB:CC:DD:EE:FF</code>. HRMS checks the format and converts it to capitals.</li>
+<li>Leave Active ticked and save.</li>
+</ol>
+<h2 id="s6-2"><span class="n">6.2</span>SSID only, or pinned to one access point</h2>
+<table class="first-b">
+<tr><th style="width:48mm">Setup</th><th style="width:60mm">How it matches</th><th>When to use it</th></tr>
+<tr><td>SSID only (BSSID left blank)</td><td>Any router broadcasting that name is accepted</td><td>Simple setups where you trust the name</td></tr>
+<tr><td>SSID with BSSID</td><td>Both the name and the exact router must match</td><td>Stops a fake hotspot using your WiFi name</td></tr>
+</table>
+<div class="note"><span class="label">Add as many as you need</span><p>Head office, each branch and a guest network can all be listed. The first match wins. Switching a network to inactive removes it from checks without deleting it.</p></div>
+<h2 id="s6-3"><span class="n">6.3</span>The on and off switch</h2>
+<p>At the top of the same page is <b>Enforce WiFi Restriction for Server Access</b>. It is off by default.</p>
+<table class="first-b">
+<tr><th style="width:52mm">Switch</th><th>What HRMS answers</th></tr>
+<tr><td>Off</td><td>Always allowed. No matching is done at all. Safe for testing TunnelGate first.</td></tr>
+<tr><td>On, with networks listed</td><td>Allowed only if the current network matches one entry</td></tr>
+<tr><td>On, with no networks listed</td><td>Denied, with a message to contact the administrator</td></tr>
+</table>
+<h2 id="s6-4"><span class="n">6.4</span>Exempting a person</h2>
+<p>A person holding <code>settings.wifi_bypass</code> skips the WiFi check entirely. Superusers are exempt too. Use this sparingly, for example for people who must connect from home.</p>
+<h2 id="s6-5"><span class="n">6.5</span>How TunnelGate checks</h2>
+<figure class="fig keep"><svg viewBox="0 0 700 330" font-family="Plus Jakarta Sans, Arial, sans-serif" role="img" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#1C75BC"/></marker></defs><rect x="60" y="6" width="160" height="38" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="140.0" y="28.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">TunnelGate app</text><rect x="460" y="6" width="160" height="38" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="540.0" y="28.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">HRMS</text><rect x="60" y="286" width="160" height="38" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="140.0" y="308.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">TunnelGate app</text><rect x="460" y="286" width="160" height="38" fill="#D6E7F1" stroke="#231F20" stroke-width="1.6"/><text x="540.0" y="308.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="#231F20">HRMS</text><path d="M140 44V286M540 44V286" stroke="#1C75BC" stroke-width="1.4" stroke-dasharray="4 4"/><text x="150" y="68" font-size="9.5" font-weight="500" fill="#231F20">Read current WiFi name and router address</text><path d="M140 76 h30 q10 0 10 9 q0 9 -10 9 h-28" fill="none" stroke="#231F20" stroke-width="1.6" marker-end="url(#ah)"/><path d="M140 126 H536" fill="none" stroke="#231F20" stroke-width="1.8"  marker-end="url(#ah)"/><text x="338" y="118" text-anchor="middle" font-size="9.5" font-weight="600" fill="#231F20">Send SSID and BSSID</text><text x="552" y="166" font-size="9.5" font-weight="500" fill="#231F20">Is restriction on? Is the person exempt?</text><path d="M540 174 h30 q10 0 10 9 q0 9 -10 9 h-28" fill="none" stroke="#231F20" stroke-width="1.6" marker-end="url(#ah)"/><text x="552" y="212" font-size="9.5" font-weight="500" fill="#231F20">Compare with the active list</text><path d="M540 220 h30 q10 0 10 9 q0 9 -10 9 h-28" fill="none" stroke="#231F20" stroke-width="1.6" marker-end="url(#ah)"/><path d="M540 256 H144" fill="none" stroke="#1C75BC" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#ah)"/><text x="342" y="248" text-anchor="middle" font-size="9.5" font-weight="600" fill="#231F20">allowed or not allowed, with a reason</text><text x="150" y="274" font-size="9.5" font-weight="500" fill="#231F20">Grant or deny access</text></svg><figcaption>The WiFi check</figcaption></figure>
+<ul><li>TunnelGate calls <code>POST /api/rbac/wifi-networks/validate/</code> with the <code>ssid</code> and optional <code>bssid</code>.</li><li>If HRMS cannot be reached, TunnelGate should deny. Failing open defeats the purpose.</li><li>TunnelGate should remember an allow decision for 30 to 60 seconds and check again as soon as the network changes.</li><li>Use a dedicated service account for TunnelGate, never a real employee's login.</li></ul>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s7"><span class="n">7</span>Other Things You Can Change</h1>
+<p>Smaller settings that follow the same idea: change it in the browser, no code needed.</p>
+<div class="cards2">
+<div class="card"><h3>Geofence locations</h3><p>Add plant or office locations with a map point and an allowed range. Attendance check-ins are matched against them. Needs <code>settings.geofencing</code>.</p></div>
+<div class="card"><h3>Company settings</h3><p>Company profile, logo and shared dropdown values used across forms. Needs <code>settings.manage_company</code>.</p></div>
+<div class="card"><h3>Email settings and templates</h3><p>Outgoing email account and the wording of system emails. Needs <code>settings.manage_email</code> and <code>settings.manage_templates</code>.</p></div>
+<div class="card"><h3>Departments and designations</h3><p>The organisation structure that approval mappings and scopes refer to. Needs <code>org.manage_departments</code> and <code>org.manage_designations</code>.</p></div>
+<div class="card"><h3>Holidays and weekly offs</h3><p>Holiday calendar by year and weekly off pattern. Needs the <code>holiday.manage</code> permissions.</p></div>
+<div class="card"><h3>Intranet apps</h3><p>Tiles in the app launcher with name, link, icon, colour and order. Can be switched on or off. Needs <code>intranet.manage</code>.</p></div>
+<div class="card"><h3>Forms and workflows</h3><p>Custom forms and multi-step workflows built in the browser. Needs <code>forms.*</code> and <code>workflow.*</code> permissions.</p></div>
+<div class="card"><h3>Onboarding policies</h3><p>The policies new joiners see in the public onboarding form. Needs <code>onboarding_policy.*</code>.</p></div>
+</div>
+</section>
+<section class="sec-break">
+<h1 class="sec" id="s8"><span class="n">8</span>Quick Checklists</h1>
+<h2 id="s8-1"><span class="n">8.1</span>A new person joins</h2>
+<ol class="steps">
+<li>Create the employee. The login and the basic Employee role are created automatically.</li>
+<li>Check Active Mappings that their department or role has the right approval templates.</li>
+<li>Give extra roles or single permissions only if needed, then have them approved.</li>
+<li>Grant server access and, if needed, note any WiFi exemption.</li>
+</ol>
+<h2 id="s8-2"><span class="n">8.2</span>A person leaves or changes role</h2>
+<ol class="steps">
+<li>Remove or replace their role in User Roles. Remove any direct permissions.</li>
+<li>Remove their server access grants.</li>
+<li>If they are named as an approver in any template, replace them there first. Otherwise requests may reach someone who has left.</li>
+</ol>
+<h2 id="s8-3"><span class="n">8.3</span>Things worth remembering</h2>
+<ul><li>Everyone's access is decided by permissions, so adjust permissions rather than creating special cases.</li><li>A role or permission change waits for approval and then applies immediately.</li><li>An approval mapping always beats the default chain, even if the template is short.</li><li>Servers are by person, WiFi is by network, and the two are independent switches.</li><li>Every change is recorded in the audit log, so you can always see who changed what.</li></ul>
+<div class="signoff keep"><div><span class="label">For BeForth</span><div class="line"></div><b>Authorized Signatory</b></div><div><span class="label">For Aureole</span><div class="line"></div><b>Authorized Signatory</b></div></div>
+</section>
+</body></html>

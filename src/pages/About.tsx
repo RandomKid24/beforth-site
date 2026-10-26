@@ -16,7 +16,7 @@ const POINTS = [
 
 const VALUES = [
   { k: 'Clarity', v: 'Plain language, documented scope, no jargon between you and the build.' },
-  { k: 'Craft', v: 'Work we are happy to put our name on — tested, tidy and built to last.' },
+  { k: 'Craft', v: 'Work we are happy to put our name on, tested, tidy and built to last.' },
   { k: 'Ownership', v: 'Your deadlines and data treated as our own.' },
   { k: 'Continuity', v: 'Reachable for the years after go-live.' },
 ];
@@ -90,7 +90,7 @@ export default function AboutPage() {
                 <p className="display-md text-lg md:text-[24px] leading-[1.28] text-paper">
                   Replace manual processes and disconnected tools with practical, scalable
                   technology that makes businesses run better. Our job is not simply to deliver
-                  software — it is to understand the problem behind the request.
+                  software. It is to understand the problem behind the request.
                 </p>
                 <MissionDoodle dark className="mt-auto pt-6 w-44 self-end" />
               </div>
@@ -179,17 +179,14 @@ export default function AboutPage() {
             </Reveal>
 
             <Reveal delay={0.08}>
-              <div className="flex flex-wrap gap-2.5">
+              <ul className="grid sm:grid-cols-2 gap-x-8 border-t border-ink/15">
                 {INDUSTRIES.map((industry) => (
-                  <span
-                    key={industry}
-                    className="label inline-flex items-center gap-2.5 border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
-                  >
+                  <li key={industry} className="flex items-center gap-3 py-3.5 border-b border-ink/15 display-md text-[16px]">
                     <SectorIcon name={industry} className="w-5 h-5 shrink-0" />
                     {industry}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               <div className="mt-10 pt-8 border-t border-ink/12">
                 <p className="body max-w-lg mb-6">

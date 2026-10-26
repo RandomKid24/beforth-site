@@ -45,9 +45,10 @@ for M and Y.
 1. **`paper` is the default canvas.** Every page starts on `paper`.
 2. **`bone` marks a section break** — one step darker, same hue family.
 3. **`ink` carries primary text.** On dark fills (`bg-ink`) use `paper` for text.
-4. **`ash` is secondary text only.** Its contrast on `paper` is about 4.4:1, just under the
-   4.5:1 AA threshold for small text — keep it for supporting copy, use `ink` for anything
-   the reader must act on, and avoid thin weights below ~14px.
+4. **`ash` is secondary text only.** Its contrast is about 5.4:1 on `paper` and 4.6:1 on
+   `bone`, both above the 4.5:1 AA threshold for small text (it was `#6D737F` at 4.4:1
+   until October 2026). Keep it for supporting copy, use `ink` for anything the reader
+   must act on, and avoid thin weights below ~14px.
 5. **`signal` is used sparingly** — one primary action per view, plus active states.
 6. **On dark surfaces use `wave`, not `signal`.** `signal` on `ink` is only ~3.3:1.
 7. **Dark sections (`bg-ink`) are contrast bands only.**
