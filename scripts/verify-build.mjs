@@ -18,7 +18,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 
 const ROUTES = [
-  '/', '/services', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact',
+  '/', '/services', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact', '/privacy-policy', '/terms', '/cookie-policy',
   '/product/delivery-tracking', '/product/salon-erp', '/product/hrms',
   '/product/crm', '/product/mobile-apps', '/product/websites',
   '/product/tunnelgate', '/product/seo-tracking', '/product/payroll',

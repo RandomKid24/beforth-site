@@ -265,6 +265,9 @@ const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/about': [{ name: 'About', path: '/about' }],
   '/team': [{ name: 'Team', path: '/team' }],
   '/contact': [{ name: 'Contact', path: '/contact' }],
+  '/privacy-policy': [{ name: 'Privacy Policy', path: '/privacy-policy' }],
+  '/terms': [{ name: 'Terms & Conditions', path: '/terms' }],
+  '/cookie-policy': [{ name: 'Cookie Policy', path: '/cookie-policy' }],
 };
 
 function breadcrumbList(pathname: string) {

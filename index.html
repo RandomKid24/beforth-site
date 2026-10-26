@@ -51,25 +51,21 @@
     }
   </script>
 
-  <!-- Tawk.to live chat: loaded on the visitor's first interaction, not on page
-       load, so it cannot delay the first paint or shift the layout. -->
+  <!-- Tawk.to live chat: loaded only after the visitor accepts it in the cookie
+       banner (src/components/ConsentBanner.tsx), because it sets cookies and
+       sends chat data to a third party. -->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var events=['pointerdown','keydown','touchstart','wheel'];
-      function load(){
-        events.forEach(function(e){ window.removeEventListener(e,load); });
-        if(document.getElementById('tawk-src')) return;
-        var s=document.createElement('script');
-        s.id='tawk-src';
-        s.async=true;
-        s.src='https://embed.tawk.to/69cce1f8cfacab1c3944644d/1jl455dah';
-        s.charset='UTF-8';
-        s.setAttribute('crossorigin','*');
-        document.head.appendChild(s);
-      }
-      events.forEach(function(e){ window.addEventListener(e,load,{once:true,passive:true}); });
-    })();
+    window.loadTawk=function(){
+      if(document.getElementById('tawk-src')) return;
+      var s=document.createElement('script');
+      s.id='tawk-src';
+      s.async=true;
+      s.src='https://embed.tawk.to/69cce1f8cfacab1c3944644d/1jl455dah';
+      s.charset='UTF-8';
+      s.setAttribute('crossorigin','*');
+      document.head.appendChild(s);
+    };
   </script>
 
   <script type="module" src="/src/main.tsx"></script>

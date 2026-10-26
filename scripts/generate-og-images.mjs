@@ -120,6 +120,9 @@ const ROUTE_META = {
     title: 'The people behind the builds | BeForth',
     sub: 'Strategy, architecture and engineering.',
   },
+  '/privacy-policy': { eyebrow: 'Legal', title: 'Privacy Policy | BeForth', sub: 'How we handle your information.' },
+  '/terms': { eyebrow: 'Legal', title: 'Terms & Conditions | BeForth', sub: 'The terms for using this website.' },
+  '/cookie-policy': { eyebrow: 'Legal', title: 'Cookie Policy | BeForth', sub: 'Cookies and how to control them.' },
   '/contact': {
     eyebrow: 'Contact',
     title: 'Discuss your ERP or software project | BeForth',

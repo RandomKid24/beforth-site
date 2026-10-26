@@ -1,6 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
 
+const esc = (v: unknown) =>
+  String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS configuration
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -24,14 +27,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
-      res.status(500).json({
-        success: false,
-        message: 'Email service is not configured. Set GMAIL_USER and GMAIL_PASS.',
-      });
-      return;
-    }
-
     const body =
       typeof req.body === 'string'
         ? JSON.parse(req.body || '{}')
@@ -39,9 +34,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           ? req.body
           : {};
 
-    const { name, email, subject, message } = body as {
+    const { name, email, company, subject, message } = body as {
       name?: string;
       email?: string;
+      company?: string;
       subject?: string;
       message?: string;
     };
@@ -51,6 +47,42 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
 
+    // CRM lead webhook (server-side: the URL holds the token, and the CRM is plain http,
+    // which browsers block from an https page). Set CRM_WEBHOOK_URL in Vercel.
+    const crmUrl = process.env.CRM_WEBHOOK_URL;
+    const emailConfigured = !!(process.env.GMAIL_USER && process.env.GMAIL_PASS);
+    if (!crmUrl && !emailConfigured) {
+      res.status(500).json({ success: false, message: 'Contact service is not configured.' });
+      return;
+    }
+
+    const sendToCrm = async () => {
+      if (!crmUrl) return;
+      const r = await fetch(crmUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: name,
+          email,
+          company: company || '',
+          need: subject || '',
+          details: message,
+        }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (r.status === 400) {
+        const data = (await r.json().catch(() => ({}))) as { errors?: Record<string, unknown> };
+        throw Object.assign(new Error('CRM validation failed'), { crmErrors: data.errors ?? {} });
+      }
+      if (!r.ok) throw new Error(`CRM responded ${r.status}`);
+    };
+
+    const sendEmail = async () => {
+      if (!emailConfigured) return;
+      await sendMail();
+    };
+
+    const sendMail = async () => {
     // Configure the SMTP transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -71,7 +103,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       from: `"Beforth Website" <${process.env.GMAIL_USER}>`,
       to: recipients,
       replyTo: email,
-      subject: `New Contact Form Submission: ${subject || 'General Inquiry'}`,
+      subject: `New Contact Form Submission: ${String(subject || 'General Inquiry').replace(/[\r\n]+/g, ' ')}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <h2 style="color: #0F172A; border-bottom: 2px solid #slate-200; padding-bottom: 10px;">New Form Submission</h2>
@@ -80,28 +112,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <tr>
               <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold; width: 120px;">Name</td>
-              <td style="padding: 10px; border: 1px solid #e2e8f0;">${name}</td>
+              <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(name)}</td>
             </tr>
             <tr>
               <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Email</td>
-              <td style="padding: 10px; border: 1px solid #e2e8f0;">${email}</td>
+              <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(email)}</td>
             </tr>
             <tr>
               <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Subject</td>
-              <td style="padding: 10px; border: 1px solid #e2e8f0;">${subject}</td>
+              <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(subject)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Company</td>
+              <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(company)}</td>
             </tr>
           </table>
           
           <h3 style="margin-top: 30px;">Message:</h3>
-          <div style="padding: 15px; background: #f8fafc; border-left: 4px solid #0F172A; white-space: pre-wrap;">${message}</div>
+          <div style="padding: 15px; background: #f8fafc; border-left: 4px solid #0F172A; white-space: pre-wrap;">${esc(message)}</div>
           
           <p style="margin-top: 40px; font-size: 12px; color: #64748b;">This email was automatically generated from your Vercel frontend.</p>
         </div>
       `,
     };
 
-    // Send the email
     await transporter.sendMail(mailOptions);
+    };
+
+    // Either channel reaching the team is enough; a lead is never lost to one outage.
+    const [crm, mail] = await Promise.allSettled([sendToCrm(), sendEmail()]);
+    if (crm.status === 'rejected') console.error('CRM error:', crm.reason);
+    if (mail.status === 'rejected') console.error('Email error:', mail.reason);
+
+    const crmErrors = crm.status === 'rejected' ? (crm.reason as { crmErrors?: Record<string, unknown> }).crmErrors : undefined;
+    if (crmErrors) {
+      res.status(400).json({ success: false, message: 'Please check the highlighted details.', errors: crmErrors });
+      return;
+    }
+    const delivered = (crmUrl && crm.status === 'fulfilled') || (emailConfigured && mail.status === 'fulfilled');
+    if (!delivered) {
+      res.status(500).json({ success: false, message: 'Failed to send message.' });
+      return;
+    }
 
     res.status(200).json({ success: true, message: 'Message sent successfully!' });
   } catch (error: any) {

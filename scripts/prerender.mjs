@@ -56,6 +56,9 @@ const ROUTES = [
   '/about',
   '/team',
   '/contact',
+  '/privacy-policy',
+  '/terms',
+  '/cookie-policy',
   ...[
     'delivery-tracking',
     'salon-erp',

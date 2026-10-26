@@ -1,4 +1,5 @@
 import { track } from '@/lib/track';
+import { Link } from 'react-router-dom';
 import React, { useState, useRef, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
@@ -86,6 +87,7 @@ function Dropdown({ value, onChange }: { value: string; onChange: (v: string) =>
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+  const [agreed, setAgreed] = useState(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [feedback, setFeedback] = useState('');
   const [statusIndex, setStatusIndex] = useState(0);
@@ -110,13 +112,14 @@ export default function ContactPage() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
+          company: form.company,
           subject: form.subject,
           message: form.message,
         }),
       });
 
       const text = await res.text();
-      let data: { message?: string } = {};
+      let data: { message?: string; errors?: Record<string, unknown> } = {};
       if (text) {
         try {
           data = JSON.parse(text);
@@ -125,12 +128,17 @@ export default function ContactPage() {
         }
       }
 
-      if (!res.ok) throw new Error(data.message || 'Something went wrong. Please try again.');
+      if (!res.ok) {
+        const labels: Record<string, string> = { full_name: 'Name', email: 'Email', details: 'Project details', company: 'Company', need: 'Topic' };
+        const detail = Object.keys(data.errors ?? {}).map((k) => labels[k] ?? k).join(', ');
+        throw new Error(detail ? `Please check: ${detail}.` : data.message || 'Something went wrong. Please try again.');
+      }
 
       track('contact_submit');
       setState('success');
       setFeedback('Message sent. We will get back to you shortly.');
       setForm({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+      setAgreed(false);
       setTimeout(() => setState('idle'), 6000);
     } catch (err) {
       setState('error');
@@ -285,6 +293,20 @@ export default function ContactPage() {
                   />
                 </div>
 
+                <label className="flex items-start gap-3 mb-6 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="mt-1 w-4 h-4 shrink-0 accent-[var(--color-signal)]"
+                  />
+                  <span className="body-tight !text-ink/80">
+                    I agree that BeForth may use these details to reply to my enquiry, as described in the{' '}
+                    <Link to="/privacy-policy" className="underline hover:text-signal">Privacy Policy</Link>. *
+                  </span>
+                </label>
+
                 <AnimatePresence>
                   {feedback && (
                     <m.div
@@ -309,7 +331,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="label !normal-case !tracking-[0.06em] mt-5 text-center leading-relaxed">
-                  We never share your details. No mailing lists, no spam.
+                  Your details go to our team by email. We do not sell them or add you to mailing lists.
                 </p>
               </form>
             </Reveal>

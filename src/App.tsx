@@ -15,6 +15,7 @@ import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { PUBLISHED_CASE_STUDIES } from '@/data/caseStudies';
 import { routeGraph } from '@/lib/schema';
 import { track } from '@/lib/track';
+import ConsentBanner from '@/components/ConsentBanner';
 import { DoodleDefs, HeroDoodle, HubDoodle, SheetDoodle, SiteDoodle, RoadDoodle, SectorIcon, PlaneDoodle, ReasonDoodle, TangleDoodle, FaqDoodle } from '@/components/Doodles';
 
 /**
@@ -62,6 +63,8 @@ const InsightsPage = lazyRoute(() => import('./pages/Insights'));
 const loadInsights = InsightsPage.preload;
 const InsightArticle = lazyRoute(() => import('./pages/InsightArticle'));
 const loadInsightArticle = InsightArticle.preload;
+const LegalPage = lazyRoute(() => import('./pages/Legal'));
+const loadLegal = LegalPage.preload;
 const ProductPage = lazyRoute(() => import('./pages/ProductPage'));
 const loadProductPage = ProductPage.preload;
 
@@ -899,7 +902,12 @@ function Footer() {
 
         <div className="mt-10 pt-5 border-t border-ink/12 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <p className="label !normal-case !tracking-[0.06em]">© {new Date().getFullYear()} Beforth</p>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-x-2">
+            {[['/privacy-policy', 'Privacy Policy'], ['/terms', 'Terms & Conditions'], ['/cookie-policy', 'Cookie Policy']].map(([to, label]) => (
+              <Link key={to} to={to} className="flex items-center min-h-[28px] px-2 label hover:text-signal transition-colors">
+                {label}
+              </Link>
+            ))}
             <a
               href="https://in.linkedin.com/company/beforth"
               target="_blank"
@@ -965,6 +973,25 @@ const META: Record<string, { title: string; description: string; keywords: strin
   },
 };
 
+const LEGAL_META: Record<string, { title: string; description: string; keywords: string }> = {
+  '/privacy-policy': {
+    title: 'Privacy Policy | Beforth',
+    description: 'How Beforth collects, uses and protects personal information submitted through beforth.in, and the choices you have.',
+    keywords: 'Beforth privacy policy',
+  },
+  '/terms': {
+    title: 'Terms & Conditions | Beforth',
+    description: 'The terms for using the Beforth website, including disclaimers and governing law.',
+    keywords: 'Beforth terms and conditions',
+  },
+  '/cookie-policy': {
+    title: 'Cookie Policy | Beforth',
+    description: 'The cookies and similar technologies used on beforth.in and how to control them.',
+    keywords: 'Beforth cookie policy',
+  },
+};
+Object.assign(META, LEGAL_META);
+
 function setMeta(selector: string, attrs: Record<string, string>, content: string) {
   let el = document.head.querySelector(selector) as HTMLMetaElement | null;
   if (!el) {
@@ -986,6 +1013,7 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   if (p === '/insights') return loadInsights();
   if (p.startsWith('/insights/')) return loadInsightArticle();
   if (p.startsWith('/product/')) return loadProductPage();
+  if (p in LEGAL_META) return loadLegal();
   return NotFound.preload();
 }
 
@@ -1102,7 +1130,7 @@ export default function App() {
   // Fetch every page chunk once the browser is idle, so a route change never
   // waits on the network or flashes the Suspense fallback mid-animation.
   useEffect(() => {
-    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadInsightArticle, loadProductPage, loadShowcase].forEach((f) => f());
+    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadInsightArticle, loadProductPage, loadLegal, loadShowcase].forEach((f) => f());
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) w.requestIdleCallback(preload);
     else window.setTimeout(preload, 1200);
@@ -1167,6 +1195,9 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy-policy" element={<LegalPage kind="privacy" />} />
+              <Route path="/terms" element={<LegalPage kind="terms" />} />
+              <Route path="/cookie-policy" element={<LegalPage kind="cookies" />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -1174,6 +1205,7 @@ export default function App() {
         </main>
 
         <Footer />
+        <ConsentBanner />
       </MotionConfig>
     </LazyMotion>
   );
