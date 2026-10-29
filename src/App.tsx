@@ -281,6 +281,21 @@ function Navbar() {
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
+/** Eased scroll to an element, below the fixed navbar. Instant under reduced motion. */
+function smoothScrollTo(el: HTMLElement) {
+  const target = el.getBoundingClientRect().top + window.scrollY - 80;
+  const from = window.scrollY;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return window.scrollTo(0, target);
+  const dur = Math.min(1100, 450 + Math.abs(target - from) * 0.35);
+  const t0 = performance.now();
+  const step = (now: number) => {
+    const p = Math.min(1, (now - t0) / dur);
+    window.scrollTo(0, from + (target - from) * (1 - Math.pow(1 - p, 4)));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 function Hero() {
   return (
     <section className="pt-32 md:pt-40 pb-16 md:pb-24 border-b border-ink/12">
@@ -301,7 +316,17 @@ function Hero() {
           <Link to="/contact" className="btn-signal">
             Start a project <ArrowRight className="w-4 h-4" />
           </Link>
-          <a href="#services" className="ulink">
+          <a
+            href="#services"
+            className="ulink"
+            onClick={(e) => {
+              const el = document.getElementById('services');
+              if (!el) return;
+              e.preventDefault();
+              smoothScrollTo(el);
+              history.replaceState(null, '', '#services');
+            }}
+          >
             What we build <ArrowDown className="w-3.5 h-3.5" />
           </a>
         </div>
@@ -323,7 +348,7 @@ function Positioning() {
           <Reveal>
             <div className="rule mb-5" />
             <span className="label">What we do</span>
-            <HubDoodle className="hidden lg:block w-44 mt-8" />
+            <HubDoodle className="hidden lg:block w-56 mt-6" />
           </Reveal>
           <Reveal delay={0.08}>
             <p className="display-lg text-xl md:text-[28px] leading-[1.3] max-w-[30ch]">
@@ -410,18 +435,33 @@ function ServicesSection() {
             <Reveal key={service.n} delay={i * 0.04}>
               <Link
                 to={service.to}
-                className="group grid md:grid-cols-[3.5rem_1fr_auto] gap-x-8 gap-y-2 py-6 md:py-7 px-3 -mx-3 transition-colors duration-500 hover:bg-bone/50"
+                className="group relative overflow-hidden grid md:grid-cols-[3.5rem_1fr_auto] gap-x-8 gap-y-2 py-6 md:py-7 px-3 -mx-3"
               >
-                <span className="label transition-colors duration-500 group-hover:text-signal">
+                {/* a wash of colour sweeps in from the left, like a highlighter */}
+                <span aria-hidden="true" className="absolute inset-0 bg-bone/60 origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none" />
+                <span className="label relative transition-colors duration-500 group-hover:text-signal">
                   {service.n}
                 </span>
-                <h3 className="display-lg text-[clamp(1.3rem,2.4vw,1.9rem)] transition-colors duration-500 group-hover:text-signal">
+                <h3 className="display-lg relative w-fit text-[clamp(1.3rem,2.4vw,1.9rem)] transition-[color,transform] duration-500 group-hover:text-signal md:group-hover:translate-x-2 motion-reduce:transform-none">
                   {service.title}
+                  {/* hand-drawn underline, pen-stroked on hover */}
+                  <svg aria-hidden="true" viewBox="0 0 200 8" preserveAspectRatio="none" className="absolute left-0 -bottom-1 w-full h-2 overflow-visible">
+                    <path
+                      pathLength="1"
+                      d="M2 5C40 1 80 7 120 3S180 5 198 2"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      className="[stroke-dasharray:1_2] [stroke-dashoffset:1.01] opacity-0 group-hover:opacity-100 group-hover:[stroke-dashoffset:0] group-focus-visible:opacity-100 group-focus-visible:[stroke-dashoffset:0] transition-[stroke-dashoffset,opacity] duration-500 delay-100 ease-out motion-reduce:transition-none"
+                    />
+                  </svg>
                 </h3>
-                <div className="flex items-center gap-6 md:justify-end">
-                  <p className="body text-right max-w-sm">{service.desc}</p>
-                  <span className="w-8 h-8 border border-ink/15 flex items-center justify-center shrink-0 transition-[background-color,border-color,color] duration-500 group-hover:bg-signal group-hover:border-signal group-hover:text-white">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                <div className="relative flex items-center gap-6 md:justify-end">
+                  <p className="body text-right max-w-sm transition-colors duration-500 group-hover:text-ink">{service.desc}</p>
+                  <span className="w-8 h-8 border border-ink/15 flex items-center justify-center shrink-0 overflow-hidden transition-[background-color,border-color,color] duration-500 group-hover:bg-signal group-hover:border-signal group-hover:text-white">
+                    {/* the arrow leaves the box and a fresh one arrives from the corner */}
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:animate-[arrow-through_0.5s_ease-out]" />
                   </span>
                 </div>
               </Link>
@@ -478,7 +518,7 @@ function Method() {
               A method, not a guess.
             </h2>
             <p className="body max-w-xs">
-              Five stages, every time. The order is why the result fits.
+              Six stages, every time. The order is why the result fits.
             </p>
             <RoadDoodle className="hidden lg:block w-60 mt-10" />
           </div>
@@ -633,11 +673,14 @@ function ClientsLine() {
       <div className="wrap grid lg:grid-cols-[260px_1fr] gap-x-14 gap-y-5 items-baseline">
         <p className="display-md text-[18px] md:text-xl">Businesses already running on our systems.</p>
         <div>
-          <ul className="flex flex-wrap gap-x-7 gap-y-1.5 display-md text-[17px] md:text-[22px] !text-ink/85">
-            {CLIENTS.map((c) => (
-              <li key={c}>{c}</li>
+          <ol className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 border-t border-ink/25">
+            {CLIENTS.map((c, i) => (
+              <li key={c} className="flex items-baseline gap-3 py-2.5 border-b border-ink/12">
+                <span className="font-mono text-[11px] text-ash tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="display-md text-[17px] md:text-[20px] !text-ink/90">{c}</span>
+              </li>
             ))}
-          </ul>
+          </ol>
           <Link to="/portfolio#clients" className="inline-flex items-center gap-1.5 mt-5 text-[14px] font-semibold text-signal hover:text-signal-deep">
             See the work <ArrowRight className="w-3.5 h-3.5" />
           </Link>

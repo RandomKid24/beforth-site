@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev": "vite --port=5173 --host=0.0.0.0",
     "build": "node scripts/emit-static-schema.mjs && vite build && node scripts/generate-og-images.mjs && node scripts/install-browser.mjs && node scripts/prerender.mjs && node scripts/verify-build.mjs",
     "build:raw": "vite build",
     "prerender": "node scripts/install-browser.mjs && node scripts/prerender.mjs",

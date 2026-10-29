@@ -162,35 +162,27 @@ export function HeroDoodle({ className }: Props) {
 /* What we do: one place, everything connected                          */
 /* ------------------------------------------------------------------ */
 export function HubDoodle({ className }: Props) {
-  // One cabinet, five drawers: everything the business runs on, in one place.
-  const drawers: { y: number; icon: React.ReactNode }[] = [
-    { y: 22, icon: <path d="M-7 4l4 -5l4 3l7 -8" /> }, // sales
-    { y: 54, icon: <path d="M-7 -3l7 -4l7 4v8l-7 4l-7 -4zM-7 -3l7 4l7 -4" /> }, // inventory
-    { y: 86, icon: <><path d="M-7 3a7 7 0 0 1 14 0" /><path d="M-9 1v6M9 1v6" strokeWidth="3" /></> }, // service
-    { y: 118, icon: <><circle r="7" /><path d="M-3 -2h6M-3 2h6" strokeWidth="1.6" /></> }, // finance
-    { y: 150, icon: <path d="M-7 6v-6M-2 6v-11M3 6v-8M8 6v-4" strokeWidth="3" /> }, // reporting
+  // Five parts of a business, threaded onto one line: connected in one place.
+  const nodes: { x: number; y: number; icon: React.ReactNode }[] = [
+    { x: 36, y: 146, icon: <path d="M-7 4l4 -5l4 3l7 -8" /> }, // sales
+    { x: 82, y: 72, icon: <path d="M-7 -3l7 -4l7 4v8l-7 4l-7 -4zM-7 -3l7 4l7 -4" /> }, // inventory
+    { x: 124, y: 138, icon: <><path d="M-7 3a7 7 0 0 1 14 0" /><path d="M-9 1v6M9 1v6" strokeWidth="3" /></> }, // service
+    { x: 168, y: 62, icon: <><circle r="7" /><path d="M-3 -2h6M-3 2h6" strokeWidth="1.6" /></> }, // finance
+    { x: 208, y: 128, icon: <path d="M-7 6v-6M-2 6v-11M3 6v-8M8 6v-4" strokeWidth="3" /> }, // reporting
   ];
   return (
-    <svg viewBox="0 0 240 200" className={className} aria-hidden="true" focusable="false" {...common}>
-      <g filter="url(#sketch)" strokeWidth="2.4" stroke={INK}>
-        <rect x="46" y="10" width="148" height="182" rx="6" fill={PAPER} />
-        {drawers.map((d, i) => (
-          <g key={d.y}>
-            <rect x="56" y={d.y} width="128" height="26" fill={i % 2 ? PAPER : BONE} strokeWidth="1.8" />
-            <g transform={`translate(78 ${d.y + 13})`}>{d.icon}</g>
-            <rect x="106" y={d.y + 9} width="40" height="8" rx="4" fill={PAPER} strokeWidth="1.8" />
+    <svg viewBox="0 0 244 200" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch-md)" strokeWidth="2.4" stroke={INK}>
+        {/* the one thread everything hangs on */}
+        <path d="M6 168C20 150 24 148 36 146C58 142 66 92 82 72C98 54 108 134 124 138C142 142 150 70 168 62C188 54 196 130 208 128C220 126 226 112 238 94" stroke={SIGNAL} strokeWidth="3.4" />
+        <path d="M230 90l10 -2l-2 10" stroke={SIGNAL} strokeWidth="3" />
+        {nodes.map((n, i) => (
+          <g key={i} transform={`translate(${n.x} ${n.y})`}>
+            <circle r="23" fill={i % 2 ? PAPER : BONE} />
+            <g transform="scale(1.1)">{n.icon}</g>
           </g>
         ))}
-        {/* a papers-sticking-out top drawer, slightly open */}
-        <path d="M70 22l6 -10h30l4 10" stroke={SIGNAL} strokeWidth="1.8" fill={PAPER} />
-        {/* one lock bar runs through every drawer */}
-        <path d="M168 14v174" stroke={SIGNAL} strokeWidth="3.4" />
-        <g fill={SIGNAL} stroke="none">
-          {drawers.map((d) => (
-            <circle key={d.y} cx="168" cy={d.y + 13} r="4" />
-          ))}
-        </g>
-        <path d="M16 194H224" strokeOpacity="0.3" strokeWidth="2" />
+        <path d="M60 186H190" strokeOpacity="0.3" strokeWidth="2" />
       </g>
     </svg>
   );
@@ -238,30 +230,31 @@ export function SiteDoodle({ className }: Props) {
 /* Method: five stages along one road                                   */
 /* ------------------------------------------------------------------ */
 export function RoadDoodle({ className }: Props) {
-  const stops: [number, number][] = [
-    [60, 28],
-    [196, 76],
-    [74, 140],
-    [200, 204],
-    [92, 262],
-  ];
+  // Six stages as six steps: an idea on dashes, firming up into something finished, then looped back for improvement.
+  const base = 232;
+  const steps = Array.from({ length: 6 }, (_, i) => ({ x: 14 + i * 42, h: 34 + i * 25 }));
   return (
-    <svg viewBox="0 0 280 310" className={className} aria-hidden="true" focusable="false" {...common}>
-      <g filter="url(#sketch)" strokeWidth="2.2" stroke={INK}>
-        <path d="M60 28C150 24 220 40 196 76S40 100 74 140S230 160 200 204S60 230 92 262" strokeDasharray="2 9" strokeWidth="3" />
-        {stops.slice(0, 4).map(([x, y]) => (
-          <circle key={`${x}-${y}`} cx={x} cy={y} r="11" fill={PAPER} />
-        ))}
-        {/* the last stop is a flag */}
-        <path d="M92 262V224" />
-        <path d="M92 224l30 9l-30 11z" fill={SIGNAL} stroke={SIGNAL} />
-        <circle cx="92" cy="262" r="4" fill={INK} />
-      </g>
-      {/* tiny tick inside each finished stop, outside the filter so it stays crisp */}
-      <g stroke={SIGNAL} strokeWidth="2.4">
-        {stops.slice(0, 4).map(([x, y]) => (
-          <path key={`t${x}-${y}`} d={`M${x - 4} ${y}l3 4l6 -8`} />
-        ))}
+    <svg viewBox="0 0 280 260" className={className} aria-hidden="true" focusable="false" {...common}>
+      <g filter="url(#sketch)" strokeWidth="2.3" stroke={INK}>
+        {steps.map((s, i) => {
+          const y = base - s.h;
+          return (
+            <g key={i}>
+              <rect x={s.x} y={y} width="38" height={s.h} fill={i < 1 ? 'none' : i === 3 || i === 4 ? BONE : PAPER} strokeDasharray={i === 0 ? '3 6' : undefined} strokeOpacity={i === 0 ? 0.6 : 1} />
+              {i === 1 && <path d={`M${s.x} ${y + 14}H${s.x + 38}M${s.x} ${y + 28}H${s.x + 38}M${s.x + 19} ${y}V${base}`} strokeWidth="1.2" strokeOpacity="0.5" />}
+              {i === 2 && <path d={`M${s.x + 8} ${y + 12}h22M${s.x + 8} ${y + 24}h14`} strokeWidth="1.6" />}
+              {i === 4 && <path d={`M${s.x + 8} ${y + 12}h22M${s.x + 8} ${y + 24}h22M${s.x + 8} ${y + 36}h12`} strokeWidth="1.6" />}
+            </g>
+          );
+        })}
+        <path d={`M${steps[3].x + 10} ${base - steps[3].h + 20}l7 8l13 -16`} stroke={SIGNAL} strokeWidth="3.2" />
+        {/* the last step is live: signal outline and a loop arrow for ongoing improvement */}
+        <rect x={steps[5].x} y={base - steps[5].h} width="38" height={steps[5].h} fill="none" stroke={SIGNAL} strokeWidth="3" />
+        <g transform={`translate(${steps[5].x + 19} ${base - steps[5].h - 22})`} stroke={SIGNAL} strokeWidth="3">
+          <path d="M10.0 -8.4A13 13 0 1 1 -7.5 -10.6" />
+          <path d="M-14.4 -10.3L-7.5 -10.6L-10.2 -4.2" />
+        </g>
+        <path d={`M6 ${base + 4}H272`} strokeOpacity="0.3" strokeWidth="2" />
       </g>
     </svg>
   );
@@ -446,15 +439,29 @@ export function FaqDoodle({ className }: Props) {
         <circle cx="100" cy="114" r="4" fill={SIGNAL} stroke="none" />
         {/* the answer: lines and a tick */}
         <path d="M118 176h98a8 8 0 0 1 8 8v52a8 8 0 0 1 -8 8h-8v18l-26 -18h-64a8 8 0 0 1 -8 -8v-52a8 8 0 0 1 8 -8z" fill={BONE} />
-        <path d="M134 198h64M134 214h46" strokeWidth="2.2" />
+        <path className="fq-line fq-l1" pathLength="1" d="M134 198h64" strokeWidth="2.2" />
+        <path className="fq-line fq-l2" pathLength="1" d="M134 214h46" strokeWidth="2.2" />
         <path d="M196 226l8 8l16 -18" stroke={SIGNAL} strokeWidth="3.4" />
         {/* sparks */}
         <path d="M210 40v12M204 46h12" stroke={SIGNAL} strokeWidth="2.6" />
         <path d="M40 200v10M35 205h10" stroke={SIGNAL} strokeWidth="2.6" />
-        {/* a curious little figure */}
-        <circle cx="54" cy="270" r="14" fill={PAPER} />
-        <path d="M30 316c0 -26 14 -36 24 -36s24 10 24 36" />
-        <path d="M78 296l18 -30M96 266l-4 -9M96 266l8 -4" strokeWidth="2.4" />
+        {/* a curious person: raised brow, pointing at the answer */}
+        <path d="M26 318c0 -30 12 -42 30 -42s30 12 30 42" fill={PAPER} />
+        <path d="M46 278l10 14l10 -14" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M56 292v26" stroke={SIGNAL} strokeWidth="2" strokeOpacity="0.6" />
+        <g className="fq-head">
+        <circle cx="56" cy="254" r="17" fill={PAPER} />
+        <path d="M40 250c0 -16 10 -22 20 -20c10 -2 16 6 14 18c-6 -8 -16 -10 -34 2z" fill={INK} />
+        <circle cx="50" cy="257" r="1.8" fill={INK} stroke="none" />
+        <circle cx="63" cy="257" r="1.8" fill={INK} stroke="none" />
+        <path d="M46 250q4 -4 8 -1M60 250q4 -5 8 -2" strokeWidth="1.8" />
+        <ellipse className="fq-mouth" cx="57" cy="267" rx="2.6" ry="2.4" strokeWidth="1.8" />
+        </g>
+        <g className="fq-wave">
+          <path d="M84 292q14 -4 20 -26" strokeWidth="2.6" />
+          <path d="M104 266l2 -14M104 266l10 -6M104 266l-5 -10" strokeWidth="2.4" />
+        </g>
+        <path d="M28 300q-8 10 -4 18" strokeWidth="2.6" />
       </g>
     </svg>
   );

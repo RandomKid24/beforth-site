@@ -14,6 +14,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://embed.tawk.to" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
 
@@ -56,7 +57,11 @@
        sends chat data to a third party. -->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    // Wait for the page to finish loading and go idle so the widget (several
+    // hundred KB plus its own requests) never competes with first paint.
     window.loadTawk=function(){
+      if(document.readyState!=='complete') return addEventListener('load',window.loadTawk,{once:true});
+      if(window.requestIdleCallback && !window.loadTawk.idle){ window.loadTawk.idle=1; return requestIdleCallback(window.loadTawk,{timeout:4000}); }
       if(document.getElementById('tawk-src')) return;
       var s=document.createElement('script');
       s.id='tawk-src';

@@ -230,3 +230,20 @@
   }
 }
 @keyframes hd-recede { to { opacity: 0.25; transform: translateX(-14px); } }
+
+/* FAQ drawing: the person talks (mouth, nod, wave) while the answer writes itself. */
+@media (prefers-reduced-motion: no-preference) {
+  .fq-head, .fq-mouth { transform-box: fill-box; transform-origin: center; }
+  .fq-head { animation: fq-nod 3.6s ease-in-out infinite; }
+  .fq-mouth { animation: fq-talk 0.9s ease-in-out infinite; }
+  .fq-wave { transform-box: view-box; transform-origin: 84px 292px; animation: fq-wave 1.8s ease-in-out infinite; }
+  .fq-line { stroke-dasharray: 1; animation: fq-write 3.6s ease-out infinite; }
+  .fq-l2 { animation-delay: 0.5s; }
+}
+@keyframes fq-talk { 0%, 100% { transform: scaleY(0.35); } 25% { transform: scaleY(1.3); } 50% { transform: scaleY(0.6); } 75% { transform: scaleY(1.1); } }
+@keyframes fq-nod { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(1.5px) rotate(-2deg); } }
+@keyframes fq-wave { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-9deg); } }
+@keyframes fq-write { 0% { stroke-dashoffset: 1; } 45%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 1; } }
+
+@keyframes arrow-through { 0% { transform: translate(0,0); } 45% { transform: translate(14px,-14px); opacity: 0; } 46% { transform: translate(-14px,14px); opacity: 0; } 100% { transform: translate(0,0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .group:hover [class*="arrow-through"] { animation: none !important; } }
