@@ -34,10 +34,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           ? req.body
           : {};
 
-    const { name, email, company, subject, message } = body as {
+    const { name, email, company, phone, subject, message } = body as {
       name?: string;
       email?: string;
       company?: string;
+      phone?: string;
       subject?: string;
       message?: string;
     };
@@ -65,6 +66,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           full_name: name,
           email,
           company: company || '',
+          phone: phone || '',
           need: subject || '',
           details: message,
         }),
@@ -117,6 +119,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             <tr>
               <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Email</td>
               <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(email)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Phone</td>
+              <td style="padding: 10px; border: 1px solid #e2e8f0;">${esc(phone)}</td>
             </tr>
             <tr>
               <td style="padding: 10px; border: 1px solid #e2e8f0; font-weight: bold;">Subject</td>

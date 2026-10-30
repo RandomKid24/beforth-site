@@ -86,7 +86,7 @@ function Dropdown({ value, onChange }: { value: string; onChange: (v: string) =>
 }
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+  const [form, setForm] = useState({ name: '', email: '', company: '', phone: '', subject: SUBJECTS[0], message: '' });
   const [agreed, setAgreed] = useState(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [feedback, setFeedback] = useState('');
@@ -113,6 +113,7 @@ export default function ContactPage() {
           name: form.name,
           email: form.email,
           company: form.company,
+          phone: form.phone,
           subject: form.subject,
           message: form.message,
         }),
@@ -129,7 +130,7 @@ export default function ContactPage() {
       }
 
       if (!res.ok) {
-        const labels: Record<string, string> = { full_name: 'Name', email: 'Email', details: 'Project details', company: 'Company', need: 'Topic' };
+        const labels: Record<string, string> = { full_name: 'Name', email: 'Email', details: 'Project details', company: 'Company', phone: 'Phone', need: 'Topic' };
         const detail = Object.keys(data.errors ?? {}).map((k) => labels[k] ?? k).join(', ');
         throw new Error(detail ? `Please check: ${detail}.` : data.message || 'Something went wrong. Please try again.');
       }
@@ -137,7 +138,7 @@ export default function ContactPage() {
       track('contact_submit');
       setState('success');
       setFeedback('Message sent. We will get back to you shortly.');
-      setForm({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+      setForm({ name: '', email: '', company: '', phone: '', subject: SUBJECTS[0], message: '' });
       setAgreed(false);
       setTimeout(() => setState('idle'), 6000);
     } catch (err) {
@@ -275,9 +276,14 @@ export default function ContactPage() {
                     <input id="company" type="text" value={form.company} onChange={update('company')} className="field" placeholder="Optional" autoComplete="organization" />
                   </div>
                   <div>
-                    <span className="flabel">What do you need?</span>
-                    <Dropdown value={form.subject} onChange={(v) => setForm((f) => ({ ...f, subject: v }))} />
+                    <label className="flabel" htmlFor="phone">Phone</label>
+                    <input id="phone" type="tel" value={form.phone} onChange={update('phone')} className="field" placeholder="+91 98765 43210" autoComplete="tel" />
                   </div>
+                </div>
+
+                <div className="mb-5">
+                  <span className="flabel">What do you need?</span>
+                  <Dropdown value={form.subject} onChange={(v) => setForm((f) => ({ ...f, subject: v }))} />
                 </div>
 
                 <div className="mb-6">
