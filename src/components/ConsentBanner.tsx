@@ -25,7 +25,7 @@ export default function ConsentBanner() {
       aria-label="Cookie choice"
       className="fixed z-[55] bottom-0 inset-x-0 bg-paper border-t border-ink/15 px-4 md:px-10 py-3 flex flex-col md:flex-row md:items-center gap-3 md:gap-8"
     >
-      <p className="body-tight !text-ink/80 md:flex-1">
+      <p className="body-tight !text-ash md:flex-1">
         Our live chat (Tawk.to) sets cookies and loads only if you accept.{' '}
         <Link to="/cookie-policy" className="underline hover:text-signal">Cookie Policy</Link>,{' '}
         <Link to="/privacy-policy" className="underline hover:text-signal">Privacy Policy</Link>.

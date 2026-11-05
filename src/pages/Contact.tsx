@@ -71,7 +71,7 @@ function Dropdown({ value, onChange }: { value: string; onChange: (v: string) =>
                   aria-selected={subject === value}
                   onClick={() => { onChange(subject); setOpen(false); }}
                   className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                    subject === value ? 'text-signal bg-bone' : 'text-ink/80 hover:bg-bone/60'
+                    subject === value ? 'text-signal bg-bone' : 'text-ash hover:bg-bone/60'
                   }`}
                 >
                   {subject}
@@ -184,7 +184,7 @@ export default function ContactPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.3 }}
-                        className="text-[14px] text-ink/80 leading-relaxed"
+                        className="text-[14px] text-ash leading-relaxed"
                       >
                         {STATUSES[statusIndex]}
                       </m.p>
@@ -207,7 +207,7 @@ export default function ContactPage() {
                   },
                   {
                     label: 'Office',
-                    lines: [{ text: 'Nashik, Maharashtra, India' }],
+                    lines: [{ text: 'BeForth' }, { text: 'Nashik, Maharashtra, India' }],
                   },
                   {
                     label: 'Hours',
@@ -231,7 +231,7 @@ export default function ContactPage() {
                               {line.text}
                             </a>
                           ) : (
-                            <p key={line.text} className="text-[15px] text-ink/85">
+                            <p key={line.text} className="text-[15px] text-ink">
                               {line.text}
                             </p>
                           )
@@ -252,6 +252,31 @@ export default function ContactPage() {
               />
             </div>
 
+            <div>
+            <Reveal delay={0.08}>
+              <div className="mb-10 max-w-xl">
+                <h2 className="display-md text-lg md:text-xl mb-4">What happens after you write</h2>
+                <p className="body mb-3">
+                  A person at BeForth reads your message and replies within one working day.
+                  If it sounds like a fit, we set up a short call to understand how the work
+                  runs today: who does what, where data is typed twice, and which reports
+                  nobody trusts.
+                </p>
+                <p className="body mb-3">
+                  It helps to mention your industry, roughly how many people use the process,
+                  and what you use now (spreadsheets, an old ERP, chat and phone). You do not
+                  need a specification. For background, see how we approach{' '}
+                  <Link to="/insights/what-to-expect-during-erp-discovery" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">ERP discovery</Link>{' '}
+                  or browse the <Link to="/product/erp" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">ERP</Link>,{' '}
+                  <Link to="/product/crm" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">CRM</Link> and{' '}
+                  <Link to="/product/hrms" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">HRMS</Link> we build.
+                </p>
+                <p className="body">
+                  Follow BeForth on{' '}
+                  <a href="https://www.linkedin.com/company/beforth-in" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors" rel="noopener" target="_blank">LinkedIn</a>.
+                </p>
+              </div>
+            </Reveal>
             <Reveal delay={0.08}>
               <form onSubmit={handleSubmit} className="surface p-6 md:p-10">
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-5 border-b border-ink/12">
@@ -307,7 +332,7 @@ export default function ContactPage() {
                     onChange={(e) => setAgreed(e.target.checked)}
                     className="mt-1 w-4 h-4 shrink-0 accent-[var(--color-signal)]"
                   />
-                  <span className="body-tight !text-ink/80">
+                  <span className="body-tight !text-ash">
                     I agree that BeForth may use these details to reply to my enquiry, as described in the{' '}
                     <Link to="/privacy-policy" className="underline hover:text-signal">Privacy Policy</Link>. *
                   </span>
@@ -341,6 +366,7 @@ export default function ContactPage() {
                 </p>
               </form>
             </Reveal>
+            </div>
           </div>
         </div>
       </section>

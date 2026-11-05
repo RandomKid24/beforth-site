@@ -93,25 +93,32 @@ export default function ProductPage() {
                 </h1>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="body text-[16px] md:text-[18px] max-w-[34rem] mt-6 md:mt-7 !text-ink/70">{p.lead}</p>
+                <p className="body text-[16px] md:text-[18px] max-w-[34rem] mt-6 md:mt-7 !text-ash">{p.lead}</p>
               </Reveal>
               <Reveal delay={0.15}>
                 <div className="flex flex-wrap items-center gap-x-7 gap-y-4 mt-8 md:mt-10">
                   <Magnetic>
-                    <Link to="/contact" className="btn-signal !px-7 !py-4">
-                      <span className="sm:hidden">Talk to us</span>
-                      <span className="hidden sm:inline">Talk to us about {p.name}</span>
-                      <ArrowRight className="w-4 h-4 shrink-0" />
-                    </Link>
+                    {p.primary ? (
+                      <a href={p.primary.href} target="_blank" rel="noopener noreferrer" className="btn-signal !px-7 !py-4">
+                        {p.primary.label}
+                        <ArrowUpRight className="w-4 h-4 shrink-0" />
+                      </a>
+                    ) : (
+                      <Link to="/contact" className="btn-signal !px-7 !py-4">
+                        <span className="sm:hidden">Talk to us</span>
+                        <span className="hidden sm:inline">Talk to us about {p.name}</span>
+                        <ArrowRight className="w-4 h-4 shrink-0" />
+                      </Link>
+                    )}
                   </Magnetic>
                   <button type="button" onClick={toDemo} className="ulink">
                     Try the live preview <ArrowDown className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </Reveal>
-              {p.proof && (
+              {p.proof && !p.primary && (
                 <Reveal delay={0.2}>
-                  <p className="mt-8 border-l-2 border-signal pl-4 text-[14px] leading-relaxed text-ink/75 max-w-[34rem]">
+                  <p className="mt-8 border-l-2 border-signal pl-4 text-[14px] leading-relaxed text-ash max-w-[34rem]">
                     {p.proof.text}{' '}
                     <a href={p.proof.href} target="_blank" rel="noopener noreferrer" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal">
                       {p.proof.cta}
@@ -136,11 +143,13 @@ export default function ProductPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 pt-5 border-t border-ink/12 grid grid-cols-3 gap-2 text-center">
-                  {['Build', 'Run', 'Maintain'].map((t) => (
-                    <span key={t} className="label !text-ink !tracking-[0.14em] border border-ink/12 py-2">{t}</span>
-                  ))}
-                </div>
+                {!p.primary && (
+                  <div className="mt-6 pt-5 border-t border-ink/12 grid grid-cols-3 gap-2 text-center">
+                    {['Build', 'Run', 'Maintain'].map((t) => (
+                      <span key={t} className="label !text-ink !tracking-[0.14em] border border-ink/12 py-2">{t}</span>
+                    ))}
+                  </div>
+                )}
               </aside>
             </Reveal>
             </div>
@@ -161,9 +170,9 @@ export default function ProductPage() {
               <div className="px-5 py-3.5 border-b border-ink/10 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-8 bg-signal/10 text-signal flex items-center justify-center"><Icon className="w-4 h-4" strokeWidth={1.7} /></span>
-                  <h2 className="display-md text-[17px]">{p.name}</h2>
+                  <h2 className="display-md text-[18px]">{p.name}</h2>
                 </div>
-                <span className="inline-flex items-center gap-1.5 text-[11px] text-ash"><i className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Sample data</span>
+                <span className="inline-flex items-center gap-1.5 text-[12px] text-ash"><i className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Sample data</span>
               </div>
               <div className="relative bg-bone/55 p-4 sm:p-8 min-h-[520px] flex items-center justify-center overflow-hidden">
                 <div className="w-full max-w-[900px] relative z-10"><Preview /></div>
@@ -184,9 +193,9 @@ export default function ProductPage() {
             {p.changes.map((c, i) => (
               <Reveal key={c.to} delay={i * 0.07} className="h-full">
                 <div className="h-full bg-white border border-ink/12 p-6 md:p-7 flex flex-col gap-4">
-                  <span className="label !text-[10px]">0{i + 1}</span>
+                  <span className="label !text-[12px]">0{i + 1}</span>
                   <p className="text-[14px] text-ash line-through decoration-ink/25">{c.from}</p>
-                  <p className="flex items-start gap-3 display-md text-[18px] md:text-[19px] leading-snug">
+                  <p className="flex items-start gap-3 display-md text-[18px] md:text-[20px] leading-snug">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-signal/10 text-signal flex items-center justify-center shrink-0"><Check className="w-3 h-3" strokeWidth={3} /></span>
                     {c.to}
                   </p>
@@ -206,7 +215,7 @@ export default function ProductPage() {
               <Reveal key={f.title} delay={(i % 3) * 0.05} className="h-full">
                 <div className="group h-full bg-paper p-6 md:p-7">
                   <span className="block w-6 h-px bg-signal mb-5" />
-                  <h3 className="display-md text-[17px] mb-2 transition-colors duration-500 group-hover:text-signal">{f.title}</h3>
+                  <h3 className="display-md text-[18px] mb-2 transition-colors duration-500 group-hover:text-signal">{f.title}</h3>
                   <p className="body-tight">{f.desc}</p>
                 </div>
               </Reveal>
@@ -226,7 +235,7 @@ export default function ProductPage() {
                     <span className="w-9 h-9 rounded-full bg-ink text-paper flex items-center justify-center text-[13px] font-semibold tabular-nums shrink-0">{i + 1}</span>
                     {i < p.flow.length - 1 && <span aria-hidden className="hidden md:block flex-1 h-px bg-ink/20" />}
                   </div>
-                  <h3 className="display-md text-[17px] mb-1.5">{s.title}</h3>
+                  <h3 className="display-md text-[18px] mb-1.5">{s.title}</h3>
                   <p className="body-tight">{s.desc}</p>
               </li>
             ))}
@@ -250,7 +259,7 @@ export default function ProductPage() {
                     ['We maintain it', 'Fixes, updates and new features as your business changes, from the same team that built it.'],
                   ].map(([t, d]) => (
                     <div key={t} className="bg-ink p-6">
-                      <h3 className="display-md text-[17px] text-paper mb-2">{t}</h3>
+                      <h3 className="display-md text-[18px] text-paper mb-2">{t}</h3>
                       <p className="text-[14px] leading-relaxed text-paper/65">{d}</p>
                     </div>
                   ))}
@@ -324,9 +333,9 @@ export default function ProductPage() {
               />
               <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
                 <div className="max-w-xl">
-                  <span className="label !text-paper/50 block mb-5">Next step</span>
+                  <span className="label !text-paper/65 block mb-5">Next step</span>
                   <h2 className="display-lg text-[clamp(1.7rem,4vw,2.9rem)] text-paper mb-5">Tell us how your business runs today.</h2>
-                  <p className="text-paper/60 text-base leading-relaxed">
+                  <p className="text-paper/65 text-base leading-relaxed">
                     We will show you what {p.name} should look like for you, and be straight about it if the answer is less software than you expected.
                   </p>
                 </div>

@@ -72,6 +72,8 @@ const ROUTES = [
     'seo-tracking',
     'payroll',
     'pos',
+    'serop',
+    '4form',
   ].map((slug) => `/product/${slug}`),
 ];
 

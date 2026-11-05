@@ -22,7 +22,7 @@ const ROUTES = [
   '/product/erp', '/product/delivery-tracking', '/product/salon-erp', '/product/hrms',
   '/product/crm', '/product/mobile-apps', '/product/websites',
   '/product/tunnelgate', '/product/seo-tracking', '/product/payroll',
-  '/product/pos',
+  '/product/pos', '/product/serop', '/product/4form',
 ];
 
 /** Below this a page has no chance of ranking or being cited. */

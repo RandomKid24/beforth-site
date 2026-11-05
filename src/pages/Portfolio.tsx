@@ -81,8 +81,8 @@ function Thumb({ Preview }: { Preview: Platform['Preview'] }) {
 
 function Features({ p }: { p: Platform }) {
   return (
-    <p className="text-[13.5px] leading-relaxed text-ink/80">
-      <span className="label !text-[11px] mr-2">{p.slug === 'erp' ? 'Modules' : 'Includes'}</span>
+    <p className="text-[14px] leading-relaxed text-ash">
+      <span className="label !text-[12px] mr-2">{p.slug === 'erp' ? 'Modules' : 'Includes'}</span>
       {p.features.map((f) => f.title).join(', ')}.
     </p>
   );
@@ -227,7 +227,7 @@ export default function PortfolioPage() {
             {CLIENTS.map((c, i) => (
               <li key={c} className="flex items-baseline gap-6 py-4 md:py-5 border-b border-ink/12">
                 <span className="label text-signal w-8 shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                <span className="display-md text-[17px] md:text-2xl">{c}</span>
+                <span className="display-md text-[18px] md:text-2xl">{c}</span>
               </li>
             ))}
           </ol>

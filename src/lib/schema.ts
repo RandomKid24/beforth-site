@@ -37,7 +37,7 @@ export const ORG = {
   geo: { latitude: 19.9908887, longitude: 73.7598738 },
   mapUrl: 'https://www.google.com/maps/search/?api=1&query=19.9908887,73.7598738',
   sameAs: [
-    'https://in.linkedin.com/company/beforth',
+    'https://www.linkedin.com/company/beforth-in',
     'https://www.instagram.com/beforth.in',
   ],
   description:
@@ -104,8 +104,13 @@ export const PRODUCTS = [
 /* Graph builders                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * One entity for the business. ProfessionalService is a LocalBusiness subtype
+ * (what Google uses for local ranking), and it is also an Organization, so a
+ * separate Organization node would only duplicate it.
+ */
 const organization = () => ({
-  '@type': 'Organization',
+  '@type': 'ProfessionalService',
   '@id': `${ORIGIN}/#organization`,
   name: ORG.name,
   legalName: ORG.legalName,
@@ -127,38 +132,8 @@ const organization = () => ({
     { '@type': 'Place', name: 'Nashik, Maharashtra' },
   ],
   sameAs: ORG.sameAs,
-});
-
-/**
- * LocalBusiness is the subtype Google uses for local ranking, and the one an
- * AI engine is most likely to quote back for "software company in Nashik".
- * `ProfessionalService` alone under-specifies the local entity.
- */
-const localBusiness = () => ({
-  '@type': 'ProfessionalService',
-  '@id': `${ORIGIN}/#localbusiness`,
-  name: ORG.name,
-  url: ORG.url,
-  logo: ORG.logo,
-  image: ORG.logo,
-  description: ORG.description,
-  email: ORG.email,
-  telephone: ORG.telephone,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: ORG.addressLocality,
-    addressRegion: ORG.addressRegion,
-    addressCountry: ORG.addressCountry,
-  },
-  foundingDate: ORG.foundingDate,
   hasMap: ORG.mapUrl,
   geo: { '@type': 'GeoCoordinates', ...ORG.geo },
-  areaServed: [
-    { '@type': 'City', name: 'Nashik' },
-    { '@type': 'State', name: 'Maharashtra' },
-    { '@type': 'Country', name: 'India' },
-  ],
-  parentOrganization: { '@id': `${ORIGIN}/#organization` },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Custom software services',
@@ -360,7 +335,6 @@ export function routeGraph(pathname: string, page?: { title: string; description
 
   const graph: Record<string, unknown>[] = [
     organization(),
-    localBusiness(),
     website(),
     ...people(),
     ...products(),
@@ -404,6 +378,6 @@ export function routeGraph(pathname: string, page?: { title: string; description
 export function organizationGraph() {
   return {
     '@context': 'https://schema.org',
-    '@graph': [organization(), localBusiness(), website(), ...people(), ...products()],
+    '@graph': [organization(), website(), ...people(), ...products()],
   };
 }

@@ -104,6 +104,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://beforth.in/product/serop</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://beforth.in/product/4form</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://beforth.in/insights</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>

@@ -86,7 +86,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.07}>
               <div className="surface-ink p-7 md:p-9 h-full flex flex-col">
-                <span className="label !text-paper/50 block mb-5">Mission</span>
+                <span className="label !text-paper/65 block mb-5">Mission</span>
                 <p className="display-md text-lg md:text-[24px] leading-[1.28] text-paper">
                   Replace manual processes and disconnected tools with practical, scalable
                   technology that makes businesses run better. Our job is not simply to deliver

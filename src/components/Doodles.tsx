@@ -638,6 +638,61 @@ const ART: Record<string, React.ReactNode> = {
       <path d="M232 128C210 104 192 100 176 96" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
     </>
   ),
+  serop: (
+    <>
+      <g transform="translate(20 52)">
+        <rect x="0" y="0" width="96" height="30" fill={PAPER} />
+        <rect x="0" y="40" width="96" height="30" fill={BONE} />
+        <rect x="0" y="80" width="96" height="30" fill={PAPER} />
+        <circle cx="14" cy="15" r="3.4" fill={SIGNAL} stroke="none" />
+        <circle cx="14" cy="55" r="3.4" fill={SIGNAL} stroke="none" />
+        <circle cx="14" cy="95" r="3.4" fill={INK} stroke="none" />
+        <path d="M30 15h46M30 55h34M30 95h40" strokeWidth="1.8" strokeOpacity="0.55" />
+        <path d="M14 110v12M82 110v12M6 122h84" strokeWidth="2.4" />
+      </g>
+      <g transform="translate(178 24)">
+        <rect x="0" y="0" width="122" height="84" fill={PAPER} />
+        <path d="M0 16H122" />
+        <circle cx="9" cy="8" r="2.6" fill={INK} />
+        <circle cx="19" cy="8" r="2.6" fill={INK} />
+        <path d="M14 34l12 9l-12 9M36 52h34" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M14 68h48M14 76h30" strokeWidth="1.6" strokeOpacity="0.5" />
+      </g>
+      <g transform="translate(188 138)">
+        <rect x="0" y="0" width="34" height="26" fill={BONE} />
+        <rect x="44" y="0" width="34" height="26" fill={BONE} />
+        <rect x="88" y="0" width="34" height="26" fill={BONE} stroke={SIGNAL} />
+        <path d="M6 13h22M50 13h22M94 13h22" strokeWidth="1.8" strokeOpacity="0.6" />
+      </g>
+      <path d="M126 96C146 92 156 80 176 72" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+      <path d="M126 126C150 140 160 148 184 150" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+    </>
+  ),
+  '4form': (
+    <>
+      <g transform="translate(24 20)">
+        <rect x="0" y="0" width="124" height="170" fill={PAPER} />
+        <path d="M16 22h56" strokeWidth="3" />
+        <rect x="16" y="42" width="92" height="20" fill={BONE} />
+        <rect x="16" y="72" width="92" height="20" fill={BONE} />
+        <rect x="16" y="102" width="14" height="14" fill={PAPER} />
+        <path d="M19 109l4 4l7 -9" stroke={SIGNAL} strokeWidth="2.6" />
+        <path d="M38 109h50" strokeWidth="1.8" strokeOpacity="0.55" />
+        <rect x="16" y="130" width="52" height="24" fill={SIGNAL} stroke={SIGNAL} />
+      </g>
+      <g transform="translate(214 28)">
+        <rect x="0" y="0" width="84" height="56" fill={PAPER} />
+        <path d="M0 0l42 32l42 -32" />
+      </g>
+      <g transform="translate(214 118)">
+        <rect x="0" y="0" width="84" height="64" fill={PAPER} />
+        <path d="M10 16h40M10 32h54M10 48h30" strokeWidth="1.8" strokeOpacity="0.55" />
+        <circle cx="68" cy="16" r="6" fill={BONE} stroke={SIGNAL} />
+      </g>
+      <path d="M150 70C172 62 190 56 210 54" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+      <path d="M150 140C172 148 192 152 210 150" stroke={SIGNAL} strokeWidth="3" strokeDasharray="2 9" />
+    </>
+  ),
   'seo-tracking': (
     <>
       <rect x="30" y="20" width="250" height="36" rx="18" fill={PAPER} />

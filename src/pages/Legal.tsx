@@ -318,7 +318,7 @@ const COOKIES: Section[] = [
           <div key={name} className="grid md:grid-cols-[1fr_2fr_0.8fr] gap-x-6 gap-y-1 p-4">
             <span className="display-md text-[15px]">{name}</span>
             <span className="body-tight">{what}</span>
-            <span className="label !text-[11px] md:text-right">{when}</span>
+            <span className="label !text-[12px] md:text-right">{when}</span>
           </div>
         ))}
       </div>

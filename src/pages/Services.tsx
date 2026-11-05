@@ -164,7 +164,7 @@ export default function ServicesPage() {
                     <p className="accent text-lg md:text-xl mb-4">{service.summary}</p>
                     <p className="body max-w-md">{service.detail}</p>
                     {service.stack && (
-                      <p className="label !text-[10px] !tracking-[0.14em] mt-5 pt-5 border-t border-ink/12">
+                      <p className="label !text-[12px] !tracking-[0.14em] mt-5 pt-5 border-t border-ink/12">
                         {service.stack}
                       </p>
                     )}
@@ -178,7 +178,7 @@ export default function ServicesPage() {
                           {service.points.map((point) => (
                             <li key={point} className="flex items-start gap-2.5">
                               <Check className="w-3.5 h-3.5 text-signal mt-1 shrink-0" />
-                              <span className="text-[13.5px] text-ink/85 leading-snug">{point}</span>
+                              <span className="text-[14px] text-ink leading-snug">{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -228,7 +228,7 @@ export default function ServicesPage() {
                 <li className="py-6 border-b border-ink/15 h-full">
                   <h3 className="display-md text-[18px] mb-1.5">{sector.n}</h3>
                   <p className="body-tight mb-3">{sector.desc}</p>
-                  <p className="text-[13.5px] leading-relaxed text-ink/75">{sector.uses.join(', ')}.</p>
+                  <p className="text-[14px] leading-relaxed text-ash">{sector.uses.join(', ')}.</p>
                 </li>
               </Reveal>
             ))}
@@ -240,11 +240,11 @@ export default function ServicesPage() {
         <div className="wrap relative z-10">
           <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-20">
             <Reveal>
-              <span className="label !text-paper/45 block mb-5">How an engagement runs</span>
+              <span className="label !text-paper/65 block mb-5">How an engagement runs</span>
               <h2 className="display-lg text-[clamp(1.7rem,4vw,2.8rem)] text-paper mb-4">
                 No surprises.<br />No black box.
               </h2>
-              <p className="text-paper/60 leading-relaxed max-w-xs">
+              <p className="text-paper/65 leading-relaxed max-w-xs">
                 You always know what is being built, what it costs, and what happens next.
               </p>
             </Reveal>
@@ -257,7 +257,7 @@ export default function ServicesPage() {
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <h3 className="display-md text-base mb-1.5">{step.k}</h3>
-                    <p className="text-paper/70 text-[13.5px] leading-relaxed">{step.v}</p>
+                    <p className="text-paper/70 text-[14px] leading-relaxed">{step.v}</p>
                   </div>
                 </Reveal>
               ))}

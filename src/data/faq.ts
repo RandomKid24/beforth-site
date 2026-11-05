@@ -15,6 +15,11 @@
 
 export const FAQ: { q: string; a: string; related?: string }[] = [
   {
+    q: 'Is BeForth a software company in Nashik?',
+    a: 'Yes. BeForth is a software company based in Nashik, Maharashtra, founded in 2025. We build ERP, CRM and HRMS systems for Indian businesses.',
+    related: 'services',
+  },
+  {
     q: 'What does BeForth do?',
     a: 'BeForth builds custom business software from Nashik, India. That covers ERP systems, CRM platforms, HRMS and payroll, inventory management, workflow automation, internal web applications and mobile apps. The work is custom rather than off-the-shelf: systems are designed around the approval structures, roles and reporting requirements of the specific business.',
     related: 'services',

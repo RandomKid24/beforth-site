@@ -38,6 +38,15 @@ export default function InsightsPage() {
               Written for owners and managers dealing with the systems a business
               actually runs on. No product announcements.
             </p>
+            <p className="body max-w-2xl mt-5">
+              Most of what goes wrong in a growing business is not a software problem until
+              it is. These notes cover the decisions that come before the build: whether
+              to buy or build an <Link to="/product/erp" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">ERP</Link>, what
+              to settle before a project starts, and when a spreadsheet stops being enough.
+              If you are weighing a sales system instead, start with our{' '}
+              <Link to="/product/crm" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">CRM</Link> notes and the{' '}
+              <Link to="/services" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">full list of what we build</Link>.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -69,6 +78,23 @@ export default function InsightsPage() {
                     </Link>
                   </Reveal>
                 ))}
+              </div>
+              <div className="mt-14 max-w-3xl">
+                <h2 className="display-md text-xl md:text-2xl mb-4">How to use these notes</h2>
+                <p className="body mb-4">
+                  Start with the article closest to the decision in front of you. If you
+                  are choosing between packaged software and a custom system, read the
+                  first one. If you have already decided to build and want to know what the
+                  first weeks look like, read the second. If your team runs on shared
+                  sheets across more than one depot or branch, the third explains where
+                  that breaks.
+                </p>
+                <p className="body mb-6">
+                  Each article ends with the products it relates to, so you can see what
+                  a finished system looks like. Questions about your own situation are
+                  welcome; we will say plainly if a custom build is not the right answer.
+                </p>
+                <Link to="/contact" className="ulink">Talk to us about your process <ArrowRight className="w-3.5 h-3.5" /></Link>
               </div>
             </>
           ) : (

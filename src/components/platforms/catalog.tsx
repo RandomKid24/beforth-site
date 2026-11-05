@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Truck, Scissors, Boxes, Users, Kanban, Smartphone, Globe, ShieldCheck, TrendingUp, IndianRupee, ReceiptText,
+  Truck, Scissors, Boxes, Users, Kanban, Smartphone, Globe, ShieldCheck, TrendingUp, IndianRupee, ReceiptText, Terminal, ClipboardList,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -15,6 +15,8 @@ import SeoPreview from './Seo';
 import PayrollPreview from './Payroll';
 import PosPreview from './Pos';
 import ErpPreview from './Erp';
+import SeropPreview from './Serop';
+import FourFormPreview from './FourForm';
 
 export interface Platform {
   /** URL slug: /product/<slug> */
@@ -41,6 +43,8 @@ export interface Platform {
   faq: { q: string; a: string }[];
   related: string[];
   proof?: { text: string; href: string; cta: string };
+  /** For self-serve products: the main button goes to the product's own site, not to contact. */
+  primary?: { label: string; href: string };
 }
 
 export const PLATFORMS: Platform[] = [
@@ -385,6 +389,7 @@ export const PLATFORMS: Platform[] = [
       { q: 'How is access controlled?', a: 'Through the tunnel and the access rules we configure, so only permitted people reach the office machines. There is no inbound port exposed to the internet for someone to find, which is the specific risk a traditional remote-access setup creates.' },
     ],
     related: ['websites', 'hrms', 'mobile-apps'],
+    proof: { text: 'TunnelGate has its own product site with downloads and setup notes.', href: 'https://tunnelgate.vercel.app/', cta: 'Visit tunnelgate.vercel.app' },
   },
 
   {
@@ -511,6 +516,94 @@ export const PLATFORMS: Platform[] = [
       { q: 'Is it fast enough for a busy counter?', a: 'That is the point of the design: fast billing, with stock that updates as each sale happens. We look at how your counter actually operates during discovery, because a system that is technically correct but slow at the till gets worked around, and then the numbers are wrong again.' },
     ],
     related: ['salon-erp', 'payroll', 'delivery-tracking'],
+  },
+
+  {
+    slug: 'serop',
+    name: 'Server Operator (SerOp)',
+    sub: 'SSH · Docker · deploy',
+    icon: Terminal,
+    Preview: SeropPreview,
+    summary: 'A free, open-source desktop app for managing servers over SSH: files, Docker containers, logs and deploys in one window.',
+    built: 'Developers who work in terminals and Docker Compose',
+    caps: ['SSH with key or password', 'Remote file editor', 'Docker and Compose logs', 'One-click deploy presets'],
+    seoTitle: 'Server Operator (SerOp): SSH, Docker and Deploy Desktop App | Beforth',
+    seoDescription: 'Server Operator is a free open-source desktop app to manage servers over SSH: browse and edit files, view Docker containers, tail Compose logs and deploy. By Beforth, Nashik.',
+    keywords: 'SSH client desktop app, Docker Compose logs viewer, server management app, open source SSH manager, remote file editor, Server Operator, SerOp',
+    headline: ['Run your servers', 'from one window.'],
+    lead: 'Server Operator, called SerOp for short, connects to your servers over SSH and puts files, Docker containers, logs and deploys in a single desktop app. It is open source under the Apache License 2.0 and runs on macOS, Windows and Linux.',
+    changes: [
+      { from: 'A terminal tab per server and a separate editor', to: 'Servers, files and a terminal in one window' },
+      { from: 'Typing the same docker compose commands each time', to: 'Containers and logs a click away' },
+      { from: 'Deploy steps kept in someone’s head', to: 'Deploy presets you can run again' },
+    ],
+    features: [
+      { title: 'SSH connections', desc: 'Connect with a key or a password and keep a list of your servers.' },
+      { title: 'Remote file browser', desc: 'Browse files on the server and edit them in a Monaco editor, the engine behind VS Code.' },
+      { title: 'Docker and Compose', desc: 'List containers and tail Docker Compose logs without leaving the app.' },
+      { title: 'Deploy presets', desc: 'Save a deploy as a preset and run it in one click.' },
+      { title: 'Integrated terminal', desc: 'A terminal for the server you are looking at, in the same window.' },
+      { title: 'Optional proxy and AI', desc: 'A SOCKS or Tor proxy can be set per server. Deploy suggestions and voice input use a Groq key and are optional.' },
+    ],
+    flow: [
+      { title: 'Download', desc: 'Get the build for macOS, Windows or Linux from the GitHub releases page.' },
+      { title: 'Add a server', desc: 'Enter the host and your SSH key or password.' },
+      { title: 'Look around', desc: 'Browse files, check containers and read logs.' },
+      { title: 'Deploy', desc: 'Run a saved preset when you are ready to ship.' },
+    ],
+    faq: [
+      { q: 'Is Server Operator free?', a: 'Yes. It is open source under the Apache License 2.0, and the source code is on GitHub. The optional AI features use your own Groq API key; the app works without one.' },
+      { q: 'Which systems does it run on?', a: 'macOS on Apple Silicon and Intel, Windows as an installer or a portable build, and Linux as a .deb package. The Mac build is unsigned, so macOS may ask you to allow it on first launch.' },
+      { q: 'Who is it for?', a: 'Developers who already live in terminals and Docker Compose files and want files, containers, logs and deploys together instead of in separate tools.' },
+      { q: 'Who makes it?', a: 'BeForth, a software company in Nashik, Maharashtra. We build custom ERP, CRM and HRMS systems for businesses, and SerOp is a tool we made for our own engineering work.' },
+    ],
+    related: ['tunnelgate', 'websites', 'mobile-apps'],
+    primary: { label: 'Visit the SerOp site', href: 'https://server-operator-zeta.vercel.app/' },
+    proof: { text: 'SerOp has its own site with download links and the source on GitHub.', href: 'https://server-operator-zeta.vercel.app/', cta: 'Visit the SerOp site' },
+  },
+
+  {
+    slug: '4form',
+    name: '4Form',
+    sub: 'Forms · workflow · tracking',
+    icon: ClipboardList,
+    Preview: FourFormPreview,
+    summary: 'Create digital forms, track every submission and connect them to email and your CRM.',
+    built: 'Teams that collect information through forms',
+    caps: ['Digital forms', 'Submission tracking', 'Email automation', 'CRM integration'],
+    seoTitle: '4Form: Form Builder and Workflow Platform | Beforth',
+    seoDescription: '4Form is a form-management platform to create, manage and track digital forms, with analytics, email automation, CRM integration, validation and API integrations. By Beforth, Nashik.',
+    keywords: '4Form, form builder, form management software, digital forms India, form workflow, submission tracking, form to CRM',
+    headline: ['Forms that go', 'somewhere useful.'],
+    lead: '4Form is a form-management and workflow platform. You create and manage digital forms, track every submission, send email automatically and pass the data on to your CRM or other systems through an API.',
+    changes: [
+      { from: 'Form answers copied by hand into a sheet', to: 'Each submission recorded and tracked' },
+      { from: 'Someone has to remember to email the owner', to: 'Email sent automatically on submit' },
+      { from: 'Leads from forms lost in an inbox', to: 'Submissions passed on to your CRM' },
+    ],
+    features: [
+      { title: 'Digital forms', desc: 'Create and manage forms in one place.' },
+      { title: 'Validation', desc: 'Check answers as they are entered so the data arrives clean.' },
+      { title: 'Submission tracking', desc: 'See what came in and follow each submission.' },
+      { title: 'Email automation', desc: 'Send emails automatically when a form is submitted.' },
+      { title: 'CRM integration', desc: 'Pass submissions into your CRM so follow-up starts at once.' },
+      { title: 'Analytics and API', desc: 'See how your forms perform and connect them to other systems through the API.' },
+    ],
+    flow: [
+      { title: 'Build the form', desc: 'Set up the fields and the rules for valid answers.' },
+      { title: 'Share it', desc: 'Put the form where your customers or staff will fill it in.' },
+      { title: 'Track submissions', desc: 'Every response is recorded and visible.' },
+      { title: 'Connect', desc: 'Send email and push data to your CRM or other systems.' },
+    ],
+    faq: [
+      { q: 'What is 4Form?', a: '4Form is a form-management and workflow platform made by BeForth. It lets you create digital forms, track submissions, automate email and connect the data to your CRM.' },
+      { q: 'Can it send data to my CRM?', a: 'Yes. 4Form has CRM integration and an API, so a submission can create a lead or record in another system instead of sitting in an inbox.' },
+      { q: 'Where do I use it?', a: '4Form runs on the web at 4form.beforth.in.' },
+      { q: 'Can BeForth build something custom around it?', a: 'Yes. If your forms feed a wider process such as approvals, a CRM or an ERP, we can build that around it. See our CRM and custom ERP pages.' },
+    ],
+    related: ['crm', 'erp', 'websites'],
+    primary: { label: 'Open 4Form', href: 'https://4form.beforth.in/' },
+    proof: { text: '4Form runs as its own web app.', href: 'https://4form.beforth.in/', cta: 'Open 4Form' },
   },
 ];
 

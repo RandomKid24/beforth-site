@@ -32,6 +32,8 @@ Each has a page with module lists, workflow steps and its own FAQ.
 - Websites and portals — including customer portals: https://beforth.in/product/websites
 - TunnelGate — remote desktop over Cloudflare Zero Trust: https://beforth.in/product/tunnelgate
 - SEO and SERP rank tracking: https://beforth.in/product/seo-tracking
+- Server Operator (SerOp) — free open-source SSH, Docker and deploy desktop app: https://beforth.in/product/serop
+- 4Form — form builder and workflow platform: https://beforth.in/product/4form
 
 ## Insights
 

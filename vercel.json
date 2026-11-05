@@ -105,6 +105,14 @@
       "destination": "/product/pos/index.html"
     },
     {
+      "source": "/product/serop",
+      "destination": "/product/serop/index.html"
+    },
+    {
+      "source": "/product/4form",
+      "destination": "/product/4form/index.html"
+    },
+    {
       "source": "/privacy-policy",
       "destination": "/privacy-policy/index.html"
     },

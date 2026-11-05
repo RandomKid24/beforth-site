@@ -259,7 +259,7 @@ export default function ProductShowcase() {
       </div>
     ) : (
       <nav className="flex-1 px-3 py-3" aria-label="Modules">
-        <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-paper/40">Modules</p>
+        <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-paper/65">Modules</p>
         <div className="flex flex-col gap-0.5">
           {MODULES.map(({ id, label, icon: Icon }) => {
             const on = id === module;

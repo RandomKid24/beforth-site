@@ -204,7 +204,7 @@ function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`label transition-colors duration-300 ${active ? 'text-signal' : 'hover:text-ink'}`}
+                      className={`label inline-block py-2.5 transition-colors duration-300 ${active ? 'text-signal' : 'hover:text-ink'}`}
                     >
                       {item.label}
                     </Link>
@@ -220,7 +220,7 @@ function Navbar() {
               transition={springSmooth}
             >
               <Magnetic>
-                <Link to="/contact" className="btn-signal !px-5 !py-2.5 !text-[10px]">
+                <Link to="/contact" className="btn-signal !px-5 !py-2.5 !text-[12px]">
                   Start a project <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </Magnetic>
@@ -308,7 +308,7 @@ function Hero() {
         </h1>
 
         <p className="lead max-w-xl mt-6">
-          We replace spreadsheets and scattered tools with one system built around how your
+          We replace <Link to="/insights/spreadsheets-fail-at-a-second-location" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">spreadsheets</Link> and scattered tools with one system built around how your
           company works. Used by manufacturing, pharma, distribution and service firms.
         </p>
 
@@ -355,6 +355,10 @@ function Positioning() {
               We build the systems a business runs on: sales, inventory, service, finance and
               reporting, <span className="accent">connected in one place.</span>
             </p>
+            <p className="body max-w-[56ch] mt-5">
+              BeForth is a software company in Nashik, Maharashtra, founded in 2025. We build
+              ERP, CRM and HRMS systems for Indian businesses. <Link to="/about" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">More about us</Link>.
+            </p>
           </Reveal>
         </div>
       </div>
@@ -373,6 +377,12 @@ function Fit() {
           title={<>Built for companies that have <span className="accent">outgrown spreadsheets.</span></>}
         />
 
+        <p className="body max-w-2xl mb-10">
+          Not sure a build is the right answer? Read how to decide between{' '}
+          <Link to="/insights/custom-erp-or-off-the-shelf" className="text-ink underline underline-offset-4 decoration-signal hover:text-signal transition-colors">custom ERP and off-the-shelf software</Link>,
+          and what happens during <Link to="/insights/what-to-expect-during-erp-discovery" className="text-ink underline underline-offset-4 decoration-signal hover:text-signal transition-colors">ERP discovery</Link> before any code is written.
+        </p>
+
         <div className="grid lg:grid-cols-2 gap-5">
           <Reveal>
             <div className="surface p-6 md:p-8 h-full relative">
@@ -382,7 +392,7 @@ function Fit() {
                 {FITS.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-signal mt-2.5 shrink-0" />
-                    <span className="body text-ink/85">{item}</span>
+                    <span className="body text-ink">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -504,6 +514,44 @@ function ProductProof() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Our own tools                                                       */
+/* ------------------------------------------------------------------ */
+function OwnTools() {
+  const tools = ['tunnelgate', 'serop'].map((slug) => getPlatform(slug)).filter((p): p is NonNullable<ReturnType<typeof getPlatform>> => !!p);
+  return (
+    <section className="section">
+      <div className="wrap">
+        <SectionHead title={<>Tools we built for <span className="accent">ourselves, and share.</span></>} />
+        <div className="flex flex-col gap-16 md:gap-24">
+          {tools.map((t, i) => (
+            <div key={t.slug} className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+              <Reveal className={i % 2 ? 'lg:order-2' : ''}>
+                <t.Preview />
+              </Reveal>
+              <Reveal delay={0.08}>
+                <span className="label block mb-4">{t.sub}</span>
+                <h3 className="display-lg text-2xl md:text-3xl mb-4">{t.name}</h3>
+                <p className="body mb-6 max-w-md">{t.summary}</p>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <Link to={`/product/${t.slug}`} className="ulink">
+                    How it works <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  {t.proof && (
+                    <a href={t.proof.href} target="_blank" rel="noopener noreferrer" className="ulink">
+                      {t.proof.cta} <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+              </Reveal>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Method                                                               */
 /* ------------------------------------------------------------------ */
 function Method() {
@@ -563,9 +611,9 @@ function Why() {
                 <li className="grid grid-cols-[56px_1fr] sm:grid-cols-[72px_1fr] gap-x-5 py-6 border-b border-ink/15">
                   <ReasonDoodle index={i} className="w-14 h-14 sm:w-[72px] sm:h-[72px]" />
                   <div>
-                    <h3 className="display-md text-[19px] md:text-[21px]">{reason.title}</h3>
-                    <p className="body-tight mt-1 !text-[14.5px] !text-ink/80">{reason.desc}</p>
-                    <p className="body-tight mt-2 !text-[13.5px]">{reason.how}</p>
+                    <h3 className="display-md text-[20px] md:text-[20px]">{reason.title}</h3>
+                    <p className="body-tight mt-1 !text-[15px] !text-ash">{reason.desc}</p>
+                    <p className="body-tight mt-2 !text-[14px]">{reason.how}</p>
                   </div>
                 </li>
               </Reveal>
@@ -579,7 +627,7 @@ function Why() {
                 {OUTCOMES.map((row) => (
                   <li key={row.to} className="grid gap-1 py-4 border-t border-paper/15">
                     <span className="text-[13px] text-paper/65 line-through decoration-paper/40 decoration-1">{row.from}</span>
-                    <span className="flex items-center gap-3 text-[17px] md:text-[18px] font-semibold tracking-[-0.015em]">
+                    <span className="flex items-center gap-3 text-[18px] md:text-[18px] font-semibold tracking-[-0.015em]">
                       <Check className="w-4 h-4 shrink-0 text-wave" strokeWidth={3} />
                       {row.to}
                     </span>
@@ -640,7 +688,7 @@ function SelectedWork() {
                 <p className="body-tight mb-6">{item.desc}</p>
                 <ul className="flex flex-wrap gap-1.5">
                   {item.points.map((point) => (
-                    <li key={point} className="label !text-[10px] border border-ink/12 px-2.5 py-1">
+                    <li key={point} className="label !text-[12px] border border-ink/12 px-2.5 py-1">
                       {point}
                     </li>
                   ))}
@@ -676,8 +724,8 @@ function ClientsLine() {
           <ol className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 border-t border-ink/25">
             {CLIENTS.map((c, i) => (
               <li key={c} className="flex items-baseline gap-3 py-2.5 border-b border-ink/12">
-                <span className="font-mono text-[11px] text-ash tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                <span className="display-md text-[17px] md:text-[20px] !text-ink/90">{c}</span>
+                <span className="font-mono text-[12px] text-ash tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="display-md text-[18px] md:text-[20px] !text-ink">{c}</span>
               </li>
             ))}
           </ol>
@@ -795,7 +843,7 @@ function Sectors() {
             <li key={industry.name} className="grid grid-cols-[28px_1fr] gap-x-4 py-5 border-b border-ink/15">
               <SectorIcon name={industry.name} className="w-6 h-6 mt-0.5" />
               <div>
-                <h3 className="display-md text-[17px]">{industry.name}</h3>
+                <h3 className="display-md text-[18px]">{industry.name}</h3>
                 <p className="body-tight mt-1">{industry.does}</p>
               </div>
             </li>
@@ -822,11 +870,11 @@ function CTA() {
             <PlaneDoodle className="hidden md:block absolute right-8 top-4 w-60 pointer-events-none" />
             <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <div className="max-w-xl">
-                <span className="label !text-paper/50 block mb-5">Next step</span>
+                <span className="label !text-paper/65 block mb-5">Next step</span>
                 <h2 className="display-lg text-[clamp(1.7rem,4vw,2.9rem)] text-paper mb-5">
                   Tell us how your business runs today.
                 </h2>
-                <p className="text-paper/60 text-base leading-relaxed">
+                <p className="text-paper/65 text-base leading-relaxed">
                   We will show you the technology it should run on, even when the answer is less
                   software than you expected.
                 </p>
@@ -950,7 +998,7 @@ function Footer() {
               </Link>
             ))}
             <a
-              href="https://in.linkedin.com/company/beforth"
+              href="https://www.linkedin.com/company/beforth-in"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center min-h-[28px] px-2 label hover:text-signal transition-colors"
@@ -1236,7 +1284,7 @@ export default function App() {
         <main id="main-content" key={pathname} className={animate.current ? 'page-enter' : undefined}>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<><Hero /><Positioning /><ClientsLine /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+              <Route path="/" element={<><Hero /><Positioning /><ClientsLine /><Fit /><ServicesSection /><ProductProof /><OwnTools /><Method /><Why /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/insights" element={<InsightsPage />} />

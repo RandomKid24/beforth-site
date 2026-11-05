@@ -63,7 +63,7 @@
 
   /* ---- Type --------------------------------------------------------- */
   .display-xl {
-    @apply font-display font-extrabold tracking-[-0.035em] leading-[0.95];
+    @apply font-display font-bold tracking-[-0.035em] leading-[0.95];
   }
   .display-lg {
     @apply font-display font-bold tracking-[-0.025em] leading-[1.1];
@@ -81,10 +81,10 @@
     @apply text-ash text-[15px] md:text-[16px] font-normal leading-[1.75];
   }
   .body-tight {
-    @apply text-ash text-[13.5px] font-normal leading-[1.65];
+    @apply text-ash text-[14px] font-normal leading-[1.65];
   }
   .lead {
-    @apply text-ink/80 text-lg md:text-[21px] font-normal leading-[1.5] tracking-[-0.012em];
+    @apply text-ink/80 text-lg md:text-[20px] font-normal leading-[1.5] tracking-[-0.012em];
   }
   .figure-cap {
     @apply font-sans text-[13px] text-ash;

@@ -65,7 +65,7 @@ export default function TeamPage() {
             {TEAM.map((person, i) => (
               <Reveal key={person.name} delay={i * 0.06}>
                 <div className="group grid md:grid-cols-[auto_1fr_1.1fr] gap-6 md:gap-10 items-start py-7 md:py-9 border-b border-ink/12">
-                  <span className="font-display font-extrabold text-2xl md:text-3xl text-signal w-14 md:w-16 shrink-0 leading-none">
+                  <span className="font-display font-bold text-2xl md:text-3xl text-signal w-14 md:w-16 shrink-0 leading-none">
                     {person.initials}
                   </span>
                   <div>
