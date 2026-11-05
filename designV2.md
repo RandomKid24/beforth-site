@@ -7,7 +7,7 @@ edited.
 Where the two disagree, **this one wins**. Last brought up to date: October 2026.
 
 - Source of truth for tokens: `src/index.css`
-- Source of truth for structured data: `src/lib/schema.ts`
+- Source of truth for structured data: `src/lib/schema.ts`a
 - Source of truth for illustrations: `src/components/Doodles.tsx`
 - Source of truth for articles: `src/data/insights.ts`
 - Print equivalents: `COLOR_PALETTE.md`
