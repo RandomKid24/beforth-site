@@ -3,25 +3,27 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import { Magnetic } from '../components/Magnetic';
+import { LOCATION_PAGES, LOCATIONS, LOCATIONS_PATH, type Location, type PageKind } from '../data/locations';
 
 /**
- * Two location landing pages: "ERP software in Nashik" and "Custom software
- * development in Nashik".
+ * Location landing pages ("ERP software in Pune", "Custom software
+ * development in Maharashtra", ...). One component, driven by
+ * src/data/locations.json.
  *
- * Honesty rules (designV2.md section 8) apply. Everything below is already
- * published elsewhere on the site: the capability lists come from Services, the
- * fit lists and typical client from the home page, the engagement steps from
- * Services. The only location claim is the verified one: BeForth is based in
- * Nashik, Maharashtra. Do not add named areas, client counts, response times
- * or "we serve" statements without a source.
+ * Honesty rules (designV2.md section 8) apply. Capability lists, fit lists, the
+ * typical client and the engagement steps are already published elsewhere on
+ * the site. The location claims are the ones the owner has confirmed: BeForth
+ * is based in Nashik and delivers across India. Do not add offices, onsite
+ * visits, named areas, client counts or response times without a source.
+ *
+ * Each place gets its own `local` paragraph in the data file. Keep them
+ * specific to the place and general in tone. Pages that differ only by a swapped
+ * city name are doorway pages and should not be added.
  */
 
-type Kind = 'erp' | 'custom';
+type Kind = PageKind;
 
 interface Copy {
-  label: string;
-  title: React.ReactNode;
-  lead: string;
   coverTitle: string;
   coverNote: string;
   covers: string[];
@@ -31,10 +33,6 @@ interface Copy {
 
 const COPY: Record<Kind, Copy> = {
   erp: {
-    label: 'ERP software in Nashik',
-    title: <>ERP software company in <span className="accent">Nashik.</span></>,
-    lead:
-      'BeForth is a software company based in Nashik, Maharashtra, founded in 2025. We build custom ERP systems around how your company works, instead of asking you to fit a packaged product.',
     coverTitle: 'What a custom ERP can cover',
     coverNote:
       'We start with the processes you need today and expand as the business grows. Any module can stand alone, or be wired into one connected system.',
@@ -62,10 +60,6 @@ const COPY: Record<Kind, Copy> = {
     ],
   },
   custom: {
-    label: 'Custom software in Nashik',
-    title: <>Custom software development in <span className="accent">Nashik.</span></>,
-    lead:
-      'BeForth is a software company based in Nashik, Maharashtra, founded in 2025. We build software for the cases off-the-shelf products cannot cover: business systems, web applications, mobile apps and the integrations between them.',
     coverTitle: 'What we build',
     coverNote:
       'Five things, with one accountable partner from the first conversation to handover.',
@@ -116,8 +110,29 @@ const ENGAGEMENT = [
   { k: 'Handover', v: 'Training, documentation and support.' },
 ];
 
-export default function NashikPage({ kind }: { kind: Kind }) {
+const BASE = 'BeForth is a software company based in Nashik, Maharashtra, founded in 2025.';
+
+/** Who the page addresses: "businesses in Pune", "businesses across India". */
+function scope(loc: Location) {
+  return loc.kind === 'city' ? `businesses in ${loc.name}` : loc.focus;
+}
+
+function leadFor(kind: Kind, loc: Location): string {
+  if (loc.slug === 'nashik') {
+    return kind === 'erp'
+      ? `${BASE} We build custom ERP systems around how your company works, instead of asking you to fit a packaged product.`
+      : `${BASE} We build software for the cases off-the-shelf products cannot cover: business systems, web applications, mobile apps and the integrations between them.`;
+  }
+  return kind === 'erp'
+    ? `${BASE} We deliver custom ERP to ${scope(loc)}, built around how your company works instead of asking you to fit a packaged product.`
+    : `${BASE} We deliver custom software to ${scope(loc)}: business systems, web applications, mobile apps and the integrations between them, for the cases off-the-shelf products cannot cover.`;
+}
+
+export default function LocationPage({ kind, slug }: { kind: Kind; slug: string }) {
   const c = COPY[kind];
+  const loc = LOCATIONS.find((l) => l.slug === slug) as Location;
+  const label = kind === 'erp' ? `ERP software in ${loc.name}` : `Custom software in ${loc.name}`;
+  const others = LOCATION_PAGES.filter((p) => p.kind === kind && p.loc.slug !== slug);
 
   return (
     <>
@@ -125,9 +140,12 @@ export default function NashikPage({ kind }: { kind: Kind }) {
         <div className="wrap">
           <Reveal>
             <div className="rule mb-6" />
-            <span className="label block mb-6">{c.label}</span>
-            <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[18ch]">{c.title}</h1>
-            <p className="lead max-w-2xl mt-7">{c.lead}</p>
+            <span className="label block mb-6">{label}</span>
+            <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[18ch]">
+              {kind === 'erp' ? <>ERP software company in </> : <>Custom software development in </>}
+              <span className="accent">{loc.name}.</span>
+            </h1>
+            <p className="lead max-w-2xl mt-7">{leadFor(kind, loc)}</p>
             <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link to="/contact" className="btn-signal">
                 Start a project <ArrowRight className="w-4 h-4" />
@@ -165,6 +183,16 @@ export default function NashikPage({ kind }: { kind: Kind }) {
                 </ul>
               </div>
             </article>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <Reveal>
+            <div className="rule mb-6" />
+            <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] mb-4 max-w-[26ch]">{loc.localHeading}</h2>
+            <p className="body max-w-2xl">{loc.local}</p>
           </Reveal>
         </div>
       </section>
@@ -258,6 +286,19 @@ export default function NashikPage({ kind }: { kind: Kind }) {
                 </li>
               ))}
             </ul>
+            <div className="mt-10 pt-8 border-t border-ink/15">
+              <span className="label block mb-4">Also delivered in</span>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                {others.map((o) => (
+                  <li key={o.path}>
+                    <Link to={o.path} className="ulink">{o.loc.name}</Link>
+                  </li>
+                ))}
+                <li>
+                  <Link to={LOCATIONS_PATH} className="ulink">All locations <ArrowUpRight className="w-3.5 h-3.5" /></Link>
+                </li>
+              </ul>
+            </div>
             <div className="mt-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7">
               <p className="body max-w-md">
                 BeForth, Nashik, Maharashtra, India. Email support@beforth.in or call +91 97661 83834.

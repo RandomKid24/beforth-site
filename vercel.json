@@ -37,6 +37,46 @@
       "destination": "/custom-software-nashik/index.html"
     },
     {
+      "source": "/erp-software-india",
+      "destination": "/erp-software-india/index.html"
+    },
+    {
+      "source": "/custom-software-india",
+      "destination": "/custom-software-india/index.html"
+    },
+    {
+      "source": "/erp-software-maharashtra",
+      "destination": "/erp-software-maharashtra/index.html"
+    },
+    {
+      "source": "/custom-software-maharashtra",
+      "destination": "/custom-software-maharashtra/index.html"
+    },
+    {
+      "source": "/erp-software-mumbai",
+      "destination": "/erp-software-mumbai/index.html"
+    },
+    {
+      "source": "/erp-software-pune",
+      "destination": "/erp-software-pune/index.html"
+    },
+    {
+      "source": "/erp-software-thane",
+      "destination": "/erp-software-thane/index.html"
+    },
+    {
+      "source": "/erp-software-bengaluru",
+      "destination": "/erp-software-bengaluru/index.html"
+    },
+    {
+      "source": "/erp-software-surat",
+      "destination": "/erp-software-surat/index.html"
+    },
+    {
+      "source": "/locations",
+      "destination": "/locations/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

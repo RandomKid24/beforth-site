@@ -12,6 +12,7 @@
  * If a fact is not published elsewhere on the site, it does not belong here.
  */
 
+import { LOCATION_PAGES, LOCATIONS_PATH } from '../data/locations';
 import { PUBLISHED_INSIGHTS } from '@/data/insights';
 import { FAQ } from '@/data/faq';
 import { PLATFORMS } from '@/components/platforms/catalog';
@@ -236,8 +237,6 @@ function faqPageFor(pathname: string) {
 const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/': [],
   '/services': [{ name: 'Services', path: '/services' }],
-  '/erp-software-nashik': [{ name: 'ERP software in Nashik', path: '/erp-software-nashik' }],
-  '/custom-software-nashik': [{ name: 'Custom software in Nashik', path: '/custom-software-nashik' }],
   '/portfolio': [{ name: 'Portfolio', path: '/portfolio' }],
   '/insights': [{ name: 'Insights', path: '/insights' }],
   '/about': [{ name: 'About', path: '/about' }],
@@ -247,6 +246,14 @@ const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/terms': [{ name: 'Terms & Conditions', path: '/terms' }],
   '/cookie-policy': [{ name: 'Cookie Policy', path: '/cookie-policy' }],
 };
+
+/** Location pages and their hub. */
+for (const p of LOCATION_PAGES) {
+  CRUMBS[p.path] = [
+    { name: p.kind === 'erp' ? `ERP software in ${p.loc.name}` : `Custom software in ${p.loc.name}`, path: p.path },
+  ];
+}
+CRUMBS[LOCATIONS_PATH] = [{ name: 'Where we deliver', path: LOCATIONS_PATH }];
 
 function breadcrumbList(pathname: string) {
   if (pathname.startsWith('/product/')) {
