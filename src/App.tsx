@@ -71,6 +71,8 @@ const LegalPage = lazyRoute(() => import('./pages/Legal'));
 const loadLegal = LegalPage.preload;
 const ProductPage = lazyRoute(() => import('./pages/ProductPage'));
 const loadProductPage = ProductPage.preload;
+const NashikPage = lazyRoute<{ kind: 'erp' | 'custom' }>(() => import('./pages/NashikPage'));
+const loadNashik = NashikPage.preload;
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -358,6 +360,8 @@ function Positioning() {
             <p className="body max-w-[56ch] mt-5">
               BeForth is a software company in Nashik, Maharashtra, founded in 2025. We build
               ERP, CRM and HRMS systems for Indian businesses. <Link to="/about" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">More about us</Link>.
+              {' '}See our <Link to="/erp-software-nashik" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">ERP software in Nashik</Link> and{' '}
+              <Link to="/custom-software-nashik" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">custom software development in Nashik</Link>.
             </p>
           </Reveal>
         </div>
@@ -944,6 +948,22 @@ function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/erp-software-nashik"
+                  className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
+                >
+                  ERP software in Nashik
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/custom-software-nashik"
+                  className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
+                >
+                  Custom software in Nashik
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -1087,6 +1107,23 @@ const LEGAL_META: Record<string, { title: string; description: string; keywords:
 };
 Object.assign(META, LEGAL_META);
 
+/** Location landing pages. Claims on these pages are limited to the verified one: BeForth is based in Nashik. */
+const NASHIK_META: Record<string, { title: string; description: string; keywords: string }> = {
+  '/erp-software-nashik': {
+    title: 'ERP Software Company in Nashik | Custom ERP — Beforth',
+    description:
+      'Beforth is a software company in Nashik, Maharashtra building custom ERP around how your business works: inventory, sales, purchase, production, approvals and reporting.',
+    keywords: 'ERP software company Nashik, custom ERP Nashik, ERP development Nashik, ERP software Maharashtra, manufacturing ERP Nashik',
+  },
+  '/custom-software-nashik': {
+    title: 'Custom Software Development in Nashik | Beforth',
+    description:
+      'Custom business software, web and mobile apps, workflow automation and integrations from Beforth, a software company in Nashik, Maharashtra, founded in 2025.',
+    keywords: 'custom software development Nashik, software company Nashik, web application development Nashik, mobile app development Nashik',
+  },
+};
+Object.assign(META, NASHIK_META);
+
 function setMeta(selector: string, attrs: Record<string, string>, content: string) {
   let el = document.head.querySelector(selector) as HTMLMetaElement | null;
   if (!el) {
@@ -1110,6 +1147,7 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   if (p.startsWith('/insights/')) return loadInsightArticle();
   if (p.startsWith('/product/')) return loadProductPage();
   if (p in LEGAL_META) return loadLegal();
+  if (p in NASHIK_META) return loadNashik();
   return NotFound.preload();
 }
 
@@ -1295,6 +1333,8 @@ export default function App() {
               <Route path="/privacy-policy" element={<LegalPage kind="privacy" />} />
               <Route path="/terms" element={<LegalPage kind="terms" />} />
               <Route path="/cookie-policy" element={<LegalPage kind="cookies" />} />
+              <Route path="/erp-software-nashik" element={<NashikPage kind="erp" />} />
+              <Route path="/custom-software-nashik" element={<NashikPage kind="custom" />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

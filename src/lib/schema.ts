@@ -236,6 +236,8 @@ function faqPageFor(pathname: string) {
 const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/': [],
   '/services': [{ name: 'Services', path: '/services' }],
+  '/erp-software-nashik': [{ name: 'ERP software in Nashik', path: '/erp-software-nashik' }],
+  '/custom-software-nashik': [{ name: 'Custom software in Nashik', path: '/custom-software-nashik' }],
   '/portfolio': [{ name: 'Portfolio', path: '/portfolio' }],
   '/insights': [{ name: 'Insights', path: '/insights' }],
   '/about': [{ name: 'About', path: '/about' }],

@@ -29,6 +29,14 @@
       "destination": "/services/index.html"
     },
     {
+      "source": "/erp-software-nashik",
+      "destination": "/erp-software-nashik/index.html"
+    },
+    {
+      "source": "/custom-software-nashik",
+      "destination": "/custom-software-nashik/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

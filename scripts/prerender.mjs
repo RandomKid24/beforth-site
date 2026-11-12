@@ -57,6 +57,8 @@ const ROUTES = [
   '/about',
   '/team',
   '/contact',
+  '/erp-software-nashik',
+  '/custom-software-nashik',
   '/privacy-policy',
   '/terms',
   '/cookie-policy',

@@ -105,6 +105,16 @@ const ROUTE_META = {
     title: 'Custom ERP, CRM, HRMS and automation | BeForth',
     sub: 'Seven service lines, one accountable partner.',
   },
+  '/erp-software-nashik': {
+    eyebrow: 'ERP software',
+    title: 'ERP software company in Nashik | BeForth',
+    sub: 'Custom ERP built around how your business works.',
+  },
+  '/custom-software-nashik': {
+    eyebrow: 'Custom software',
+    title: 'Custom software development in Nashik | BeForth',
+    sub: 'Business systems, web and mobile apps, integrations.',
+  },
   '/portfolio': {
     eyebrow: 'Portfolio',
     title: 'Eleven business systems, shown running | BeForth',
