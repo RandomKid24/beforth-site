@@ -14,6 +14,7 @@
 import puppeteer from 'puppeteer';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { LOCATIONS, locationPath } from './locations.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -181,6 +182,20 @@ async function main() {
   [...insights.matchAll(/slug: '([^']+)',\s*title: '([^']+)'/g)].forEach((m) => {
     ROUTE_META[`/insights/${m[1]}`] = { eyebrow: 'Insights', title: `${m[2]} | BeForth` };
   });
+
+  for (const l of LOCATIONS) {
+    for (const kind of l.pages) {
+      ROUTE_META[locationPath(kind, l.slug)] =
+        kind === 'erp'
+          ? { eyebrow: 'ERP software', title: `ERP software company in ${l.name} | BeForth`, sub: 'Custom ERP built around how your business works.' }
+          : { eyebrow: 'Custom software', title: `Custom software development in ${l.name} | BeForth`, sub: 'Business systems, web and mobile apps, integrations.' };
+    }
+  }
+  ROUTE_META['/locations'] = {
+    eyebrow: 'Locations',
+    title: 'Where we deliver | BeForth',
+    sub: 'Custom ERP and software across India, from Nashik.',
+  };
 
   const browser = await puppeteer.launch(await launchOptions());
   let made = 0;

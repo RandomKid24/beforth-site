@@ -284,6 +284,13 @@ These are rules, not preferences. Breaking one is a bug.
   Team page. Nothing else about size, clients or revenue is stated.
 - **Location is a specific claim.** Do not infer or embellish geographic reach — "we work
   with clients across India and overseas" was invented and had to be removed.
+  **Owner-confirmed (2026-11-13):** BeForth is based in Nashik and delivers across India,
+  including Maharashtra and its cities. Location pages exist for the places listed in
+  `src/data/locations.json`. Add a place there only when the owner confirms delivery. A
+  location page may say "we deliver to businesses in <place>" and "based in Nashik". It
+  must not claim an office, onsite visits, named clients, counts or response times in that
+  place, and its `local` paragraph must stay general ("usually", "is known for"). Pages that
+  differ only by a swapped city name are doorway pages and must not be added.
 - **Label demonstrations as demonstrations.** The two systems under "Selected work" are
   sample-data builds and say so on the card.
 - **No placeholder content reaches a visitor.** Case studies render nothing until a real,
