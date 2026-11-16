@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "nashik",
+    "name": "Nashik",
+    "kind": "city",
+    "pages": ["erp", "custom"],
+    "focus": "manufacturing, pharma, distribution and service firms",
+    "localHeading": "Based in Nashik",
+    "local": "BeForth is based in Nashik, Maharashtra, and was founded in 2025. Businesses here can reach the team directly by phone or email. We build for manufacturing, pharma, distribution and service firms."
+  },
+  {
+    "slug": "india",
+    "name": "India",
+    "kind": "country",
+    "pages": ["erp", "custom"],
+    "focus": "businesses across India",
+    "localHeading": "What growing Indian businesses usually need",
+    "local": "As a business grows, sales, stock, billing and people records usually end up in separate sheets and tools. Indian compliance adds to that. Our POS product handles GST billing, and our payroll product handles PF, professional tax and TDS, so those rules sit inside the same connected system."
+  },
+  {
+    "slug": "maharashtra",
+    "name": "Maharashtra",
+    "kind": "state",
+    "pages": ["erp", "custom"],
+    "focus": "businesses across Maharashtra",
+    "localHeading": "Delivered across Maharashtra",
+    "local": "BeForth is based in Nashik and delivers across Maharashtra, including Mumbai, Pune, Thane and Nashik, and other cities in the state. Some rules, such as professional tax, are set state by state, which matters for payroll when a business has people in more than one state."
+  },
+  {
+    "slug": "mumbai",
+    "name": "Mumbai",
+    "kind": "city",
+    "pages": ["erp"],
+    "focus": "trading, distribution and service businesses",
+    "localHeading": "What Mumbai businesses usually need from an ERP",
+    "local": "Mumbai businesses often trade, distribute or provide services from more than one location. That makes stock across locations, billing and receivables the usual starting point for an ERP."
+  },
+  {
+    "slug": "pune",
+    "name": "Pune",
+    "kind": "city",
+    "pages": ["erp"],
+    "focus": "manufacturing and engineering firms",
+    "localHeading": "What Pune businesses usually need from an ERP",
+    "local": "Pune has a large manufacturing and engineering base. For these firms an ERP usually starts with production workflows, purchase, inventory and quality, then grows into sales and finance."
+  },
+  {
+    "slug": "thane",
+    "name": "Thane",
+    "kind": "city",
+    "pages": ["erp"],
+    "focus": "manufacturing and distribution firms",
+    "localHeading": "What Thane businesses usually need from an ERP",
+    "local": "Thane's businesses include manufacturing and distribution firms close to Mumbai. A common starting point is connecting purchase, stock and dispatch to billing, so nothing is typed twice."
+  },
+  {
+    "slug": "bengaluru",
+    "name": "Bengaluru",
+    "kind": "city",
+    "pages": ["erp"],
+    "focus": "technology and services companies",
+    "localHeading": "What Bengaluru businesses usually need from an ERP",
+    "local": "Bengaluru is known for technology, electronics and services companies. For project-based and people-heavy businesses, an ERP usually centres on sales and project tracking, HR and payroll, and reporting."
+  },
+  {
+    "slug": "surat",
+    "name": "Surat",
+    "kind": "city",
+    "pages": ["erp"],
+    "focus": "trading and textile businesses",
+    "localHeading": "What Surat businesses usually need from an ERP",
+    "local": "Surat is known for textiles and trading. High-volume trading with many parties makes stock, billing and receivables the usual starting point for an ERP."
+  }
+]

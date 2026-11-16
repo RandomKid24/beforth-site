@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { LOCATION_PAGES, LOCATIONS_PATH, locationMeta } from './data/locations';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
 import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compass, Handshake, MousePointerClick, Puzzle } from 'lucide-react';
@@ -71,6 +72,10 @@ const LegalPage = lazyRoute(() => import('./pages/Legal'));
 const loadLegal = LegalPage.preload;
 const ProductPage = lazyRoute(() => import('./pages/ProductPage'));
 const loadProductPage = ProductPage.preload;
+const LocationPage = lazyRoute<{ kind: 'erp' | 'custom'; slug: string }>(() => import('./pages/LocationPage'));
+const loadLocation = LocationPage.preload;
+const LocationsHub = lazyRoute(() => import('./pages/LocationsHub'));
+const loadLocationsHub = LocationsHub.preload;
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -358,6 +363,8 @@ function Positioning() {
             <p className="body max-w-[56ch] mt-5">
               BeForth is a software company in Nashik, Maharashtra, founded in 2025. We build
               ERP, CRM and HRMS systems for Indian businesses. <Link to="/about" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">More about us</Link>.
+              {' '}We deliver across India: <Link to="/erp-software-india" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">ERP software</Link>,{' '}
+              <Link to="/custom-software-india" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">custom software</Link> and <Link to="/locations" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">where we deliver</Link>.
             </p>
           </Reveal>
         </div>
@@ -944,6 +951,22 @@ function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/erp-software-india"
+                  className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
+                >
+                  ERP software in India
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/locations"
+                  className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
+                >
+                  Where we deliver
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -1087,6 +1110,10 @@ const LEGAL_META: Record<string, { title: string; description: string; keywords:
 };
 Object.assign(META, LEGAL_META);
 
+/** Location pages and the /locations hub. Content and claims live in src/data/locations.json. */
+const LOCATION_META = locationMeta();
+Object.assign(META, LOCATION_META);
+
 function setMeta(selector: string, attrs: Record<string, string>, content: string) {
   let el = document.head.querySelector(selector) as HTMLMetaElement | null;
   if (!el) {
@@ -1110,6 +1137,8 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   if (p.startsWith('/insights/')) return loadInsightArticle();
   if (p.startsWith('/product/')) return loadProductPage();
   if (p in LEGAL_META) return loadLegal();
+  if (p === LOCATIONS_PATH) return loadLocationsHub();
+  if (p in LOCATION_META) return loadLocation();
   return NotFound.preload();
 }
 
@@ -1295,6 +1324,10 @@ export default function App() {
               <Route path="/privacy-policy" element={<LegalPage kind="privacy" />} />
               <Route path="/terms" element={<LegalPage kind="terms" />} />
               <Route path="/cookie-policy" element={<LegalPage kind="cookies" />} />
+              {LOCATION_PAGES.map((p) => (
+                <Route key={p.path} path={p.path} element={<LocationPage kind={p.kind} slug={p.loc.slug} />} />
+              ))}
+              <Route path={LOCATIONS_PATH} element={<LocationsHub />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

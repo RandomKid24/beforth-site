@@ -12,13 +12,14 @@
 
 import { readFile, access } from 'node:fs/promises';
 import path from 'node:path';
+import { LOCATION_ROUTES } from './locations.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 
 const ROUTES = [
-  '/', '/services', '/portfolio', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact', '/privacy-policy', '/terms', '/cookie-policy',
+  '/', '/services', '/portfolio', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact', ...LOCATION_ROUTES, '/privacy-policy', '/terms', '/cookie-policy',
   '/product/erp', '/product/delivery-tracking', '/product/salon-erp', '/product/hrms',
   '/product/crm', '/product/mobile-apps', '/product/websites',
   '/product/tunnelgate', '/product/seo-tracking', '/product/payroll',
@@ -81,6 +82,14 @@ async function checkRoute(route) {
 
 async function main() {
   for (const route of ROUTES) await checkRoute(route);
+
+  // Location routes must be in the sitemap and have a Vercel rewrite, or they ship as a 404.
+  const sitemap = await readFile(path.join(ROOT, 'public', 'sitemap.xml'), 'utf8');
+  const vercel = await readFile(path.join(ROOT, 'vercel.json'), 'utf8');
+  for (const route of LOCATION_ROUTES) {
+    if (!sitemap.includes(`<loc>https://beforth.in${route}</loc>`)) problems.push(`${route}: missing from public/sitemap.xml`);
+    if (!vercel.includes(`"source": "${route}"`)) problems.push(`${route}: missing rewrite in vercel.json`);
+  }
 
   // Public files must be served as files, not swallowed by the SPA rewrite.
   for (const f of ['robots.txt', 'sitemap.xml', 'llms.txt', 'favicon.ico', 'logo.png', 'og-image.png']) {

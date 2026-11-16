@@ -23,6 +23,7 @@ import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir, access, stat, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { LOCATION_ROUTES } from './locations.mjs';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 
@@ -57,6 +58,7 @@ const ROUTES = [
   '/about',
   '/team',
   '/contact',
+  ...LOCATION_ROUTES,
   '/privacy-policy',
   '/terms',
   '/cookie-policy',
