@@ -85,10 +85,25 @@ async function main() {
 
   // Location routes must be in the sitemap and have a Vercel rewrite, or they ship as a 404.
   const sitemap = await readFile(path.join(ROOT, 'public', 'sitemap.xml'), 'utf8');
-  const vercel = await readFile(path.join(ROOT, 'vercel.json'), 'utf8');
+  const vercelRaw = await readFile(path.join(ROOT, 'vercel.json'), 'utf8');
+
+  // Parse the config rather than matching its literal text: Vercel may
+  // reserialize vercel.json (compact spacing, different key order) inside the
+  // build container, and that must not look like a missing rewrite.
+  let vercel;
+  try {
+    vercel = JSON.parse(vercelRaw);
+  } catch {
+    problems.push('vercel.json is not valid JSON');
+    vercel = {};
+  }
+  const rewriteSources = new Set(
+    Array.isArray(vercel.rewrites) ? vercel.rewrites.map((rule) => rule?.source) : [],
+  );
+
   for (const route of LOCATION_ROUTES) {
     if (!sitemap.includes(`<loc>https://www.beforth.in${route}</loc>`)) problems.push(`${route}: missing from public/sitemap.xml`);
-    if (!vercel.includes(`"source": "${route}"`)) problems.push(`${route}: missing rewrite in vercel.json`);
+    if (!rewriteSources.has(route)) problems.push(`${route}: missing rewrite in vercel.json`);
   }
 
   // Public files must be served as files, not swallowed by the SPA rewrite.
@@ -132,6 +147,9 @@ async function main() {
   if (problems.length) {
     console.error('\nBuild verification failed:\n');
     problems.forEach((p) => console.error(`  - ${p}`));
+    if (problems.some((p) => p.includes('missing rewrite'))) {
+      console.error(`\n  vercel.json seen by this build: ${vercelRaw.slice(0, 400).replace(/\s+/g, ' ')}\n`);
+    }
     console.error('\nRefusing to ship an empty or broken build.\n');
     process.exit(1);
   }
