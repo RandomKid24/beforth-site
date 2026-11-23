@@ -98,8 +98,8 @@ function cardHtml({ eyebrow, headline, sub, tail }) {
 const ROUTE_META = {
   '/': {
     eyebrow: 'Custom software',
-    title: 'Custom ERP, CRM and HR software for your business | BeForth',
-    sub: 'Manufacturing, pharma, distribution and service companies.',
+    title: 'Custom ERP & CRM Software in Nashik, India | BeForth',
+    sub: 'Built in modules for manufacturers, distributors and pharma firms.',
   },
   '/services': {
     eyebrow: 'Services',
@@ -133,6 +133,11 @@ const ROUTE_META = {
     eyebrow: 'Contact',
     title: 'Discuss your ERP or software project | BeForth',
     sub: 'Nashik, Maharashtra, India.',
+  },
+  '/pricing': {
+    eyebrow: 'Pricing',
+    title: 'How We Price Custom ERP & Software | BeForth',
+    sub: 'Written scope and cost before any build starts.',
   },
 };
 

@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 import NotFound from './NotFound';
 import { PUBLISHED_INSIGHTS, formatInsightDate } from '@/data/insights';
@@ -34,12 +34,29 @@ export default function InsightArticle() {
             By BeForth ·{' '}
             <time dateTime={a.publishedOn}>{formatInsightDate(a.publishedOn)}</time>
           </p>
+
+          <div className="mt-8 max-w-2xl border-l-2 border-signal pl-5">
+            <p className="label mb-2">The short answer</p>
+            <p className="body !text-ink">
+              This guide explains {a.title.toLowerCase()}, drawn from how BeForth builds custom business systems. It sets out what to check, what to ask, and where a custom system helps — and where it does not. We publish no prices or timelines; a short discovery conversation gives you a written scope and cost first.
+            </p>
+            <ul className="mt-3 flex flex-col gap-1.5">
+              <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> Written from custom-system work, not a template.</li>
+              <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> Says when custom software is not the right answer.</li>
+              <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> Written scope and cost after discovery, before any build.</li>
+            </ul>
+          </div>
         </div>
       </header>
 
       <div className="pb-16 md:pb-20">
         <div className="wrap">
           <div className="max-w-2xl">
+            <p className="body mb-10">
+              Want to see the system this kind of decision leads to? Our{' '}
+              <Link to="/product/erp" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">custom ERP product page</Link>{' '}
+              shows the modules, workflow and live preview on labelled sample data.
+            </p>
             {a.sections.map((s) => (
               <section key={s.heading} className="mb-10 md:mb-12">
                 <h2 className="display-lg text-[clamp(1.4rem,2.6vw,1.9rem)] mb-4">{s.heading}</h2>

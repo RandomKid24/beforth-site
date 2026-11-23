@@ -3,7 +3,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { LOCATION_PAGES, LOCATIONS_PATH, locationMeta } from './data/locations';
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
-import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compass, Handshake, MousePointerClick, Puzzle } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Mail, Phone, MapPin, Check, Compass, Handshake, MousePointerClick, Puzzle } from 'lucide-react';
 
 import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
@@ -76,6 +76,8 @@ const LocationPage = lazyRoute<{ kind: 'erp' | 'custom'; slug: string }>(() => i
 const loadLocation = LocationPage.preload;
 const LocationsHub = lazyRoute(() => import('./pages/LocationsHub'));
 const loadLocationsHub = LocationsHub.preload;
+const PricingPage = lazyRoute(() => import('./pages/Pricing'));
+const loadPricing = PricingPage.preload;
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -93,11 +95,11 @@ const NAV = [
  * crawlers and readers use them to reach related detail from within the text.
  */
 const SERVICES = [
-  { n: '01', title: 'Business Software & ERP', desc: 'Sales, HR, service, inventory and reporting on one platform.', to: '/services' },
-  { n: '02', title: 'Workflow Automation', desc: 'Approvals and follow-ups tracked, not chased.', to: '/product/crm' },
-  { n: '03', title: 'Custom Software', desc: 'Built for the cases off-the-shelf cannot cover.', to: '/services' },
-  { n: '04', title: 'Web & Mobile Apps', desc: 'Websites, portals and apps your team will actually use.', to: '/product/mobile-apps' },
-  { n: '05', title: 'Integrations', desc: 'ERP, accounts, CRM and APIs talking to each other.', to: '/services' },
+  { n: '01', title: 'ERP', desc: 'Sales, purchase, inventory, approvals and reporting on one system.', to: '/product/erp' },
+  { n: '02', title: 'CRM & Follow-up Automation', desc: 'Leads, reminders and approvals tracked instead of chased.', to: '/product/crm' },
+  { n: '03', title: 'Custom Software', desc: 'Built for the cases a packaged product cannot cover.', to: '/services' },
+  { n: '04', title: 'Web & Mobile Apps', desc: 'Portals, websites and apps your team will actually use.', to: '/product/mobile-apps' },
+  { n: '05', title: 'Integrations & APIs', desc: 'ERP, accounts, CRM and machines talking to each other.', to: '/services' },
 ];
 
 const METHOD = [
@@ -186,14 +188,18 @@ function Navbar() {
               transition={springSmooth}
             >
               <Link to="/" className="flex items-center min-h-[40px] shrink-0" aria-label="BeForth home">
-                <m.img
-                  src="/logo.png"
-                  alt="BeForth"
-                  className="h-[26px] md:h-[28px] w-auto"
-                  initial={shouldReduce ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={springSmooth}
-                />
+                <picture>
+                  <source srcSet="/logo.webp" type="image/webp" />
+                  <source srcSet="/logo.avif" type="image/avif" />
+                  <m.img
+                    src="/logo.png"
+                    alt="BeForth"
+                    className="h-[26px] md:h-[28px] w-auto"
+                    initial={shouldReduce ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={springSmooth}
+                  />
+                </picture>
               </Link>
             </m.div>
 
@@ -286,55 +292,35 @@ function Navbar() {
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
-/** Eased scroll to an element, below the fixed navbar. Instant under reduced motion. */
-function smoothScrollTo(el: HTMLElement) {
-  const target = el.getBoundingClientRect().top + window.scrollY - 80;
-  const from = window.scrollY;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return window.scrollTo(0, target);
-  const dur = Math.min(1100, 450 + Math.abs(target - from) * 0.35);
-  const t0 = performance.now();
-  const step = (now: number) => {
-    const p = Math.min(1, (now - t0) / dur);
-    window.scrollTo(0, from + (target - from) * (1 - Math.pow(1 - p, 4)));
-    if (p < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-
 function Hero() {
   return (
     <section className="pt-32 md:pt-40 pb-16 md:pb-24 border-b border-ink/12">
       <div className="wrap grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-6 items-center">
         <div>
-        <span className="label">Nashik, Maharashtra, India</span>
+        <span className="label">Custom business software · Nashik, India</span>
 
         <h1 className="display-xl text-[clamp(2rem,5.6vw,4.25rem)] max-w-[20ch] mt-5">
-          Custom ERP, CRM and HR software for your <span className="accent">business.</span>
+          Custom ERP and business software built around <span className="accent">your process.</span>
         </h1>
 
         <p className="lead max-w-xl mt-6">
-          We replace <Link to="/insights/spreadsheets-fail-at-a-second-location" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">spreadsheets</Link> and scattered tools with one system built around how your
-          company works. Used by manufacturing, pharma, distribution and service firms.
+          We replace <Link to="/insights/spreadsheets-fail-at-a-second-location" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal transition-colors">spreadsheets</Link> and scattered tools with one system built around how your company works. Try 13 working product previews on labelled sample data — no signup — then get a written scope and cost before any build starts.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Link to="/contact" className="btn-signal">
-            Start a project <ArrowRight className="w-4 h-4" />
+          <Link to="/product/erp#demo" className="btn-signal">
+            See the live ERP preview <ArrowRight className="w-4 h-4" />
           </Link>
-          <a
-            href="#services"
-            className="ulink"
-            onClick={(e) => {
-              const el = document.getElementById('services');
-              if (!el) return;
-              e.preventDefault();
-              smoothScrollTo(el);
-              history.replaceState(null, '', '#services');
-            }}
-          >
-            What we build <ArrowDown className="w-3.5 h-3.5" />
-          </a>
+          <Link to="/contact" className="ulink">
+            Get a written estimate <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
+
+        <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 label !normal-case !tracking-[0.06em]">
+          <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 shrink-0 text-signal" strokeWidth={3} /> 13 working product previews</li>
+          <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 shrink-0 text-signal" strokeWidth={3} /> Sample data — no signup</li>
+          <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 shrink-0 text-signal" strokeWidth={3} /> Reply within 1 working day</li>
+        </ul>
         </div>
         <HeroDoodle className="w-full max-w-[540px] mx-auto lg:max-w-none" />
       </div>
@@ -422,14 +408,6 @@ function Fit() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.1}>
-          <div className="mt-5 border border-ink/12 bg-paper px-6 py-5">
-            <span className="label">Typical client</span>
-            <p className="display-md text-base mt-1.5">
-              Manufacturing, pharma, distribution and service firms with 20 to 500 people.
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
@@ -541,7 +519,7 @@ function OwnTools() {
                 <p className="body mb-6 max-w-md">{t.summary}</p>
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
                   <Link to={`/product/${t.slug}`} className="ulink">
-                    How it works <ArrowRight className="w-3.5 h-3.5" />
+                    How {t.name} works <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   {t.proof && (
                     <a href={t.proof.href} target="_blank" rel="noopener noreferrer" className="ulink">
@@ -917,7 +895,11 @@ function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-[1.25fr_0.6fr_0.95fr_1.05fr_1fr] gap-10">
           <div>
             <div className="mb-4">
-              <img src="/logo.png" alt="BeForth" className="h-8 w-auto" />
+              <picture>
+                <source srcSet="/logo.webp" type="image/webp" />
+                <source srcSet="/logo.avif" type="image/avif" />
+                <img src="/logo.png" alt="BeForth" className="h-8 w-auto" />
+              </picture>
             </div>
             <p className="display-md text-lg">Think better. Build smarter.</p>
           </div>
@@ -944,7 +926,7 @@ function Footer() {
               {SERVICES.map((s) => (
                 <li key={s.n}>
                   <Link
-                    to="/services"
+                    to={s.to}
                     className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
                   >
                     {s.title}
@@ -1013,7 +995,7 @@ function Footer() {
         </div>
 
         <div className="mt-10 pt-5 border-t border-ink/12 flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <p className="label !normal-case !tracking-[0.06em]">© {new Date().getFullYear()} Beforth</p>
+          <p className="label !normal-case !tracking-[0.06em]">© {new Date().getFullYear()} BeForth</p>
           <div className="flex flex-wrap items-center gap-x-2">
             {[['/privacy-policy', 'Privacy Policy'], ['/terms', 'Terms & Conditions'], ['/cookie-policy', 'Cookie Policy']].map(([to, label]) => (
               <Link key={to} to={to} className="flex items-center min-h-[28px] px-2 label hover:text-signal transition-colors">
@@ -1048,16 +1030,16 @@ function Footer() {
 /* ------------------------------------------------------------------ */
 const META: Record<string, { title: string; description: string; keywords: string }> = {
   '/': {
-    title: 'Beforth | Custom ERP & Business Software, Nashik India',
+    title: 'Custom ERP & Business Software, Nashik India | BeForth',
     description:
-      'Beforth builds custom ERP, CRM, HRMS, inventory, automation, web and mobile software, designed around how your organisation actually operates.',
+      'BeForth builds custom ERP, CRM, HRMS, inventory, automation, web and mobile software for manufacturing, pharma, distribution and service firms. Try 13 working previews on sample data — no signup.',
     keywords: 'custom ERP software Nashik, CRM development India, HRMS and payroll software, inventory management system, business automation, custom software company Maharashtra',
   },
   '/portfolio': {
-    title: 'Portfolio | ERP, CRM, HRMS & Mobile Systems — Beforth',
+    title: '13 Working Product Previews & Systems | BeForth',
     description:
-      'Eleven business systems by Beforth, shown running: custom ERP, delivery tracking, salon ERP, HRMS, CRM, payroll, POS, apps and websites. Nashik, India.',
-    keywords: 'Beforth portfolio, ERP software examples, CRM demo, HRMS payroll software, delivery tracking app, custom software Nashik',
+      'Thirteen working product previews from BeForth: custom ERP, CRM, HRMS, payroll, POS, delivery tracking, apps and websites. Sample data, no signup. Nashik, India.',
+    keywords: 'BeForth portfolio, ERP software examples, CRM demo, HRMS payroll software, delivery tracking app, custom software Nashik',
   },
   '/insights': {
     title: 'Insights | Practical Notes on Business Systems — BeForth',
@@ -1066,46 +1048,52 @@ const META: Record<string, { title: string; description: string; keywords: strin
     keywords: 'ERP insights, business software guides, custom software best practices, India ERP advice',
   },
   '/services': {
-    title: 'Services | Custom ERP, CRM, HRMS & Automation — Beforth',
+    title: 'Custom ERP, CRM, HRMS & Automation Services | BeForth',
     description:
-      'Custom ERP, CRM, HRMS and payroll, inventory management, business automation, web applications and mobile applications by Beforth, Nashik, India.',
+      'Custom ERP, CRM, HRMS and payroll, inventory management, business automation, web applications and mobile applications by BeForth, Nashik, India.',
     keywords: 'custom ERP developer Nashik, CRM software India, HRMS payroll developer, inventory management system, business process automation',
   },
   '/about': {
-    title: 'About Beforth | Custom Business Software Company, Nashik',
+    title: 'About BeForth | Custom Software Company in Nashik',
     description:
-      'Beforth is a software company in Nashik, Maharashtra, founded in 2025, building custom business systems, workflow automation and operational visibility.',
-    keywords: 'about Beforth, custom software company Nashik, ERP development company Maharashtra, IT services Nashik',
+      'BeForth is a software company in Nashik, Maharashtra, founded in 2025, building custom business systems, workflow automation and operational visibility.',
+    keywords: 'about BeForth, custom software company Nashik, ERP development company Maharashtra, IT services Nashik',
   },
   '/team': {
-    title: 'Team | The People Behind the Builds — Beforth, Nashik',
+    title: 'Team | The People Behind the Builds — BeForth, Nashik',
     description:
-      'Meet the Beforth team — engineers, designers and strategists delivering custom software, automation and digital platforms from Nashik, India.',
-    keywords: 'Beforth team, software developers Nashik, technology team Maharashtra',
+      'Meet the BeForth team — engineers, designers and strategists delivering custom software, automation and digital platforms from Nashik, India.',
+    keywords: 'BeForth team, software developers Nashik, technology team Maharashtra',
   },
   '/contact': {
-    title: 'Contact Beforth | Discuss Your ERP or Software Project',
+    title: 'Contact BeForth | Get a Written Estimate for Custom Software',
     description:
-      'Talk to Beforth about custom ERP, CRM, HRMS, inventory or automation projects. Based in Nashik, Maharashtra, India.',
-    keywords: 'contact Beforth, hire ERP developer India, custom software quote Nashik, business automation consultation',
+      'Talk to BeForth about custom ERP, CRM, HRMS, inventory or automation projects. We reply within one working day. Based in Nashik, Maharashtra, India.',
+    keywords: 'contact BeForth, hire ERP developer India, custom software quote Nashik, business automation consultation',
+  },
+  '/pricing': {
+    title: 'How BeForth Prices Custom Software | Written Scope, No Price List',
+    description:
+      'No public price list. Every system is custom, so cost depends on the modules, approval rules, integrations, data migration and support. After a short discovery conversation, we give you a written scope and cost before any build starts.',
+    keywords: 'custom software pricing India, custom ERP cost estimate, written scope, BeForth pricing',
   },
 };
 
 const LEGAL_META: Record<string, { title: string; description: string; keywords: string }> = {
   '/privacy-policy': {
-    title: 'Privacy Policy | Beforth',
-    description: 'How Beforth collects, uses and protects personal information submitted through beforth.in, and the choices you have.',
-    keywords: 'Beforth privacy policy',
+    title: 'Privacy Policy | BeForth',
+    description: 'How BeForth collects, uses and protects personal information submitted through www.beforth.in, and the choices you have.',
+    keywords: 'BeForth privacy policy',
   },
   '/terms': {
-    title: 'Terms & Conditions | Beforth',
-    description: 'The terms for using the Beforth website, including disclaimers and governing law.',
-    keywords: 'Beforth terms and conditions',
+    title: 'Terms & Conditions | BeForth',
+    description: 'The terms for using the BeForth website, including disclaimers and governing law.',
+    keywords: 'BeForth terms and conditions',
   },
   '/cookie-policy': {
-    title: 'Cookie Policy | Beforth',
-    description: 'The cookies and similar technologies used on beforth.in and how to control them.',
-    keywords: 'Beforth cookie policy',
+    title: 'Cookie Policy | BeForth',
+    description: 'The cookies and similar technologies used on www.beforth.in and how to control them.',
+    keywords: 'BeForth cookie policy',
   },
 };
 Object.assign(META, LEGAL_META);
@@ -1133,6 +1121,7 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   if (p === '/about') return loadAbout();
   if (p === '/team') return loadTeam();
   if (p === '/contact') return loadContact();
+  if (p === '/pricing') return loadPricing();
   if (p === '/insights') return loadInsights();
   if (p.startsWith('/insights/')) return loadInsightArticle();
   if (p.startsWith('/product/')) return loadProductPage();
@@ -1155,9 +1144,9 @@ function metaFor(rawPathname: string) {
     : article
     ? { title: `${article.title} | BeForth`, description: article.summary, keywords: 'custom ERP, business software, ERP guide, India' }
     : META[pathname] ?? {
-      title: 'Page not found | Beforth',
-      description: 'This page does not exist. Browse Beforth services, products and contact details.',
-      keywords: 'Beforth',
+      title: 'Page not found | BeForth',
+      description: 'This page does not exist. Browse BeForth services, products and contact details.',
+      keywords: 'BeForth',
     };
   return { meta, known: !!product || !!article || pathname in META };
 }
@@ -1168,7 +1157,7 @@ function SeoManager() {
   useEffect(() => {
     const { meta, known } = metaFor(pathname);
     const path = pathname.replace(/\/+$/, '') || '/';
-    const canonical = `https://beforth.in${path === '/' ? '/' : path}`;
+    const canonical = `https://www.beforth.in${path === '/' ? '/' : path}`;
 
     document.title = meta.title;
     setMeta('meta[name="description"]', { name: 'description' }, meta.description);
@@ -1255,7 +1244,7 @@ export default function App() {
   // Fetch every page chunk once the browser is idle, so a route change never
   // waits on the network or flashes the Suspense fallback mid-animation.
   useEffect(() => {
-    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadInsights, loadInsightArticle, loadProductPage, loadLegal, loadShowcase].forEach((f) => f());
+    const preload = () => [loadServices, loadAbout, loadTeam, loadContact, loadPricing, loadInsights, loadInsightArticle, loadProductPage, loadLegal, loadShowcase].forEach((f) => f());
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) w.requestIdleCallback(preload);
     else window.setTimeout(preload, 1200);
@@ -1321,6 +1310,7 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/pricing" element={<PricingPage />} />
               <Route path="/privacy-policy" element={<LegalPage kind="privacy" />} />
               <Route path="/terms" element={<LegalPage kind="terms" />} />
               <Route path="/cookie-policy" element={<LegalPage kind="cookies" />} />

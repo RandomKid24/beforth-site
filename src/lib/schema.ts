@@ -7,9 +7,10 @@
  * `organizationGraph()` is the single source of truth — index.html is
  * generated from it by scripts/emit-static-schema.mjs, so the two cannot drift.
  *
- * Only verifiable facts appear here. There are no review counts, ratings,
- * founding years or client names on this site, and nothing here invents them.
- * If a fact is not published elsewhere on the site, it does not belong here.
+ * Only verifiable facts appear here. Client names are published on the homepage
+ * and /portfolio; founding year, team roles and the reply promise are published
+ * on /about and /team. Ratings, review counts, prices and timelines are not
+ * published because they cannot be verified. Do not add them to this graph.
  */
 
 import { LOCATION_PAGES, LOCATIONS_PATH } from '../data/locations';
@@ -20,7 +21,7 @@ import { PLATFORMS } from '@/components/platforms/catalog';
 /** The canonical URL path for a platform slug. */
 export const platformPath = (slug: string) => `/product/${slug}`;
 
-export const ORIGIN = 'https://beforth.in';
+export const ORIGIN = 'https://www.beforth.in';
 
 export const ORG = {
   name: 'BeForth',
@@ -40,6 +41,7 @@ export const ORG = {
   sameAs: [
     'https://www.linkedin.com/company/beforth-in',
     'https://www.instagram.com/beforth.in',
+    'https://github.com/Beforth',
   ],
   description:
     'BeForth is a software company in Nashik, India. We build custom ERP, CRM, HRMS, payroll and inventory systems, workflow automation, web platforms and mobile applications for manufacturing, pharma, distribution and service companies.',
@@ -242,6 +244,7 @@ const CRUMBS: Record<string, { name: string; path: string }[]> = {
   '/about': [{ name: 'About', path: '/about' }],
   '/team': [{ name: 'Team', path: '/team' }],
   '/contact': [{ name: 'Contact', path: '/contact' }],
+  '/pricing': [{ name: 'Pricing', path: '/pricing' }],
   '/privacy-policy': [{ name: 'Privacy Policy', path: '/privacy-policy' }],
   '/terms': [{ name: 'Terms & Conditions', path: '/terms' }],
   '/cookie-policy': [{ name: 'Cookie Policy', path: '/cookie-policy' }],
@@ -267,6 +270,12 @@ function breadcrumbList(pathname: string) {
         {
           '@type': 'ListItem',
           position: 2,
+          name: 'Platforms',
+          item: `${ORIGIN}/services`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
           name: p?.name ?? 'Product',
           item: `${ORIGIN}${pathname}`,
         },

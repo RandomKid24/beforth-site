@@ -2,229 +2,235 @@
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://beforth.in/</loc>
+    <loc>https://www.beforth.in/</loc>
     <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://beforth.in/services</loc>
+    <loc>https://www.beforth.in/services</loc>
     <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-nashik</loc>
+    <loc>https://www.beforth.in/erp-software-nashik</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/custom-software-nashik</loc>
+    <loc>https://www.beforth.in/custom-software-nashik</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-india</loc>
+    <loc>https://www.beforth.in/erp-software-india</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/custom-software-india</loc>
+    <loc>https://www.beforth.in/custom-software-india</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-maharashtra</loc>
+    <loc>https://www.beforth.in/erp-software-maharashtra</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/custom-software-maharashtra</loc>
+    <loc>https://www.beforth.in/custom-software-maharashtra</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-mumbai</loc>
+    <loc>https://www.beforth.in/erp-software-mumbai</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-pune</loc>
+    <loc>https://www.beforth.in/erp-software-pune</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-thane</loc>
+    <loc>https://www.beforth.in/erp-software-thane</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-bengaluru</loc>
+    <loc>https://www.beforth.in/erp-software-bengaluru</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/erp-software-surat</loc>
+    <loc>https://www.beforth.in/erp-software-surat</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/locations</loc>
+    <loc>https://www.beforth.in/locations</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/portfolio</loc>
+    <loc>https://www.beforth.in/portfolio</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/contact</loc>
+    <loc>https://www.beforth.in/contact</loc>
     <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://beforth.in/about</loc>
+    <loc>https://www.beforth.in/pricing</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.beforth.in/about</loc>
     <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/team</loc>
+    <loc>https://www.beforth.in/team</loc>
     <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/erp</loc>
+    <loc>https://www.beforth.in/product/erp</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/delivery-tracking</loc>
+    <loc>https://www.beforth.in/product/delivery-tracking</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/salon-erp</loc>
+    <loc>https://www.beforth.in/product/salon-erp</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/hrms</loc>
+    <loc>https://www.beforth.in/product/hrms</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/crm</loc>
+    <loc>https://www.beforth.in/product/crm</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/mobile-apps</loc>
+    <loc>https://www.beforth.in/product/mobile-apps</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/websites</loc>
+    <loc>https://www.beforth.in/product/websites</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/tunnelgate</loc>
+    <loc>https://www.beforth.in/product/tunnelgate</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/seo-tracking</loc>
+    <loc>https://www.beforth.in/product/seo-tracking</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/payroll</loc>
+    <loc>https://www.beforth.in/product/payroll</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/pos</loc>
+    <loc>https://www.beforth.in/product/pos</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/serop</loc>
+    <loc>https://www.beforth.in/product/serop</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/product/4form</loc>
+    <loc>https://www.beforth.in/product/4form</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/insights</loc>
+    <loc>https://www.beforth.in/insights</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://beforth.in/insights/custom-erp-or-off-the-shelf</loc>
+    <loc>https://www.beforth.in/insights/custom-erp-or-off-the-shelf</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://beforth.in/insights/what-to-expect-during-erp-discovery</loc>
+    <loc>https://www.beforth.in/insights/what-to-expect-during-erp-discovery</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://beforth.in/insights/spreadsheets-fail-at-a-second-location</loc>
+    <loc>https://www.beforth.in/insights/spreadsheets-fail-at-a-second-location</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://beforth.in/privacy-policy</loc>
+    <loc>https://www.beforth.in/privacy-policy</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://beforth.in/terms</loc>
+    <loc>https://www.beforth.in/terms</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://beforth.in/cookie-policy</loc>
+    <loc>https://www.beforth.in/cookie-policy</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

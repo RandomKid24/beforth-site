@@ -11,4 +11,4 @@ Allow: /
 # Fragments are never sent to the server, so no rule is needed for them.
 Disallow: /*?*
 
-Sitemap: https://beforth.in/sitemap.xml
+Sitemap: https://www.beforth.in/sitemap.xml

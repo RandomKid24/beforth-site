@@ -136,7 +136,7 @@
 
   /* ---- Form fields --------------------------------------------------- */
   .field {
-    @apply w-full bg-white border border-ink/15 px-4 py-3.5 text-sm text-ink placeholder:text-ash/50 outline-none transition-[border-color,box-shadow] duration-300;
+    @apply w-full bg-white border border-ink/15 px-4 py-3.5 text-sm text-ink placeholder:text-ash outline-none transition-[border-color,box-shadow] duration-300;
   }
   .field:hover {
     @apply border-ink/30;
@@ -194,9 +194,11 @@
 /* stop when the element is not on screen or the tab is hidden,        */
 /* instead of running forever.                                          */
 /* ------------------------------------------------------------------ */
+.is-offscreen *,
+.is-hidden-tab *,
 .is-offscreen .pulse-dot,
 .is-hidden-tab .pulse-dot {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

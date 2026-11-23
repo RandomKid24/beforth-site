@@ -205,7 +205,7 @@ export function Field({
 }
 
 export const inputCls =
-  'w-full bg-white border border-ink/20 px-3 min-h-[40px] text-[13px] text-ink placeholder:text-ash/60 outline-none transition-[border-color,box-shadow] hover:border-ink/40 focus:border-signal focus:ring-2 focus:ring-signal/15';
+  'w-full bg-white border border-ink/20 px-3 min-h-[40px] text-[13px] text-ink placeholder:text-ash outline-none transition-[border-color,box-shadow] hover:border-ink/40 focus:border-signal focus:ring-2 focus:ring-signal/15';
 
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 

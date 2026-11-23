@@ -59,6 +59,7 @@ const ROUTES = [
   '/team',
   '/contact',
   ...LOCATION_ROUTES,
+  '/pricing',
   '/privacy-policy',
   '/terms',
   '/cookie-policy',
@@ -389,6 +390,15 @@ function withMarker(html) {
   return html.replace(/<head([^>]*)>/i, `<head$1>\n  ${PRERENDER_MARKER}`);
 }
 
+/**
+ * The 404 page must not declare a canonical. SeoManager injects one for every
+ * route, including the synthetic /__not-found route, which would tell Google
+ * to consolidate a non-existent URL. Strip it before writing 404.html.
+ */
+function withoutCanonical(html) {
+  return html.replace(/<link rel="canonical"[^>]*>\s*/gi, '');
+}
+
 /** Route -> og image filename, produced by scripts/generate-og-images.mjs. */
 function ogSlug(route) {
   return route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
@@ -406,7 +416,7 @@ function ogSlug(route) {
  * are already correct in index.html and are shared across cards.
  */
 function withRouteOgImage(html, route) {
-  const image = `https://beforth.in/og/${ogSlug(route)}.png`;
+  const image = `https://www.beforth.in/og/${ogSlug(route)}.png`;
 
   return html
     .replace(
@@ -508,7 +518,8 @@ async function main() {
         const outDir = route === '/' ? DIST : path.join(DIST, route);
         await mkdir(outDir, { recursive: true });
         const outFile = isNotFound ? path.join(DIST, '404.html') : path.join(outDir, 'index.html');
-        await writeFile(outFile, withRouteOgImage(withMarker(html), isNotFound ? '/' : route), 'utf8');
+        const pageHtml = withRouteOgImage(withMarker(html), isNotFound ? '/' : route);
+        await writeFile(outFile, isNotFound ? withoutCanonical(pageHtml) : pageHtml, 'utf8');
         if (isNotFound) await rm(outDir, { recursive: true, force: true });
 
         // Verify the route-scoped schema matches this route. A mismatch means

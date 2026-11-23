@@ -19,7 +19,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 
 const ROUTES = [
-  '/', '/services', '/portfolio', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact', ...LOCATION_ROUTES, '/privacy-policy', '/terms', '/cookie-policy',
+  '/', '/services', '/portfolio', '/insights', '/insights/custom-erp-or-off-the-shelf', '/insights/what-to-expect-during-erp-discovery', '/insights/spreadsheets-fail-at-a-second-location', '/about', '/team', '/contact', '/pricing', ...LOCATION_ROUTES, '/privacy-policy', '/terms', '/cookie-policy',
   '/product/erp', '/product/delivery-tracking', '/product/salon-erp', '/product/hrms',
   '/product/crm', '/product/mobile-apps', '/product/websites',
   '/product/tunnelgate', '/product/seo-tracking', '/product/payroll',
@@ -70,7 +70,7 @@ async function checkRoute(route) {
   // Every route must point og:image at its own card, or shares render the
   // home page's image and look like the wrong link.
   const og = html.match(/<meta property="og:image" content="([^"]+)"/i)?.[1] ?? '';
-  const expected = `https://beforth.in/og/${route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-')}.png`;
+  const expected = `https://www.beforth.in/og/${route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-')}.png`;
   if (og !== expected) problems.push(`${route}: og:image is "${og || 'missing'}", expected ${expected}`);
 
   // The root div must contain rendered markup, not be an empty shell.
@@ -87,7 +87,7 @@ async function main() {
   const sitemap = await readFile(path.join(ROOT, 'public', 'sitemap.xml'), 'utf8');
   const vercel = await readFile(path.join(ROOT, 'vercel.json'), 'utf8');
   for (const route of LOCATION_ROUTES) {
-    if (!sitemap.includes(`<loc>https://beforth.in${route}</loc>`)) problems.push(`${route}: missing from public/sitemap.xml`);
+    if (!sitemap.includes(`<loc>https://www.beforth.in${route}</loc>`)) problems.push(`${route}: missing from public/sitemap.xml`);
     if (!vercel.includes(`"source": "${route}"`)) problems.push(`${route}: missing rewrite in vercel.json`);
   }
 
@@ -115,6 +115,7 @@ async function main() {
     const nf = await readFile(path.join(DIST, '404.html'), 'utf8');
     if (!/name="robots" content="noindex/i.test(nf)) problems.push('404.html is missing noindex');
     if (!/<title>Page not found/i.test(nf)) problems.push('404.html has the wrong title');
+    if (/<link rel="canonical"/i.test(nf)) problems.push('404.html must not declare a canonical');
   } catch {
     problems.push('dist/404.html missing — unknown URLs would return 200');
   }

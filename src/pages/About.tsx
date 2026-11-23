@@ -58,17 +58,10 @@ export default function AboutPage() {
         title={<>Technology that <span className="accent">fits</span> the business.</>}
         art={<AboutDoodle className="hidden xl:block absolute right-0 top-0 w-[340px]" />}
       >
-        <div className="grid md:grid-cols-2 gap-8 md:gap-14 max-w-5xl">
-          <p className="lead">
-            BeForth is a software company in Nashik, India, founded in 2025. We build custom
-            business software, automation and digital platforms.
-          </p>
-          <p className="body">
-            Our work is simple to state: understand how a business really runs, then build
-            technology around it. Our span covers ERP, CRM, HRMS, inventory systems, business
-            applications, web platforms and mobile applications.
-          </p>
-        </div>
+        <p className="lead max-w-2xl">
+          BeForth is a software company in Nashik, India, founded in 2025. We build custom
+          business software, automation and digital platforms.
+        </p>
       </PageHead>
 
       <section className="pb-20 md:pb-24">

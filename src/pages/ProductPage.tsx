@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, ArrowDown, Check } from 'lucide-react';
 
@@ -9,54 +9,9 @@ import { Magnetic } from '@/components/Magnetic';
 import { getPlatform } from '@/components/platforms/catalog';
 import NotFound from './NotFound';
 
-const ORIGIN = 'https://beforth.in';
-
 export default function ProductPage() {
   const { slug } = useParams();
   const p = getPlatform(slug);
-
-  // Search engines read this: the service, where it sits on the site, and its FAQ.
-  useEffect(() => {
-    if (!p) return;
-    const url = `${ORIGIN}/product/${p.slug}`;
-    const data = {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Service',
-          '@id': `${url}#service`,
-          name: p.name,
-          serviceType: p.name,
-          description: p.seoDescription,
-          url,
-          provider: { '@id': `${ORIGIN}/#organization` },
-          areaServed: ['IN', 'AE', 'US', 'GB', 'AU'],
-        },
-        {
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
-            { '@type': 'ListItem', position: 2, name: 'Platforms', item: `${ORIGIN}/services` },
-            { '@type': 'ListItem', position: 3, name: p.name, item: url },
-          ],
-        },
-        {
-          '@type': 'FAQPage',
-          mainEntity: p.faq.map((f) => ({
-            '@type': 'Question',
-            name: f.q,
-            acceptedAnswer: { '@type': 'Answer', text: f.a },
-          })),
-        },
-      ],
-    };
-    const el = document.createElement('script');
-    el.type = 'application/ld+json';
-    el.id = 'ld-product';
-    el.text = JSON.stringify(data);
-    document.head.appendChild(el);
-    return () => el.remove();
-  }, [p]);
 
   if (!p) return <NotFound />;
 
@@ -95,26 +50,36 @@ export default function ProductPage() {
               <Reveal delay={0.1}>
                 <p className="body text-[16px] md:text-[18px] max-w-[34rem] mt-6 md:mt-7 !text-ash">{p.lead}</p>
               </Reveal>
+              <Reveal delay={0.12}>
+                <div className="mt-7 max-w-[36rem] border-l-2 border-signal pl-5">
+                  <p className="label mb-2">The short answer</p>
+                  <p className="body !text-ink">
+                    {p.name} is custom business software built by BeForth in Nashik, India, around how your team works: your roles, approvals, data and reports. Try a working preview on labelled sample data with no signup. After a short discovery conversation, we send a written scope and cost, which you approve before any build starts.
+                  </p>
+                  <ul className="mt-3 flex flex-col gap-1.5">
+                    <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> Built around your process, not a template.</li>
+                    <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> 13 working previews on sample data — no signup.</li>
+                    <li className="body-tight flex items-start gap-2"><Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-signal" strokeWidth={3} /> Written scope and cost before any build starts.</li>
+                  </ul>
+                </div>
+              </Reveal>
               <Reveal delay={0.15}>
                 <div className="flex flex-wrap items-center gap-x-7 gap-y-4 mt-8 md:mt-10">
                   <Magnetic>
-                    {p.primary ? (
-                      <a href={p.primary.href} target="_blank" rel="noopener noreferrer" className="btn-signal !px-7 !py-4">
-                        {p.primary.label}
-                        <ArrowUpRight className="w-4 h-4 shrink-0" />
-                      </a>
-                    ) : (
-                      <Link to="/contact" className="btn-signal !px-7 !py-4">
-                        <span className="sm:hidden">Talk to us</span>
-                        <span className="hidden sm:inline">Talk to us about {p.name}</span>
-                        <ArrowRight className="w-4 h-4 shrink-0" />
-                      </Link>
-                    )}
+                    <button type="button" onClick={toDemo} className="btn-signal !px-7 !py-4">
+                      Try the live {p.name} preview <ArrowDown className="w-4 h-4 shrink-0" />
+                    </button>
                   </Magnetic>
-                  <button type="button" onClick={toDemo} className="ulink">
-                    Try the live preview <ArrowDown className="w-3.5 h-3.5" />
-                  </button>
+                  <Link to="/contact" className="ulink">
+                    Get a written estimate <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  {p.primary && (
+                    <a href={p.primary.href} target="_blank" rel="noopener noreferrer" className="ulink">
+                      {p.primary.label} <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
+                <p className="label !normal-case !tracking-[0.06em] mt-4">Sample data. No signup. Reply within 1 working day.</p>
               </Reveal>
               {p.proof && !p.primary && (
                 <Reveal delay={0.2}>

@@ -184,6 +184,7 @@ export default function PortfolioPage() {
       <section id="systems" className="pb-20 md:pb-28 scroll-mt-24">
         <div className="wrap">
           <div className="rule mb-6" />
+          <h2 className="display-lg text-[clamp(1.7rem,4vw,3.2rem)] max-w-[20ch] mb-10">Systems we build, running</h2>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10">
             <span className="label">Systems · {shown.length} of {PLATFORMS.length}</span>
             <div role="group" aria-label="Filter systems" className="flex flex-wrap gap-2">
@@ -226,7 +227,7 @@ export default function PortfolioPage() {
           <ol className="border-t border-ink/12 max-w-3xl">
             {CLIENTS.map((c, i) => (
               <li key={c} className="flex items-baseline gap-6 py-4 md:py-5 border-b border-ink/12">
-                <span className="label text-signal w-8 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                <span className="label text-signal-deep w-8 shrink-0">{String(i + 1).padStart(2, '0')}</span>
                 <span className="display-md text-[18px] md:text-2xl">{c}</span>
               </li>
             ))}
@@ -257,20 +258,44 @@ export default function PortfolioPage() {
               ))}
             </ul>
           ) : (
-            <div className="surface-ink p-8 md:p-12 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-end">
-              <div>
-                <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] max-w-[22ch] mb-4">
-                  Client case studies are published when the numbers are <span className="text-wave">verified.</span>
-                </h2>
-                <p className="text-paper/75 text-[15px] md:text-[16px] leading-[1.75] max-w-xl">
-                  We would rather show nothing than something invented. A case study goes up
-                  here once the client has agreed to it and the before-and-after figures can
-                  be checked. Until then, the systems above are what we can show honestly.
-                </p>
-              </div>
-              <div className="flex flex-col items-start lg:items-end gap-6">
-                <VerifiedDoodle className="hidden sm:block w-[200px]" />
-                <Link to="/contact" className="btn-invert">
+            <div className="surface p-8 md:p-12">
+              <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] max-w-[22ch] mb-6">
+                Proof we can publish today
+              </h2>
+              <p className="body max-w-2xl mb-8">
+                No case studies are published yet. These are the facts we can stand behind
+                today, rather than invented outcomes. A case study goes up here once a client
+                has agreed to it and the before-and-after figures can be checked.
+              </p>
+              <dl className="grid md:grid-cols-2 gap-x-10 gap-y-6 border-t border-ink/12 pt-8">
+                <div>
+                  <dt className="label mb-2">Working previews</dt>
+                  <dd className="body-tight">13 working product previews on labelled sample data, with no signup.</dd>
+                </div>
+                <div>
+                  <dt className="label mb-2">Named clients</dt>
+                  <dd className="body-tight">9 named clients: {CLIENTS.join(', ')}.</dd>
+                </div>
+                <div>
+                  <dt className="label mb-2">Named leads</dt>
+                  <dd className="body-tight">Vivek Zope (CEO), Ritesh Mahale (CTO) and Aditya Badgujar (COO).</dd>
+                </div>
+                <div>
+                  <dt className="label mb-2">Response time</dt>
+                  <dd className="body-tight">We reply within one working day.</dd>
+                </div>
+                <div>
+                  <dt className="label mb-2">Open source</dt>
+                  <dd className="body-tight">SerOp is published under the Apache-2.0 licence.</dd>
+                </div>
+                <div>
+                  <dt className="label mb-2">Founded</dt>
+                  <dd className="body-tight">BeForth was founded in 2025 in Nashik, Maharashtra, India.</dd>
+                </div>
+              </dl>
+              <div className="mt-9 flex flex-wrap items-center gap-6">
+                <VerifiedDoodle className="hidden sm:block w-[180px]" />
+                <Link to="/contact" className="btn-signal">
                   Ask about similar work <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

@@ -364,18 +364,17 @@ if `404.html` is missing or not `noindex`, or if any route renders without conte
 
 ### Hostnames
 
-The canonical host is **`https://beforth.in`** (no `www`). Canonical, `og:url`, the schema
-`@id` values, the sitemap and `llms.txt` all declare that host.
+The canonical host is **`https://www.beforth.in`** (with `www`). Canonical, `og:url`, the
+schema `@id` values, the sitemap and `llms.txt` all declare that host.
 
-**The redirect lives in the Vercel dashboard, not in `vercel.json`.** A `redirects` rule in
-`vercel.json` that sent `www` to the apex looped against the dashboard's own apex-to-`www`
-redirect and left pages unstyled, so it was removed. The correct setup is: `beforth.in`
-is the primary domain and `www.beforth.in` redirects to it.
+**The apex-to-`www` redirect is declared in `vercel.json`.** A `redirects` rule with a
+`host` condition sends `beforth.in/*` to `https://www.beforth.in/$1` permanently (308).
+This matches the host the live site already served, so no Vercel dashboard domain change
+is needed and the old redirect loop cannot recur.
 
-**Status at the time of writing: not done.** `beforth.in` still redirects to `www.beforth.in`,
-so the canonical host and the live primary host disagree. Either flip the dashboard setting
-(preferred; no code change) or change every `https://beforth.in` to the `www` host. Until
-then Search Console will treat the two as separate properties.
+If a dashboard-level redirect already exists, it must also point apex → `www` (not the
+reverse), otherwise the two rules will fight and loop. Verify after deploy with
+`curl -sI https://beforth.in/ | grep -i '^location'`.
 
 ---
 

@@ -16,7 +16,7 @@
 
 ## ⚡ Quick Links
 
-| [Live Demo](https://beforth.in) | [COLOR_PALETTE.md](COLOR_PALETTE.md) | [Contact](https://beforth.in/contact) |
+| [Live Demo](https://www.beforth.in) | [COLOR_PALETTE.md](COLOR_PALETTE.md) | [Contact](https://www.beforth.in/contact) |
 | :--- | :--- | :--- |
 
 ---
@@ -85,7 +85,7 @@ npm run lint       # TypeScript check (tsc --noEmit)
 
 ### Prerendering
 
-`npm run build` prerenders all 16 routes to static HTML in `dist/<route>/index.html`.
+`npm run build` prerenders all 27 routes to static HTML in `dist/<route>/index.html` (26 existing routes plus `/pricing`).
 This is not optional decoration — the app is a client-rendered SPA, and without it
 the served HTML is an empty `<div id="root">`. Google will render the JavaScript,
 but most AI answer-engine crawlers (ChatGPT, Perplexity, ClaudeBot) fetch raw HTML
@@ -165,6 +165,8 @@ read as filler to visitors.
 - **`src/data/caseStudies.ts`** — set `live: true` on an entry once a real,
   verifiable engagement exists. `CaseStudyMetric` will not compile without a
   measured outcome, because a case study without one is not a case study.
+  The gate stays closed: no case studies are published yet, and none may be
+  invented. The portfolio shows only the verified facts it can publish today.
 - **`src/data/insights.ts`** — long-form articles. `TOPIC_BACKLOG` lists subject
   areas this company can speak to; it is a writing prompt, not published content.
 

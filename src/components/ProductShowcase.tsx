@@ -400,7 +400,7 @@ export default function ProductShowcase() {
                 else if (e.key === 'Enter') { e.preventDefault(); pickHit(hit); }
                 else if (e.key === 'Escape') { setQuery(''); setSearchOpen(false); (e.target as HTMLInputElement).blur(); }
               }}
-              className="w-full bg-paper border border-ink/12 pl-8 pr-8 min-h-[36px] text-[13px] outline-none placeholder:text-ash/70 focus:border-signal focus:bg-white focus:ring-2 focus:ring-signal/15 transition-[border-color,box-shadow]"
+              className="w-full bg-paper border border-ink/12 pl-8 pr-8 min-h-[36px] text-[13px] outline-none placeholder:text-ash focus:border-signal focus:bg-white focus:ring-2 focus:ring-signal/15 transition-[border-color,box-shadow]"
             />
             {query && (
               <button type="button" aria-label="Clear search" onMouseDown={(e) => e.preventDefault()} onClick={() => { setQuery(''); searchRef.current?.focus({ preventScroll: true }); }} className="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-ash hover:text-ink">

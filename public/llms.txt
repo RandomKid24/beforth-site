@@ -10,13 +10,13 @@ Customers are typically manufacturing, logistics and distribution, pharma, and s
 - Phone: +91 97661 83834
 - Location: Nashik, Maharashtra, India
 - Founded: 2025
-- Website: https://beforth.in/
+- Website: https://www.beforth.in/
 
 ## What we build
 
 Custom ERP · CRM · HRMS and payroll · Inventory management · Business process automation · Web applications · Mobile applications · Systems integration and APIs
 
-Full detail per service: https://beforth.in/services
+Full detail per service: https://www.beforth.in/services
 
 ## Where we deliver
 
@@ -38,33 +38,34 @@ BeForth is based in Nashik, Maharashtra and delivers across India. Overview: htt
 
 Each has a page with module lists, workflow steps and its own FAQ.
 
-- HRMS — attendance, shifts, leave, approvals, biometric: https://beforth.in/product/hrms
-- Payroll — PF, professional tax, TDS, approval workflow: https://beforth.in/product/payroll
-- CRM — leads, pipeline stages, follow-ups, sales reporting: https://beforth.in/product/crm
-- POS and billing — GST billing, UPI, card, live stock: https://beforth.in/product/pos
-- Delivery tracking — driver app, proof of delivery, routes: https://beforth.in/product/delivery-tracking
-- Salon ERP — appointments, billing, packages, stock: https://beforth.in/product/salon-erp
-- Mobile apps — Android and iOS, native or cross-platform: https://beforth.in/product/mobile-apps
-- Websites and portals — including customer portals: https://beforth.in/product/websites
-- TunnelGate — remote desktop over Cloudflare Zero Trust: https://beforth.in/product/tunnelgate
-- SEO and SERP rank tracking: https://beforth.in/product/seo-tracking
-- Server Operator (SerOp) — free open-source SSH, Docker and deploy desktop app: https://beforth.in/product/serop
-- 4Form — form builder and workflow platform: https://beforth.in/product/4form
+- HRMS — attendance, shifts, leave, approvals, biometric: https://www.beforth.in/product/hrms
+- Payroll — PF, professional tax, TDS, approval workflow: https://www.beforth.in/product/payroll
+- CRM — leads, pipeline stages, follow-ups, sales reporting: https://www.beforth.in/product/crm
+- POS and billing — GST billing, UPI, card, live stock: https://www.beforth.in/product/pos
+- Delivery tracking — driver app, proof of delivery, routes: https://www.beforth.in/product/delivery-tracking
+- Salon ERP — appointments, billing, packages, stock: https://www.beforth.in/product/salon-erp
+- Mobile apps — Android and iOS, native or cross-platform: https://www.beforth.in/product/mobile-apps
+- Websites and portals — including customer portals: https://www.beforth.in/product/websites
+- TunnelGate — remote desktop over Cloudflare Zero Trust: https://www.beforth.in/product/tunnelgate
+- SEO and SERP rank tracking: https://www.beforth.in/product/seo-tracking
+- Server Operator (SerOp) — free open-source SSH, Docker and deploy desktop app: https://www.beforth.in/product/serop
+- 4Form — form builder and workflow platform: https://www.beforth.in/product/4form
 
 ## Insights
 
 Plain-language guides on choosing and running business systems, published by BeForth.
 
-- Custom ERP or off-the-shelf: how to decide: https://beforth.in/insights/custom-erp-or-off-the-shelf
-- What to expect during ERP discovery: https://beforth.in/insights/what-to-expect-during-erp-discovery
-- Why spreadsheets fail at a second location: https://beforth.in/insights/spreadsheets-fail-at-a-second-location
-- All articles: https://beforth.in/insights
+- Custom ERP or off-the-shelf: how to decide: https://www.beforth.in/insights/custom-erp-or-off-the-shelf
+- What to expect during ERP discovery: https://www.beforth.in/insights/what-to-expect-during-erp-discovery
+- Why spreadsheets fail at a second location: https://www.beforth.in/insights/spreadsheets-fail-at-a-second-location
+- All articles: https://www.beforth.in/insights
 
 ## Company
 
-- About: https://beforth.in/about
-- Team: https://beforth.in/team
-- Contact: https://beforth.in/contact
+- About: https://www.beforth.in/about
+- Team: https://www.beforth.in/team
+- Contact: https://www.beforth.in/contact
+- Pricing method (no price list; written scope after discovery): https://www.beforth.in/pricing
 
 Leadership roles are published on the team page. BeForth was founded in 2025. No team size, client count, revenue or project-total figures are published on this site, so none are asserted here.
 
