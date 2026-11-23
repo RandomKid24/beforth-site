@@ -249,7 +249,3 @@
 
 @keyframes arrow-through { 0% { transform: translate(0,0); } 45% { transform: translate(14px,-14px); opacity: 0; } 46% { transform: translate(-14px,14px); opacity: 0; } 100% { transform: translate(0,0); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .group:hover [class*="arrow-through"] { animation: none !important; } }
-
-/* Tawk.to bubble: its iframe showed an opaque grey box. Pin to light and keep the frame transparent. */
-:root { color-scheme: light; }
-iframe[title*="chat" i], iframe[src*="tawk.to"] { color-scheme: light; background: transparent !important; }
